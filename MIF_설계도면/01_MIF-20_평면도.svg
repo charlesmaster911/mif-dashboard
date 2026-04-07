@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <defs>
+    <style>
+      text { font-family: 'Malgun Gothic', Arial, sans-serif; }
+      .title { font-size: 18px; font-weight: bold; fill: #1a1a1a; }
+      .subtitle { font-size: 12px; fill: #444; }
+      .dim { font-size: 10px; fill: #d32f2f; }
+      .label { font-size: 11px; fill: #1a1a1a; font-weight: bold; }
+      .label-sm { font-size: 9px; fill: #555; }
+      .zone-label { font-size: 13px; fill: white; font-weight: bold; }
+      .wall { fill: none; stroke: #333; stroke-width: 3; }
+      .inner-wall { fill: none; stroke: #666; stroke-width: 2; stroke-dasharray: 8,4; }
+      .partition { stroke: #444; stroke-width: 2; }
+      .dim-line { stroke: #d32f2f; stroke-width: 1; }
+      .dim-arrow { fill: #d32f2f; }
+      .shelf { fill: #e0e0e0; stroke: #999; stroke-width: 1; }
+      .duo { fill: #fff; stroke: #2196F3; stroke-width: 1.2; rx: 2; }
+      .freezer-fill { fill: #e3f2fd; }
+      .process-fill { fill: #fff3e0; }
+      .service-fill { fill: #e8f5e9; }
+      .machine-fill { fill: #fce4ec; }
+      .equipment { fill: #f5f5f5; stroke: #777; stroke-width: 1.5; rx: 3; }
+    </style>
+    <marker id="arrowR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" class="dim-arrow"/>
+    </marker>
+    <marker id="arrowL" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+      <polygon points="8,0 0,3 8,6" class="dim-arrow"/>
+    </marker>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#ccc" stroke-width="1"/>
+    </pattern>
+    <pattern id="cold-hatch" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#e3f2fd"/>
+      <circle cx="4" cy="4" r="1" fill="#90caf9" opacity="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" class="title">MIF-20 마이크로 아이스팩토리 — 평면도 (FLOOR PLAN)</text>
+  <text x="600" y="48" text-anchor="middle" class="subtitle">20ft Standard Container | 내부: 5,898 × 2,352 × 2,393 mm | Scale ≈ 1:60</text>
+
+  <!-- Container outer wall -->
+  <rect x="100" y="80" width="984" height="392" class="wall" fill="url(#hatch)" rx="2"/>
+
+  <!-- Insulation (10mm = ~1.7px at scale, shown as wall thickness) -->
+  <rect x="108" y="88" width="968" height="376" fill="white" stroke="#999" stroke-width="1" rx="1"/>
+
+  <!-- ===== ZONE A: 냉동기실 (600mm → 100px) ===== -->
+  <rect x="108" y="88" width="100" height="376" class="machine-fill" stroke="#999" stroke-width="1"/>
+  <line x1="208" y1="88" x2="208" y2="464" class="partition"/>
+  <text x="158" y="260" text-anchor="middle" class="zone-label" fill="#c62828">A</text>
+  <text x="158" y="278" text-anchor="middle" class="label-sm" fill="#c62828">냉동기실</text>
+  <text x="158" y="292" text-anchor="middle" class="label-sm" fill="#c62828">600mm</text>
+  <!-- Compressor -->
+  <rect x="120" y="120" width="70" height="50" class="equipment" fill="#ffcdd2"/>
+  <text x="155" y="148" text-anchor="middle" class="label-sm">컴프레서</text>
+  <text x="155" y="160" text-anchor="middle" class="label-sm">1HP</text>
+  <!-- Condenser -->
+  <rect x="120" y="185" width="70" height="40" class="equipment" fill="#ffcdd2"/>
+  <text x="155" y="208" text-anchor="middle" class="label-sm">콘덴서</text>
+  <!-- Electric Panel -->
+  <rect x="120" y="340" width="70" height="55" class="equipment" fill="#fff9c4"/>
+  <text x="155" y="363" text-anchor="middle" class="label-sm">전기</text>
+  <text x="155" y="375" text-anchor="middle" class="label-sm">패널</text>
+
+  <!-- ===== ZONE B: 워크인 냉동고 (2,400mm → 400px) ===== -->
+  <rect x="208" y="88" width="400" height="376" fill="url(#cold-hatch)" stroke="#1565c0" stroke-width="2"/>
+  <line x1="608" y1="88" x2="608" y2="464" class="partition" stroke="#1565c0" stroke-width="2"/>
+  <text x="408" y="115" text-anchor="middle" class="zone-label" fill="#1565c0">B — 워크인 냉동고 (-18℃)</text>
+  <text x="408" y="132" text-anchor="middle" class="label-sm" fill="#1565c0">2,400mm | 듀오메이커 96개 | PUR 단열 100mm</text>
+
+  <!-- Freezer door -->
+  <rect x="600" y="240" width="16" height="80" fill="#ffab00" stroke="#f57f17" stroke-width="1.5" rx="2"/>
+  <text x="630" y="285" class="label-sm" fill="#f57f17">슬라이딩도어</text>
+  <text x="630" y="297" class="label-sm" fill="#f57f17">W900×H1900</text>
+
+  <!-- Left wall shelves (선반 - 좌측 벽면) -->
+  <rect x="216" y="140" width="380" height="60" class="shelf"/>
+  <text x="406" y="160" text-anchor="middle" class="label-sm">좌측 선반 (7단 × 11개 × 2열 = 가용 48개)</text>
+  <!-- Duo Maker icons on shelf -->
+  <g transform="translate(220, 165)">
+    <rect x="0" y="0" width="15" height="9" class="duo"/><rect x="18" y="0" width="15" height="9" class="duo"/>
+    <rect x="36" y="0" width="15" height="9" class="duo"/><rect x="54" y="0" width="15" height="9" class="duo"/>
+    <rect x="72" y="0" width="15" height="9" class="duo"/><rect x="90" y="0" width="15" height="9" class="duo"/>
+    <rect x="108" y="0" width="15" height="9" class="duo"/><rect x="126" y="0" width="15" height="9" class="duo"/>
+    <rect x="144" y="0" width="15" height="9" class="duo"/><rect x="162" y="0" width="15" height="9" class="duo"/>
+    <rect x="180" y="0" width="15" height="9" class="duo"/>
+    <!-- Row 2 -->
+    <rect x="0" y="12" width="15" height="9" class="duo"/><rect x="18" y="12" width="15" height="9" class="duo"/>
+    <rect x="36" y="12" width="15" height="9" class="duo"/><rect x="54" y="12" width="15" height="9" class="duo"/>
+    <rect x="72" y="12" width="15" height="9" class="duo"/><rect x="90" y="12" width="15" height="9" class="duo"/>
+    <rect x="108" y="12" width="15" height="9" class="duo"/><rect x="126" y="12" width="15" height="9" class="duo"/>
+    <rect x="144" y="12" width="15" height="9" class="duo"/><rect x="162" y="12" width="15" height="9" class="duo"/>
+    <rect x="180" y="12" width="15" height="9" class="duo"/>
+  </g>
+
+  <!-- Center aisle -->
+  <rect x="216" y="210" width="380" height="65" fill="white" stroke="#bbb" stroke-width="0.5" stroke-dasharray="4,3"/>
+  <text x="406" y="248" text-anchor="middle" class="label-sm" fill="#888">작업 통로 600mm</text>
+
+  <!-- Right wall shelves (선반 - 우측 벽면) -->
+  <rect x="216" y="285" width="380" height="60" class="shelf"/>
+  <text x="406" y="305" text-anchor="middle" class="label-sm">우측 선반 (7단 × 11개 × 2열 = 가용 48개)</text>
+  <g transform="translate(220, 310)">
+    <rect x="0" y="0" width="15" height="9" class="duo"/><rect x="18" y="0" width="15" height="9" class="duo"/>
+    <rect x="36" y="0" width="15" height="9" class="duo"/><rect x="54" y="0" width="15" height="9" class="duo"/>
+    <rect x="72" y="0" width="15" height="9" class="duo"/><rect x="90" y="0" width="15" height="9" class="duo"/>
+    <rect x="108" y="0" width="15" height="9" class="duo"/><rect x="126" y="0" width="15" height="9" class="duo"/>
+    <rect x="144" y="0" width="15" height="9" class="duo"/><rect x="162" y="0" width="15" height="9" class="duo"/>
+    <rect x="180" y="0" width="15" height="9" class="duo"/>
+    <rect x="0" y="12" width="15" height="9" class="duo"/><rect x="18" y="12" width="15" height="9" class="duo"/>
+    <rect x="36" y="12" width="15" height="9" class="duo"/><rect x="54" y="12" width="15" height="9" class="duo"/>
+    <rect x="72" y="12" width="15" height="9" class="duo"/><rect x="90" y="12" width="15" height="9" class="duo"/>
+    <rect x="108" y="12" width="15" height="9" class="duo"/><rect x="126" y="12" width="15" height="9" class="duo"/>
+    <rect x="144" y="12" width="15" height="9" class="duo"/><rect x="162" y="12" width="15" height="9" class="duo"/>
+    <rect x="180" y="12" width="15" height="9" class="duo"/>
+  </g>
+
+  <!-- Unit cooler in freezer ceiling -->
+  <rect x="360" y="365" width="100" height="30" fill="#bbdefb" stroke="#1565c0" stroke-width="1" rx="3"/>
+  <text x="410" y="384" text-anchor="middle" class="label-sm" fill="#1565c0">유닛쿨러</text>
+
+  <!-- ===== ZONE C: 가공·포장실 (1,400mm → 233px) ===== -->
+  <rect x="608" y="88" width="233" height="376" class="process-fill" stroke="#999" stroke-width="1"/>
+  <line x1="841" y1="88" x2="841" y2="464" class="partition"/>
+  <text x="725" y="115" text-anchor="middle" class="zone-label" fill="#e65100">C — 가공·포장실</text>
+  <text x="725" y="132" text-anchor="middle" class="label-sm" fill="#e65100">1,400mm</text>
+
+  <!-- Work table -->
+  <rect x="620" y="150" width="210" height="60" class="equipment" fill="#ffe0b2"/>
+  <text x="725" y="175" text-anchor="middle" class="label-sm">탈형 작업대 (스테인리스)</text>
+  <text x="725" y="188" text-anchor="middle" class="label-sm">W1,200 × D450</text>
+
+  <!-- Laser engraver -->
+  <rect x="620" y="230" width="100" height="60" class="equipment" fill="#fff9c4"/>
+  <text x="670" y="255" text-anchor="middle" class="label-sm">레이저</text>
+  <text x="670" y="267" text-anchor="middle" class="label-sm">각인기</text>
+
+  <!-- Packaging area -->
+  <rect x="730" y="230" width="100" height="60" class="equipment" fill="#ffe0b2"/>
+  <text x="780" y="255" text-anchor="middle" class="label-sm">포장</text>
+  <text x="780" y="267" text-anchor="middle" class="label-sm">작업대</text>
+
+  <!-- Sink -->
+  <rect x="620" y="350" width="80" height="50" class="equipment" fill="#e0f7fa"/>
+  <text x="660" y="378" text-anchor="middle" class="label-sm">싱크대</text>
+
+  <!-- Storage fridge -->
+  <rect x="720" y="340" width="110" height="65" class="equipment" fill="#e8eaf6"/>
+  <text x="775" y="368" text-anchor="middle" class="label-sm">완제품</text>
+  <text x="775" y="382" text-anchor="middle" class="label-sm">보관냉장고</text>
+
+  <!-- ===== ZONE D: 서비스·판매 (1,498mm → 235px) ===== -->
+  <rect x="841" y="88" width="235" height="376" class="service-fill" stroke="#999" stroke-width="1"/>
+  <text x="958" y="115" text-anchor="middle" class="zone-label" fill="#2e7d32">D — 서비스·판매</text>
+  <text x="958" y="132" text-anchor="middle" class="label-sm" fill="#2e7d32">1,498mm</text>
+
+  <!-- Robot barista -->
+  <rect x="870" y="155" width="90" height="90" fill="#c8e6c9" stroke="#388e3c" stroke-width="1.5" rx="45"/>
+  <text x="915" y="197" text-anchor="middle" class="label-sm" fill="#2e7d32">로봇</text>
+  <text x="915" y="210" text-anchor="middle" class="label-sm" fill="#2e7d32">바리스타</text>
+
+  <!-- Kiosk -->
+  <rect x="975" y="155" width="80" height="90" class="equipment" fill="#c8e6c9"/>
+  <text x="1015" y="195" text-anchor="middle" class="label-sm">무인</text>
+  <text x="1015" y="208" text-anchor="middle" class="label-sm">키오스크</text>
+
+  <!-- Tumbler storage -->
+  <rect x="860" y="280" width="90" height="70" class="equipment" fill="#e8eaf6"/>
+  <text x="905" y="310" text-anchor="middle" class="label-sm">아블러</text>
+  <text x="905" y="323" text-anchor="middle" class="label-sm">텀블러</text>
+  <text x="905" y="336" text-anchor="middle" class="label-sm">보관대</text>
+
+  <!-- Water purifier -->
+  <rect x="965" y="280" width="90" height="70" class="equipment" fill="#e0f7fa"/>
+  <text x="1010" y="310" text-anchor="middle" class="label-sm">정수</text>
+  <text x="1010" y="323" text-anchor="middle" class="label-sm">시스템</text>
+
+  <!-- Service window -->
+  <rect x="1060" y="370" width="16" height="80" fill="#66bb6a" stroke="#2e7d32" stroke-width="1.5" rx="2"/>
+  <text x="1045" y="415" text-anchor="end" class="label-sm" fill="#2e7d32">서비스</text>
+  <text x="1045" y="427" text-anchor="end" class="label-sm" fill="#2e7d32">창구</text>
+
+  <!-- Ice display -->
+  <rect x="860" y="380" width="170" height="40" class="equipment" fill="#e1f5fe"/>
+  <text x="945" y="405" text-anchor="middle" class="label-sm">얼음 디스플레이 쇼케이스</text>
+
+  <!-- ===== Dimension Lines ===== -->
+  <!-- Total length -->
+  <line x1="108" y1="510" x2="1076" y2="510" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="592" y="528" text-anchor="middle" class="dim">5,898 mm (내부 유효 길이)</text>
+
+  <!-- Zone widths -->
+  <line x1="108" y1="490" x2="208" y2="490" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="158" y="500" text-anchor="middle" class="dim">600</text>
+
+  <line x1="208" y1="490" x2="608" y2="490" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="408" y="500" text-anchor="middle" class="dim">2,400</text>
+
+  <line x1="608" y1="490" x2="841" y2="490" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="725" y="500" text-anchor="middle" class="dim">1,400</text>
+
+  <line x1="841" y1="490" x2="1076" y2="490" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="958" y="500" text-anchor="middle" class="dim">1,498</text>
+
+  <!-- Width dimension -->
+  <line x1="1100" y1="88" x2="1100" y2="464" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="1120" y="280" text-anchor="middle" class="dim" transform="rotate(90,1120,280)">2,352 mm</text>
+
+  <!-- Legend -->
+  <rect x="100" y="545" width="15" height="12" fill="url(#cold-hatch)" stroke="#1565c0" stroke-width="1"/>
+  <text x="120" y="555" class="label-sm">워크인 냉동고</text>
+  <rect x="210" y="545" width="15" height="12" class="process-fill" stroke="#999" stroke-width="1"/>
+  <text x="230" y="555" class="label-sm">가공·포장실</text>
+  <rect x="320" y="545" width="15" height="12" class="service-fill" stroke="#999" stroke-width="1"/>
+  <text x="340" y="555" class="label-sm">서비스·판매</text>
+  <rect x="430" y="545" width="15" height="12" class="machine-fill" stroke="#999" stroke-width="1"/>
+  <text x="450" y="555" class="label-sm">냉동기실</text>
+  <rect x="540" y="545" width="15" height="9" class="duo"/>
+  <text x="560" y="555" class="label-sm">듀오메이커 (181.6×105mm)</text>
+  <rect x="730" y="545" width="15" height="12" fill="#ffab00" rx="2"/>
+  <text x="750" y="555" class="label-sm">도어</text>
+
+  <!-- North arrow -->
+  <g transform="translate(50, 520)">
+    <polygon points="0,-15 5,5 -5,5" fill="#333"/>
+    <text x="0" y="18" text-anchor="middle" class="label-sm">N</text>
+  </g>
+
+  <!-- Copyright -->
+  <text x="1080" y="590" text-anchor="end" class="label-sm" fill="#999">© 2026 MasterMinding Group — MIF-20 Floor Plan v1.0</text>
+</svg>

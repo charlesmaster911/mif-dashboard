@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 550" width="1200" height="550">
+  <defs>
+    <style>
+      text { font-family: 'Malgun Gothic', Arial, sans-serif; }
+      .title { font-size: 16px; font-weight: bold; fill: #1a1a1a; }
+      .subtitle { font-size: 11px; fill: #444; }
+      .dim { font-size: 9px; fill: #d32f2f; }
+      .label-sm { font-size: 9px; fill: #555; }
+      .label { font-size: 10px; fill: #1a1a1a; font-weight: bold; }
+    </style>
+    <marker id="aR" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <polygon points="0,0 6,2.5 0,5" fill="#d32f2f"/>
+    </marker>
+    <marker id="aL" markerWidth="6" markerHeight="5" refX="0" refY="2.5" orient="auto">
+      <polygon points="6,0 0,2.5 6,5" fill="#d32f2f"/>
+    </marker>
+  </defs>
+
+  <text x="600" y="25" text-anchor="middle" class="title">MIF-20 종단면도 (LONGITUDINAL SECTION B-B')</text>
+  <text x="600" y="42" text-anchor="middle" class="subtitle">컨테이너 길이 방향 중앙 절단 | 장비 배치 높이 관계 | Scale ≈ 1:50</text>
+
+  <!-- Container shell -->
+  <rect x="60" y="60" width="1080" height="380" fill="#f9f9f9" stroke="#333" stroke-width="3" rx="2"/>
+  <!-- Floor -->
+  <rect x="60" y="410" width="1080" height="30" fill="#e0e0e0" stroke="#666"/>
+
+  <!-- ===== ZONE A: 냉동기실 ===== -->
+  <rect x="65" y="65" width="110" height="340" fill="#fce4ec" stroke="#c62828" stroke-width="1"/>
+  <text x="120" y="85" text-anchor="middle" class="label" fill="#c62828">A 냉동기실</text>
+
+  <!-- Compressor -->
+  <rect x="75" y="280" width="90" height="70" fill="#ffcdd2" stroke="#c62828" rx="3"/>
+  <text x="120" y="310" text-anchor="middle" class="label-sm">컴프레서</text>
+  <text x="120" y="322" text-anchor="middle" class="label-sm">1HP</text>
+  <!-- Condenser (top) -->
+  <rect x="75" y="100" width="90" height="50" fill="#ffcdd2" stroke="#c62828" rx="3"/>
+  <text x="120" y="128" text-anchor="middle" class="label-sm">콘덴서</text>
+  <!-- Vent -->
+  <rect x="75" y="65" width="30" height="30" fill="none" stroke="#c62828" stroke-width="1.5"/>
+  <text x="90" y="83" text-anchor="middle" style="font-size:7px;fill:#c62828">환기</text>
+  <!-- Electric -->
+  <rect x="75" y="360" width="90" height="45" fill="#fff9c4" stroke="#f9a825" rx="3"/>
+  <text x="120" y="387" text-anchor="middle" class="label-sm">전기패널</text>
+
+  <!-- Partition wall -->
+  <rect x="175" y="65" width="8" height="340" fill="#bdbdbd" stroke="#666"/>
+
+  <!-- ===== ZONE B: 워크인 냉동고 ===== -->
+  <rect x="183" y="65" width="440" height="340" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="403" y="85" text-anchor="middle" class="label" fill="#1565c0">B 워크인 냉동고 (-18℃)</text>
+
+  <!-- Insulation indicator -->
+  <rect x="183" y="65" width="10" height="340" fill="#fff9c4" opacity="0.5"/>
+  <rect x="613" y="65" width="10" height="340" fill="#fff9c4" opacity="0.5"/>
+  <rect x="183" y="65" width="440" height="10" fill="#fff9c4" opacity="0.5"/>
+
+  <!-- Shelves (side view - 7 tiers) -->
+  <g>
+    <!-- Shelf supports -->
+    <rect x="200" y="370" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="325" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="280" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="235" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="190" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="145" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="100" width="410" height="3" fill="#9e9e9e"/>
+
+    <!-- Duo makers on shelves (side view) -->
+    <g fill="#bbdefb" stroke="#1565c0" stroke-width="0.8">
+      <!-- Tier 1 -->
+      <rect x="205" y="340" width="18" height="28" rx="2"/><rect x="226" y="340" width="18" height="28" rx="2"/>
+      <rect x="247" y="340" width="18" height="28" rx="2"/><rect x="268" y="340" width="18" height="28" rx="2"/>
+      <rect x="289" y="340" width="18" height="28" rx="2"/><rect x="310" y="340" width="18" height="28" rx="2"/>
+      <rect x="331" y="340" width="18" height="28" rx="2"/><rect x="352" y="340" width="18" height="28" rx="2"/>
+      <rect x="373" y="340" width="18" height="28" rx="2"/><rect x="394" y="340" width="18" height="28" rx="2"/>
+      <rect x="415" y="340" width="18" height="28" rx="2"/>
+      <!-- Tier 2 -->
+      <rect x="205" y="295" width="18" height="28" rx="2"/><rect x="226" y="295" width="18" height="28" rx="2"/>
+      <rect x="247" y="295" width="18" height="28" rx="2"/><rect x="268" y="295" width="18" height="28" rx="2"/>
+      <rect x="289" y="295" width="18" height="28" rx="2"/><rect x="310" y="295" width="18" height="28" rx="2"/>
+      <rect x="331" y="295" width="18" height="28" rx="2"/><rect x="352" y="295" width="18" height="28" rx="2"/>
+      <rect x="373" y="295" width="18" height="28" rx="2"/><rect x="394" y="295" width="18" height="28" rx="2"/>
+      <rect x="415" y="295" width="18" height="28" rx="2"/>
+      <!-- Tier 3 -->
+      <rect x="205" y="250" width="18" height="28" rx="2"/><rect x="226" y="250" width="18" height="28" rx="2"/>
+      <rect x="247" y="250" width="18" height="28" rx="2"/><rect x="268" y="250" width="18" height="28" rx="2"/>
+      <rect x="289" y="250" width="18" height="28" rx="2"/><rect x="310" y="250" width="18" height="28" rx="2"/>
+      <rect x="331" y="250" width="18" height="28" rx="2"/><rect x="352" y="250" width="18" height="28" rx="2"/>
+      <rect x="373" y="250" width="18" height="28" rx="2"/><rect x="394" y="250" width="18" height="28" rx="2"/>
+      <rect x="415" y="250" width="18" height="28" rx="2"/>
+      <!-- Tier 4 -->
+      <rect x="205" y="205" width="18" height="28" rx="2"/><rect x="226" y="205" width="18" height="28" rx="2"/>
+      <rect x="247" y="205" width="18" height="28" rx="2"/><rect x="268" y="205" width="18" height="28" rx="2"/>
+      <rect x="289" y="205" width="18" height="28" rx="2"/><rect x="310" y="205" width="18" height="28" rx="2"/>
+      <rect x="331" y="205" width="18" height="28" rx="2"/>
+      <!-- Tier 5-6 abbreviated -->
+      <rect x="205" y="160" width="18" height="28" rx="2"/><rect x="226" y="160" width="18" height="28" rx="2"/>
+      <rect x="247" y="160" width="18" height="28" rx="2"/><rect x="268" y="160" width="18" height="28" rx="2"/>
+      <rect x="205" y="115" width="18" height="28" rx="2"/><rect x="226" y="115" width="18" height="28" rx="2"/>
+      <rect x="247" y="115" width="18" height="28" rx="2"/>
+    </g>
+  </g>
+
+  <!-- Unit cooler (ceiling) -->
+  <rect x="310" y="70" width="150" height="25" fill="#64b5f6" stroke="#1565c0" stroke-width="1.5" rx="5"/>
+  <text x="385" y="87" text-anchor="middle" class="label-sm" fill="white">유닛쿨러</text>
+
+  <!-- Cold air flow -->
+  <path d="M340,97 C340,120 320,130 320,160" fill="none" stroke="#42a5f5" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#aR)"/>
+  <path d="M400,97 C400,120 400,130 400,160" fill="none" stroke="#42a5f5" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#aR)"/>
+  <text x="460" y="130" class="label-sm" fill="#42a5f5">냉기 순환</text>
+
+  <!-- Partition wall -->
+  <rect x="623" y="65" width="8" height="340" fill="#bdbdbd" stroke="#666"/>
+
+  <!-- ===== ZONE C: 가공·포장실 ===== -->
+  <rect x="631" y="65" width="256" height="340" fill="#fff3e0" stroke="#e65100" stroke-width="1"/>
+  <text x="759" y="85" text-anchor="middle" class="label" fill="#e65100">C 가공·포장실</text>
+
+  <!-- Work table -->
+  <rect x="645" y="310" width="230" height="50" fill="#ffe0b2" stroke="#e65100" rx="3"/>
+  <text x="760" y="337" text-anchor="middle" class="label-sm">작업대 H850mm</text>
+
+  <!-- Laser -->
+  <rect x="645" y="200" width="100" height="80" fill="#fff9c4" stroke="#f9a825" rx="3"/>
+  <text x="695" y="238" text-anchor="middle" class="label-sm">레이저</text>
+  <text x="695" y="250" text-anchor="middle" class="label-sm">각인기</text>
+
+  <!-- Fridge -->
+  <rect x="765" y="120" width="110" height="160" fill="#e8eaf6" stroke="#5c6bc0" rx="3"/>
+  <text x="820" y="195" text-anchor="middle" class="label-sm">보관</text>
+  <text x="820" y="207" text-anchor="middle" class="label-sm">냉장고</text>
+  <text x="820" y="219" text-anchor="middle" class="label-sm">H1,800</text>
+
+  <!-- LED lighting -->
+  <rect x="645" y="70" width="230" height="8" fill="#fff176" stroke="#f9a825" rx="2"/>
+  <text x="760" y="95" text-anchor="middle" class="label-sm" fill="#f9a825">LED 조명 (위생등급)</text>
+
+  <!-- Partition wall -->
+  <rect x="887" y="65" width="8" height="340" fill="#bdbdbd" stroke="#666"/>
+
+  <!-- ===== ZONE D: 서비스·판매 ===== -->
+  <rect x="895" y="65" width="240" height="340" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="1015" y="85" text-anchor="middle" class="label" fill="#2e7d32">D 서비스·판매</text>
+
+  <!-- Robot barista -->
+  <rect x="910" y="200" width="80" height="130" fill="#c8e6c9" stroke="#388e3c" rx="5"/>
+  <text x="950" y="260" text-anchor="middle" class="label-sm" fill="#2e7d32">로봇</text>
+  <text x="950" y="272" text-anchor="middle" class="label-sm" fill="#2e7d32">바리스타</text>
+  <text x="950" y="284" text-anchor="middle" class="label-sm" fill="#2e7d32">H1,500</text>
+
+  <!-- Kiosk -->
+  <rect x="1010" y="130" width="60" height="130" fill="#a5d6a7" stroke="#388e3c" rx="3"/>
+  <text x="1040" y="193" text-anchor="middle" class="label-sm" fill="#2e7d32">키오스크</text>
+  <text x="1040" y="205" text-anchor="middle" class="label-sm" fill="#2e7d32">H1,700</text>
+
+  <!-- Service window -->
+  <rect x="1095" y="250" width="35" height="80" fill="#66bb6a" stroke="#2e7d32" stroke-width="2" rx="3"/>
+  <text x="1112" y="295" text-anchor="middle" style="font-size:7px;fill:white" transform="rotate(-90,1112,295)">서비스창</text>
+
+  <!-- Tumbler shelf -->
+  <rect x="910" y="350" width="210" height="50" fill="#e8eaf6" stroke="#5c6bc0" rx="3"/>
+  <text x="1015" y="378" text-anchor="middle" class="label-sm">아블러 텀블러 보관 (Ø87 × H150)</text>
+
+  <!-- ===== DIMENSION LINES ===== -->
+  <!-- Total length -->
+  <line x1="60" y1="465" x2="1140" y2="465" stroke="#d32f2f" stroke-width="1" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="600" y="480" text-anchor="middle" class="dim">5,898 mm (내부)</text>
+
+  <!-- Zone lengths -->
+  <line x1="65" y1="450" x2="175" y2="450" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="120" y="448" text-anchor="middle" class="dim">600</text>
+  <line x1="183" y1="450" x2="623" y2="450" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="403" y="448" text-anchor="middle" class="dim">2,400</text>
+  <line x1="631" y1="450" x2="887" y2="450" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="759" y="448" text-anchor="middle" class="dim">1,400</text>
+  <line x1="895" y1="450" x2="1135" y2="450" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="1015" y="448" text-anchor="middle" class="dim">1,498</text>
+
+  <!-- Height -->
+  <line x1="40" y1="60" x2="40" y2="440" stroke="#d32f2f" stroke-width="1" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="25" y="255" text-anchor="middle" class="dim" transform="rotate(-90,25,255)">2,591 mm (외부높이)</text>
+
+  <!-- Work height reference -->
+  <line x1="631" y1="310" x2="895" y2="310" stroke="#888" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <text x="760" y="305" text-anchor="middle" class="label-sm" fill="#888">작업대 높이 H850mm</text>
+
+  <text x="1130" y="530" text-anchor="end" class="label-sm" fill="#999">© 2026 MasterMinding Group — MIF-20 Longitudinal Section v1.0</text>
+</svg>

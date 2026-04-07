@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>MIF 마이크로 아이스팩토리 설계도면</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Malgun Gothic', sans-serif; background: #1a1a2e; color: #eee; }
+  header { background: #16213e; padding: 20px 40px; border-bottom: 3px solid #0f3460; }
+  header h1 { font-size: 24px; color: #e94560; }
+  header p { font-size: 14px; color: #aaa; margin-top: 5px; }
+  nav { background: #0f3460; padding: 10px 40px; display: flex; gap: 10px; flex-wrap: wrap; }
+  nav button {
+    background: #16213e; color: #eee; border: 1px solid #555; padding: 10px 20px;
+    border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s;
+  }
+  nav button:hover, nav button.active { background: #e94560; border-color: #e94560; color: white; }
+  .viewer { padding: 20px; text-align: center; }
+  .viewer h2 { margin: 15px 0; font-size: 18px; color: #e94560; }
+  .svg-container {
+    background: white; border-radius: 8px; padding: 20px; margin: 0 auto;
+    max-width: 95vw; overflow-x: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .svg-container object, .svg-container img {
+    width: 100%; height: auto; min-height: 400px;
+  }
+  .controls { margin: 15px 0; display: flex; gap: 10px; justify-content: center; }
+  .controls button {
+    background: #16213e; color: #eee; border: 1px solid #555; padding: 8px 16px;
+    border-radius: 4px; cursor: pointer; font-size: 13px;
+  }
+  .controls button:hover { background: #0f3460; }
+  .info { max-width: 900px; margin: 20px auto; background: #16213e; padding: 20px; border-radius: 8px; text-align: left; }
+  .info table { width: 100%; border-collapse: collapse; }
+  .info th, .info td { padding: 8px 12px; border-bottom: 1px solid #333; font-size: 13px; }
+  .info th { color: #e94560; text-align: left; width: 30%; }
+  footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+  .page { display: none; }
+  .page.active { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MIF 마이크로 아이스팩토리 — 설계도면</h1>
+  <p>㈜마스터마인딩그룹 | 2026 기후테크 + 디자인·기술협업 통합 | 20ft / 40ft 컨테이너 모듈</p>
+</header>
+
+<nav>
+  <button class="active" onclick="showPage(0)">1. MIF-20 평면도</button>
+  <button onclick="showPage(1)">2. MIF-40 평면도</button>
+  <button onclick="showPage(2)">3. 냉동고 단면도</button>
+  <button onclick="showPage(3)">4. MIF-20 종단면도</button>
+  <button onclick="showPage(4)">5. 시스템 구성도</button>
+  <button onclick="showPage(5)">6. 외부 조감도</button>
+  <button onclick="showPage(6)">7. 내부 투시도</button>
+</nav>
+
+<!-- Page 1: MIF-20 Floor Plan -->
+<div class="page active" id="page0">
+  <div class="viewer">
+    <h2>MIF-20 마이크로 아이스팩토리 — 평면도 (Floor Plan)</h2>
+    <div class="controls">
+      <button onclick="zoomIn(0)">확대 (+)</button>
+      <button onclick="zoomOut(0)">축소 (-)</button>
+      <button onclick="zoomReset(0)">원래 크기</button>
+    </div>
+    <div class="svg-container" id="container0">
+      <object data="01_MIF-20_평면도.svg" type="image/svg+xml" style="width:100%"></object>
+    </div>
+    <div class="info">
+      <table>
+        <tr><th>컨테이너</th><td>20ft Standard | 내부 5,898 × 2,352 × 2,393 mm</td></tr>
+        <tr><th>Zone A</th><td>냉동기실 (600mm) — 컴프레서 1HP, 콘덴서, 전기패널</td></tr>
+        <tr><th>Zone B</th><td>워크인 냉동고 (2,400mm) — 듀오메이커 96개, -18℃, PUR 100mm</td></tr>
+        <tr><th>Zone C</th><td>가공·포장실 (1,400mm) — 탈형 작업대, 레이저 각인기, 포장</td></tr>
+        <tr><th>Zone D</th><td>서비스·판매 (1,498mm) — 로봇 바리스타, 무인 키오스크</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Page 2: MIF-40 Floor Plan -->
+<div class="page" id="page1">
+  <div class="viewer">
+    <h2>MIF-40 마이크로 아이스팩토리 — 평면도 (Floor Plan)</h2>
+    <div class="controls">
+      <button onclick="zoomIn(1)">확대 (+)</button>
+      <button onclick="zoomOut(1)">축소 (-)</button>
+      <button onclick="zoomReset(1)">원래 크기</button>
+    </div>
+    <div class="svg-container" id="container1">
+      <object data="02_MIF-40_평면도.svg" type="image/svg+xml" style="width:100%"></object>
+    </div>
+    <div class="info">
+      <table>
+        <tr><th>컨테이너</th><td>40ft High-Cube | 내부 12,032 × 2,352 × 2,698 mm</td></tr>
+        <tr><th>Zone A</th><td>냉동기실 (800mm) — 컴프레서 2대</td></tr>
+        <tr><th>Zone B</th><td>워크인 냉동고 (4,800mm) — 듀오메이커 144개</td></tr>
+        <tr><th>Zone C</th><td>가공·포장실 (2,400mm) — 대형 각인기, QC</td></tr>
+        <tr><th>Zone D</th><td>서비스 바 (2,400mm) — 로봇 바리스타+바텐더, 8석</td></tr>
+        <tr><th>Zone E</th><td>창고·유틸리티 (1,632mm) — 텀블러 500개 보관, 세척기</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Page 3: Cross Section -->
+<div class="page" id="page2">
+  <div class="viewer">
+    <h2>워크인 냉동고 횡단면도 & 듀오메이커·아블러 상세 치수</h2>
+    <div class="controls">
+      <button onclick="zoomIn(2)">확대 (+)</button>
+      <button onclick="zoomOut(2)">축소 (-)</button>
+      <button onclick="zoomReset(2)">원래 크기</button>
+    </div>
+    <div class="svg-container" id="container2">
+      <object data="03_냉동고_단면도_선반배치.svg" type="image/svg+xml" style="width:100%"></object>
+    </div>
+    <div class="info">
+      <table>
+        <tr><th>듀오메이커</th><td>W 181.6 × D 105.0 × H 170mm (손잡이 포함)</td></tr>
+        <tr><th>아블러 텀블러</th><td>W 75.0 × Ø 87.0 × H 150mm (뚜껑 포함) | ~355ml</td></tr>
+        <tr><th>선반 구성</th><td>7단 × 양벽 | 깊이 450mm (2열) | 단 간격 250mm</td></tr>
+        <tr><th>통로</th><td>600mm (작업자 이동 + 카트)</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Page 4: Longitudinal Section -->
+<div class="page" id="page3">
+  <div class="viewer">
+    <h2>MIF-20 종단면도 (Longitudinal Section B-B')</h2>
+    <div class="controls">
+      <button onclick="zoomIn(3)">확대 (+)</button>
+      <button onclick="zoomOut(3)">축소 (-)</button>
+      <button onclick="zoomReset(3)">원래 크기</button>
+    </div>
+    <div class="svg-container" id="container3">
+      <object data="04_MIF-20_종단면도.svg" type="image/svg+xml" style="width:100%"></object>
+    </div>
+    <div class="info">
+      <table>
+        <tr><th>외부 높이</th><td>2,591 mm</td></tr>
+        <tr><th>작업대 높이</th><td>H 850mm (표준 인체공학)</td></tr>
+        <tr><th>로봇 바리스타</th><td>H 1,500mm</td></tr>
+        <tr><th>키오스크</th><td>H 1,700mm</td></tr>
+        <tr><th>보관냉장고</th><td>H 1,800mm</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Page 5: System Architecture -->
+<div class="page" id="page4">
+  <div class="viewer">
+    <h2>마이크로 아이스팩토리 — 통합 시스템 구성도</h2>
+    <div class="controls">
+      <button onclick="zoomIn(4)">확대 (+)</button>
+      <button onclick="zoomOut(4)">축소 (-)</button>
+      <button onclick="zoomReset(4)">원래 크기</button>
+    </div>
+    <div class="svg-container" id="container4">
+      <object data="05_시스템_구성도.svg" type="image/svg+xml" style="width:100%"></object>
+    </div>
+    <div class="info">
+      <table>
+        <tr><th>INFRA</th><td>전력(3상380V) · 급수(정수5단계) · 배수(폐수0%) · 통신(5G/WiFi)</td></tr>
+        <tr><th>COOLING</th><td>냉동시스템 → 워크인 냉동고 → 디렉셔널 프리징 12~18h</td></tr>
+        <tr><th>PROCESS</th><td>탈형 → 각인 → 포장 → 서비스(로봇) → BYI 순환</td></tr>
+        <tr><th>AI/IoT</th><td>센서 → AI 수요예측·예지보전 → 관제 대시보드</td></tr>
+        <tr><th>BUSINESS</th><td>B2B 구독 · B2C 무인 · ESG 데이터 · 글로벌 PaaS</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Page 6: Exterior -->
+<div class="page" id="page5">
+  <div class="viewer">
+    <h2>MIF-20 마이크로 아이스팩토리 — 외부 조감도</h2>
+    <div class="controls">
+      <button onclick="zoomIn(5)">확대 (+)</button>
+      <button onclick="zoomOut(5)">축소 (-)</button>
+      <button onclick="zoomReset(5)">원래 크기</button>
+    </div>
+    <div class="svg-container" id="container5">
+      <object data="07_MIF-20_외부_조감도.svg" type="image/svg+xml" style="width:100%"></object>
+    </div>
+    <div class="info">
+      <table>
+        <tr><th>디자인 콘셉트</th><td>Eco-Futurism — 스테인리스 + 투명 폴딩도어 + LED</td></tr>
+        <tr><th>외부 크기</th><td>6,058 × 2,438 × 2,591 mm (20ft Standard)</td></tr>
+        <tr><th>주요 외관</th><td>Zone D 투명 폴딩도어, LED 상태표시등, 브랜드 사이니지</td></tr>
+        <tr><th>옵션</th><td>태양광 패널 (Add-on), 콘덴서 루프탑 배치</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Page 7: Interior -->
+<div class="page" id="page6">
+  <div class="viewer">
+    <h2>MIF-20 마이크로 아이스팩토리 — 내부 투시도</h2>
+    <div class="controls">
+      <button onclick="zoomIn(6)">확대 (+)</button>
+      <button onclick="zoomOut(6)">축소 (-)</button>
+      <button onclick="zoomReset(6)">원래 크기</button>
+    </div>
+    <div class="svg-container" id="container6">
+      <object data="08_MIF-20_내부_투시도.svg" type="image/svg+xml" style="width:100%"></object>
+    </div>
+    <div class="info">
+      <table>
+        <tr><th>Zone A</th><td>냉동기실 — 컴프레서 1HP, 전기패널</td></tr>
+        <tr><th>Zone B</th><td>워크인 냉동고 — 듀오메이커 462개, 7단 선반, -18℃</td></tr>
+        <tr><th>Zone C</th><td>가공·포장 — 스테인리스 작업대, 레이저 각인, 보관냉장고</td></tr>
+        <tr><th>Zone D</th><td>서비스 — 로봇 바리스타, 키오스크, 아블러 텀블러, 쇼케이스</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 ㈜마스터마인딩그룹 × 디블러 | Micro Ice Factory Blueprint v1.0</p>
+  <p style="margin-top:8px; color:#888">PDF 파일: <a href="MIF_전체도면_통합.pdf" style="color:#e94560">MIF_전체도면_통합.pdf</a> (7페이지) | <a href="06_생산량_계산서.pdf" style="color:#e94560">생산량 계산서</a></p>
+</footer>
+
+<script>
+let currentPage = 0;
+let scales = [100, 100, 100, 100, 100, 100, 100];
+
+function showPage(idx) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page' + idx).classList.add('active');
+  document.querySelectorAll('nav button')[idx].classList.add('active');
+  currentPage = idx;
+}
+
+function zoomIn(idx) {
+  scales[idx] = Math.min(scales[idx] + 20, 250);
+  applyZoom(idx);
+}
+function zoomOut(idx) {
+  scales[idx] = Math.max(scales[idx] - 20, 40);
+  applyZoom(idx);
+}
+function zoomReset(idx) {
+  scales[idx] = 100;
+  applyZoom(idx);
+}
+function applyZoom(idx) {
+  const obj = document.querySelector('#container' + idx + ' object');
+  if (obj) obj.style.width = scales[idx] + '%';
+}
+</script>
+</body>
+</html>

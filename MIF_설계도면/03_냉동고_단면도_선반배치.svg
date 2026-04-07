@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 750" width="1400" height="750">
+  <defs>
+    <style>
+      text { font-family: 'Malgun Gothic', Arial, sans-serif; }
+      .title { font-size: 16px; font-weight: bold; fill: #1a1a1a; }
+      .subtitle { font-size: 11px; fill: #444; }
+      .dim { font-size: 9px; fill: #d32f2f; }
+      .label-sm { font-size: 9px; fill: #555; }
+      .label { font-size: 11px; fill: #1a1a1a; font-weight: bold; }
+      .wall-thick { fill: #bdbdbd; stroke: #666; stroke-width: 1; }
+      .insulation { fill: #fff9c4; stroke: #f9a825; stroke-width: 0.5; }
+      .shelf-bar { fill: #9e9e9e; stroke: #616161; stroke-width: 1; }
+      .duo-side { fill: #e3f2fd; stroke: #1565c0; stroke-width: 1; rx: 2; }
+      .duo-detail { fill: #bbdefb; stroke: #1565c0; stroke-width: 0.8; }
+      .floor { fill: #e0e0e0; stroke: #666; stroke-width: 1; }
+      .cold-air { fill: none; stroke: #42a5f5; stroke-width: 1; stroke-dasharray: 4,3; }
+    </style>
+    <marker id="ar" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <polygon points="0,0 6,2.5 0,5" fill="#d32f2f"/>
+    </marker>
+    <marker id="al" markerWidth="6" markerHeight="5" refX="0" refY="2.5" orient="auto">
+      <polygon points="6,0 0,2.5 6,5" fill="#d32f2f"/>
+    </marker>
+  </defs>
+
+  <!-- ========== SECTION 1: 냉동고 횡단면 (정면에서 본) ========== -->
+  <text x="350" y="25" text-anchor="middle" class="title">워크인 냉동고 횡단면도 (CROSS SECTION A-A')</text>
+  <text x="350" y="42" text-anchor="middle" class="subtitle">컨테이너 폭 방향 절단 | 듀오메이커 선반 7단 배치 | Scale ≈ 1:20</text>
+
+  <!-- Container shell -->
+  <rect x="50" y="60" width="600" height="430" class="wall-thick"/>
+  <!-- Insulation -->
+  <rect x="65" y="75" width="570" height="400" class="insulation"/>
+  <!-- Inner space -->
+  <rect x="80" y="90" width="540" height="370" fill="#f0f8ff" stroke="#1565c0" stroke-width="1"/>
+
+  <!-- Floor -->
+  <rect x="50" y="460" width="600" height="30" class="floor"/>
+  <text x="350" y="480" text-anchor="middle" class="label-sm">스틸 플로어 + PUR 단열 100mm</text>
+
+  <!-- Ceiling unit cooler -->
+  <rect x="260" y="95" width="180" height="30" fill="#bbdefb" stroke="#1565c0" stroke-width="1.5" rx="5"/>
+  <text x="350" y="114" text-anchor="middle" class="label-sm" fill="#1565c0">유닛쿨러 (증발기)</text>
+  <!-- Cold air arrows -->
+  <path d="M280,130 L280,160" class="cold-air" marker-end="url(#ar)"/>
+  <path d="M350,130 L350,160" class="cold-air" marker-end="url(#ar)"/>
+  <path d="M420,130 L420,160" class="cold-air" marker-end="url(#ar)"/>
+
+  <!-- ===== LEFT SHELF (좌측 벽면 선반) ===== -->
+  <!-- Shelf frame -->
+  <rect x="90" y="130" width="180" height="320" fill="none" stroke="#9e9e9e" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="180" y="148" text-anchor="middle" class="label" fill="#1565c0">좌측 선반</text>
+
+  <!-- 7 shelf levels with duo makers -->
+  <!-- Shelf 1 (bottom) -->
+  <rect x="92" y="405" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="370" width="30" height="35" class="duo-side"/><text x="110" y="393" text-anchor="middle" style="font-size:6px;fill:#1565c0">DUO</text>
+  <rect x="128" y="370" width="30" height="35" class="duo-side"/><text x="143" y="393" text-anchor="middle" style="font-size:6px;fill:#1565c0">DUO</text>
+  <rect x="161" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="194" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="227" y="370" width="30" height="35" class="duo-side"/>
+
+  <!-- Shelf 2 -->
+  <rect x="92" y="360" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="128" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="161" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="194" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="227" y="325" width="30" height="35" class="duo-side"/>
+
+  <!-- Shelf 3 -->
+  <rect x="92" y="315" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="128" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="161" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="194" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="227" y="280" width="30" height="35" class="duo-side"/>
+
+  <!-- Shelf 4 -->
+  <rect x="92" y="270" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="128" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="161" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="194" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="227" y="235" width="30" height="35" class="duo-side"/>
+
+  <!-- Shelf 5 -->
+  <rect x="92" y="225" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="128" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="161" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="194" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="227" y="190" width="30" height="35" class="duo-side"/>
+
+  <!-- Shelf 6 -->
+  <rect x="92" y="180" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="128" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="161" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="194" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="227" y="158" width="30" height="22" class="duo-side"/>
+
+  <!-- CENTER AISLE -->
+  <rect x="275" y="130" width="150" height="320" fill="rgba(255,255,255,0.3)" stroke="#bbb" stroke-dasharray="5,3"/>
+  <text x="350" y="300" text-anchor="middle" class="label" fill="#888" transform="rotate(-90,350,300)">작업 통로 600mm</text>
+
+  <!-- ===== RIGHT SHELF (우측 벽면 선반) ===== -->
+  <rect x="430" y="130" width="180" height="320" fill="none" stroke="#9e9e9e" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="520" y="148" text-anchor="middle" class="label" fill="#1565c0">우측 선반</text>
+
+  <!-- 7 shelf levels right side -->
+  <rect x="432" y="405" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="468" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="501" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="534" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="567" y="370" width="30" height="35" class="duo-side"/>
+
+  <rect x="432" y="360" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="468" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="501" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="534" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="567" y="325" width="30" height="35" class="duo-side"/>
+
+  <rect x="432" y="315" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="468" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="501" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="534" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="567" y="280" width="30" height="35" class="duo-side"/>
+
+  <rect x="432" y="270" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="468" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="501" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="534" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="567" y="235" width="30" height="35" class="duo-side"/>
+
+  <rect x="432" y="225" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="468" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="501" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="534" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="567" y="190" width="30" height="35" class="duo-side"/>
+
+  <rect x="432" y="180" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="468" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="501" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="534" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="567" y="158" width="30" height="22" class="duo-side"/>
+
+  <!-- Dimension lines - Cross section -->
+  <!-- Total width -->
+  <line x1="50" y1="510" x2="650" y2="510" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="350" y="525" text-anchor="middle" class="dim">2,438 mm (외부 폭)</text>
+
+  <!-- Inner width -->
+  <line x1="80" y1="535" x2="620" y2="535" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="350" y="550" text-anchor="middle" class="dim">2,152 mm (냉동고 내부 유효 폭 — 단열재 제외)</text>
+
+  <!-- Shelf depth -->
+  <line x1="90" y1="425" x2="270" y2="425" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="180" y="438" text-anchor="middle" class="dim">선반 깊이 450mm</text>
+
+  <!-- Aisle -->
+  <line x1="275" y1="425" x2="425" y2="425" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="350" y="438" text-anchor="middle" class="dim">통로 600mm</text>
+
+  <!-- Height -->
+  <line x1="30" y1="60" x2="30" y2="490" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="20" y="280" text-anchor="middle" class="dim" transform="rotate(-90,20,280)">2,591 mm (외부 높이)</text>
+
+  <!-- Shelf spacing -->
+  <line x1="660" y1="405" x2="660" y2="360" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="695" y="385" text-anchor="middle" class="dim">250mm</text>
+  <text x="695" y="395" text-anchor="middle" class="dim">(단 간격)</text>
+
+
+  <!-- ========== SECTION 2: 듀오메이커 상세 확대도 ========== -->
+  <text x="1050" y="25" text-anchor="middle" class="title">듀오메이커 선반 배치 상세도</text>
+  <text x="1050" y="42" text-anchor="middle" class="subtitle">1단 선반 평면 (위에서 본) | Scale ≈ 1:5</text>
+
+  <!-- Shelf top view -->
+  <rect x="770" y="70" width="560" height="200" fill="#f5f5f5" stroke="#9e9e9e" stroke-width="2"/>
+  <text x="1050" y="90" text-anchor="middle" class="label">1단 선반 평면도 (벽면 1면) — 2열 × 11개 = 22개</text>
+
+  <!-- Row labels -->
+  <text x="790" y="130" class="label-sm" fill="#1565c0">전열 (Front)</text>
+  <text x="790" y="210" class="label-sm" fill="#1565c0">후열 (Back)</text>
+
+  <!-- Front row: 11 duo makers -->
+  <g transform="translate(855,105)">
+    <rect x="0" y="0" width="38" height="22" class="duo-detail"/><text x="19" y="15" text-anchor="middle" style="font-size:7px;fill:#1565c0">182</text>
+    <rect x="42" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="84" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="126" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="168" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="210" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="252" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="294" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="336" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="378" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="420" y="0" width="38" height="22" class="duo-detail"/>
+  </g>
+
+  <!-- Back row: 11 duo makers -->
+  <g transform="translate(855,185)">
+    <rect x="0" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="42" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="84" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="126" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="168" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="210" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="252" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="294" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="336" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="378" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="420" y="0" width="38" height="22" class="duo-detail"/>
+  </g>
+
+  <!-- Dimensions for shelf detail -->
+  <line x1="855" y1="145" x2="893" y2="145" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="874" y="155" text-anchor="middle" class="dim">182mm</text>
+
+  <line x1="855" y1="100" x2="855" y2="135" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="840" y="120" text-anchor="middle" class="dim" transform="rotate(-90,840,120)">105mm</text>
+
+  <!-- Total shelf length -->
+  <line x1="855" y1="85" x2="1313" y2="85" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1084" y="80" text-anchor="middle" class="dim">11개 × 182mm + 간격 = ~2,100mm (벽면 유효 길이)</text>
+
+  <!-- Shelf depth -->
+  <line x1="1340" y1="105" x2="1340" y2="207" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1370" y="160" text-anchor="middle" class="dim" transform="rotate(90,1370,160)">선반 깊이 450mm (2열)</text>
+
+  <!-- ========== SECTION 3: 듀오메이커 제품 상세 ========== -->
+  <text x="1050" y="310" text-anchor="middle" class="title">듀오메이커 제품 치수 상세</text>
+
+  <!-- Duo Maker front view -->
+  <rect x="850" y="340" width="150" height="120" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="8"/>
+  <!-- Handle -->
+  <rect x="895" y="330" width="60" height="15" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="5"/>
+  <!-- Ribs -->
+  <line x1="860" y1="360" x2="860" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="870" y1="360" x2="870" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="880" y1="360" x2="880" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="890" y1="360" x2="890" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="960" y1="360" x2="960" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="970" y1="360" x2="970" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="980" y1="360" x2="980" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="990" y1="360" x2="990" y2="455" stroke="#90caf9" stroke-width="1"/>
+
+  <!-- Duo maker dimensions -->
+  <line x1="850" y1="475" x2="1000" y2="475" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="925" y="490" text-anchor="middle" class="dim">W 181.6 mm</text>
+
+  <line x1="1020" y1="340" x2="1020" y2="460" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1055" y="390" text-anchor="middle" class="dim">H 143.2mm</text>
+  <text x="1055" y="402" text-anchor="middle" class="dim">(본체)</text>
+
+  <line x1="1080" y1="330" x2="1080" y2="460" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1120" y="390" text-anchor="middle" class="dim">H 170mm</text>
+  <text x="1120" y="402" text-anchor="middle" class="dim">(손잡이포함)</text>
+
+  <!-- Side view -->
+  <rect x="1170" y="340" width="88" height="120" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="5"/>
+  <rect x="1190" y="330" width="48" height="15" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="5"/>
+  <text x="1214" y="410" text-anchor="middle" class="label-sm" fill="#1565c0">측면</text>
+
+  <line x1="1170" y1="475" x2="1258" y2="475" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1214" y="490" text-anchor="middle" class="dim">D 105.0 mm</text>
+
+  <!-- ========== SECTION 4: 아블러 텀블러 상세 ========== -->
+  <text x="1050" y="530" text-anchor="middle" class="title">아블러 텀블러 치수 상세</text>
+
+  <!-- Tumbler front view -->
+  <rect x="900" y="560" width="62" height="95" fill="#f5f5f5" stroke="#777" stroke-width="2" rx="5"/>
+  <!-- Cap -->
+  <rect x="893" y="550" width="76" height="18" fill="#eee" stroke="#777" stroke-width="2" rx="8"/>
+  <circle cx="931" cy="548" r="7" fill="#eee" stroke="#777" stroke-width="1.5"/>
+  <text x="931" y="615" text-anchor="middle" class="label-sm">abler</text>
+
+  <!-- Tumbler dimensions -->
+  <line x1="900" y1="670" x2="962" y2="670" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="931" y="685" text-anchor="middle" class="dim">W 75.0 mm</text>
+
+  <line x1="978" y1="560" x2="978" y2="655" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1010" y="600" text-anchor="middle" class="dim">H 114mm</text>
+  <text x="1010" y="612" text-anchor="middle" class="dim">(본체)</text>
+
+  <line x1="1040" y1="548" x2="1040" y2="655" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1075" y="600" text-anchor="middle" class="dim">H 150mm</text>
+  <text x="1075" y="612" text-anchor="middle" class="dim">(뚜껑포함)</text>
+
+  <!-- Diameter -->
+  <line x1="893" y1="700" x2="969" y2="700" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="931" y="715" text-anchor="middle" class="dim">Ø 87.0 mm (뚜껑)</text>
+
+  <!-- Capacity -->
+  <text x="931" y="735" text-anchor="middle" class="label-sm" fill="#1565c0">용량: ~355ml</text>
+
+  <!-- Info box -->
+  <rect x="1140" y="560" width="220" height="140" fill="#f5f5f5" stroke="#999" rx="5"/>
+  <text x="1250" y="580" text-anchor="middle" class="label">선반 배치 요약</text>
+  <text x="1155" y="600" class="label-sm">• MIF-20: 양벽 선반 7단</text>
+  <text x="1155" y="616" class="label-sm">  → 2열×11개×7단×2면 = 308 (가용96)</text>
+  <text x="1155" y="632" class="label-sm">• MIF-40: 양벽+중앙 선반 7단</text>
+  <text x="1155" y="648" class="label-sm">  → 확장 배치 = 가용 144개</text>
+  <text x="1155" y="668" class="label-sm">• 단 간격: 250mm</text>
+  <text x="1155" y="684" class="label-sm">• 선반 깊이: 450mm (2열)</text>
+  <text x="1155" y="700" class="label-sm">• 통로: 600mm (작업자 이동)</text>
+
+  <text x="1350" y="745" text-anchor="end" class="label-sm" fill="#999">© 2026 MasterMinding Group — Section &amp; Detail v1.0</text>
+</svg>

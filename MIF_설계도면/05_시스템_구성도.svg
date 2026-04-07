@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800">
+  <defs>
+    <style>
+      text { font-family: 'Malgun Gothic', Arial, sans-serif; }
+      .title { font-size: 18px; font-weight: bold; fill: #1a1a1a; }
+      .subtitle { font-size: 11px; fill: #444; }
+      .box-title { font-size: 11px; font-weight: bold; fill: white; }
+      .box-text { font-size: 9px; fill: #333; }
+      .flow-line { fill: none; stroke-width: 2; }
+      .label-sm { font-size: 9px; fill: #555; }
+    </style>
+    <marker id="fArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#666"/>
+    </marker>
+    <marker id="fArrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#1565c0"/>
+    </marker>
+    <marker id="fArrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#2e7d32"/>
+    </marker>
+    <marker id="fArrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#e65100"/>
+    </marker>
+  </defs>
+
+  <text x="700" y="30" text-anchor="middle" class="title">마이크로 아이스팩토리 — 통합 시스템 구성도</text>
+  <text x="700" y="50" text-anchor="middle" class="subtitle">전력 · 급수 · 냉동 · 제빙 · AI · 서비스 연동 다이어그램</text>
+
+  <!-- ===== ROW 1: 인프라 레이어 ===== -->
+  <text x="30" y="90" class="label-sm" fill="#888" font-weight="bold">INFRA</text>
+
+  <!-- 전력 -->
+  <rect x="80" y="70" width="180" height="80" fill="#fff3e0" stroke="#e65100" stroke-width="2" rx="8"/>
+  <rect x="80" y="70" width="180" height="22" fill="#e65100" rx="8"/>
+  <rect x="80" y="80" width="180" height="12" fill="#e65100"/>
+  <text x="170" y="86" text-anchor="middle" class="box-title">전력 시스템</text>
+  <text x="170" y="108" text-anchor="middle" class="box-text">3상 380V / 단상 220V</text>
+  <text x="170" y="121" text-anchor="middle" class="box-text">총 소비전력: 8~12kW</text>
+  <text x="170" y="134" text-anchor="middle" class="box-text">태양광 ESS (Add-on)</text>
+
+  <!-- 급수 -->
+  <rect x="300" y="70" width="180" height="80" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="8"/>
+  <rect x="300" y="70" width="180" height="22" fill="#1565c0" rx="8"/>
+  <rect x="300" y="80" width="180" height="12" fill="#1565c0"/>
+  <text x="390" y="86" text-anchor="middle" class="box-title">급수 시스템</text>
+  <text x="390" y="108" text-anchor="middle" class="box-text">상수도 직결 / 탱크 겸용</text>
+  <text x="390" y="121" text-anchor="middle" class="box-text">정수 필터 (5단계)</text>
+  <text x="390" y="134" text-anchor="middle" class="box-text">프리미엄 워터 전환 가능</text>
+
+  <!-- 배수 -->
+  <rect x="520" y="70" width="180" height="80" fill="#e0f7fa" stroke="#00838f" stroke-width="2" rx="8"/>
+  <rect x="520" y="70" width="180" height="22" fill="#00838f" rx="8"/>
+  <rect x="520" y="80" width="180" height="12" fill="#00838f"/>
+  <text x="610" y="86" text-anchor="middle" class="box-title">배수 시스템</text>
+  <text x="610" y="108" text-anchor="middle" class="box-text">제상수 배수 (자동)</text>
+  <text x="610" y="121" text-anchor="middle" class="box-text">싱크대 · 세척기 배수</text>
+  <text x="610" y="134" text-anchor="middle" class="box-text">폐수 0% (100% 활용)</text>
+
+  <!-- 통신 -->
+  <rect x="740" y="70" width="180" height="80" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2" rx="8"/>
+  <rect x="740" y="70" width="180" height="22" fill="#6a1b9a" rx="8"/>
+  <rect x="740" y="80" width="180" height="12" fill="#6a1b9a"/>
+  <text x="830" y="86" text-anchor="middle" class="box-title">통신 시스템</text>
+  <text x="830" y="108" text-anchor="middle" class="box-text">5G / WiFi 듀얼</text>
+  <text x="830" y="121" text-anchor="middle" class="box-text">IoT 센서 게이트웨이</text>
+  <text x="830" y="134" text-anchor="middle" class="box-text">클라우드 연동 (AWS/GCP)</text>
+
+  <!-- ===== ROW 2: 냉동·제빙 레이어 ===== -->
+  <text x="30" y="210" class="label-sm" fill="#888" font-weight="bold">COOLING</text>
+
+  <!-- 냉동 시스템 -->
+  <rect x="80" y="190" width="250" height="110" fill="#e8eaf6" stroke="#283593" stroke-width="2" rx="8"/>
+  <rect x="80" y="190" width="250" height="22" fill="#283593" rx="8"/>
+  <rect x="80" y="200" width="250" height="12" fill="#283593"/>
+  <text x="205" y="206" text-anchor="middle" class="box-title">냉동 시스템 (Zone A)</text>
+  <text x="205" y="228" text-anchor="middle" class="box-text">컴프레서: 1HP (MIF-20) / 2HP (MIF-40)</text>
+  <text x="205" y="241" text-anchor="middle" class="box-text">냉매: R-404A (친환경 전환 예정)</text>
+  <text x="205" y="254" text-anchor="middle" class="box-text">응축기 + 팽창밸브 + 증발기</text>
+  <text x="205" y="267" text-anchor="middle" class="box-text">설정 온도: -18℃ ~ -22℃</text>
+  <text x="205" y="280" text-anchor="middle" class="box-text">제상: 전기 히터 자동 제상 (6h 주기)</text>
+
+  <!-- 워크인 냉동고 -->
+  <rect x="380" y="190" width="300" height="110" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="8"/>
+  <rect x="380" y="190" width="300" height="22" fill="#1565c0" rx="8"/>
+  <rect x="380" y="200" width="300" height="12" fill="#1565c0"/>
+  <text x="530" y="206" text-anchor="middle" class="box-title">워크인 냉동고 (Zone B)</text>
+  <text x="530" y="228" text-anchor="middle" class="box-text">단열: PUR 폼 100mm (벽·천장·바닥)</text>
+  <text x="530" y="241" text-anchor="middle" class="box-text">도어: 슬라이딩 단열도어 W900×H1900</text>
+  <text x="530" y="254" text-anchor="middle" class="box-text">선반: 스테인리스 7단 × 양벽 (450mm 깊이)</text>
+  <text x="530" y="267" text-anchor="middle" class="box-text">듀오메이커: 96개 (MIF-20) / 144개 (MIF-40)</text>
+  <text x="530" y="280" text-anchor="middle" class="box-text">제빙시간: 12~18시간 (디렉셔널 프리징)</text>
+
+  <!-- Flow: 냉동 → 냉동고 -->
+  <line x1="330" y1="245" x2="378" y2="245" stroke="#283593" stroke-width="2" marker-end="url(#fArrowBlue)"/>
+  <text x="354" y="238" text-anchor="middle" class="label-sm" fill="#283593">냉매</text>
+
+  <!-- ===== ROW 3: 가공·서비스 레이어 ===== -->
+  <text x="30" y="360" class="label-sm" fill="#888" font-weight="bold">PROCESS</text>
+
+  <!-- 탈형·가공 -->
+  <rect x="80" y="340" width="200" height="100" fill="#fff3e0" stroke="#e65100" stroke-width="2" rx="8"/>
+  <rect x="80" y="340" width="200" height="22" fill="#e65100" rx="8"/>
+  <rect x="80" y="350" width="200" height="12" fill="#e65100"/>
+  <text x="180" y="356" text-anchor="middle" class="box-title">탈형 · 가공 (Zone C)</text>
+  <text x="180" y="378" text-anchor="middle" class="box-text">듀오메이커에서 얼음 탈형</text>
+  <text x="180" y="391" text-anchor="middle" class="box-text">아이스볼 Ø65mm</text>
+  <text x="180" y="404" text-anchor="middle" class="box-text">아이스스틱 (스틱형)</text>
+  <text x="180" y="417" text-anchor="middle" class="box-text">작업대: 스테인리스 H850</text>
+
+  <!-- 각인·포장 -->
+  <rect x="320" y="340" width="200" height="100" fill="#fff9c4" stroke="#f9a825" stroke-width="2" rx="8"/>
+  <rect x="320" y="340" width="200" height="22" fill="#f9a825" rx="8"/>
+  <rect x="320" y="350" width="200" height="12" fill="#f9a825"/>
+  <text x="420" y="356" text-anchor="middle" class="box-title">각인 · 포장 (Zone C)</text>
+  <text x="420" y="378" text-anchor="middle" class="box-text">레이저 각인기 (브랜드 로고)</text>
+  <text x="420" y="391" text-anchor="middle" class="box-text">에코 패키징 (생분해)</text>
+  <text x="420" y="404" text-anchor="middle" class="box-text">QC 품질 검사</text>
+  <text x="420" y="417" text-anchor="middle" class="box-text">완제품 냉장 보관</text>
+
+  <!-- 서비스 -->
+  <rect x="560" y="340" width="220" height="100" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" rx="8"/>
+  <rect x="560" y="340" width="220" height="22" fill="#2e7d32" rx="8"/>
+  <rect x="560" y="350" width="220" height="12" fill="#2e7d32"/>
+  <text x="670" y="356" text-anchor="middle" class="box-title">서비스 · 판매 (Zone D)</text>
+  <text x="670" y="378" text-anchor="middle" class="box-text">로봇 바리스타 (자동 음료 제조)</text>
+  <text x="670" y="391" text-anchor="middle" class="box-text">무인 키오스크 (주문 · 결제)</text>
+  <text x="670" y="404" text-anchor="middle" class="box-text">얼음 디스플레이 쇼케이스</text>
+  <text x="670" y="417" text-anchor="middle" class="box-text">아블러 텀블러 제공 (BYI 순환)</text>
+
+  <!-- BYI 순환 -->
+  <rect x="820" y="340" width="180" height="100" fill="#e8eaf6" stroke="#5c6bc0" stroke-width="2" rx="8"/>
+  <rect x="820" y="340" width="180" height="22" fill="#5c6bc0" rx="8"/>
+  <rect x="820" y="350" width="180" height="12" fill="#5c6bc0"/>
+  <text x="910" y="356" text-anchor="middle" class="box-title">BYI 순환 (Zone E)</text>
+  <text x="910" y="378" text-anchor="middle" class="box-text">아블러 텀블러 보관 (500개)</text>
+  <text x="910" y="391" text-anchor="middle" class="box-text">세척기 (자동 살균)</text>
+  <text x="910" y="404" text-anchor="middle" class="box-text">보증금 + 리워드 시스템</text>
+  <text x="910" y="417" text-anchor="middle" class="box-text">회수율 85% 목표</text>
+
+  <!-- Process flow arrows -->
+  <line x1="530" y1="270" x2="530" y2="338" stroke="#1565c0" stroke-width="2" marker-end="url(#fArrowBlue)"/>
+  <text x="540" y="310" class="label-sm" fill="#1565c0">얼음 인출</text>
+
+  <line x1="280" y1="390" x2="318" y2="390" stroke="#e65100" stroke-width="2" marker-end="url(#fArrowOrange)"/>
+  <line x1="520" y1="390" x2="558" y2="390" stroke="#2e7d32" stroke-width="2" marker-end="url(#fArrowGreen)"/>
+  <line x1="780" y1="390" x2="818" y2="390" stroke="#5c6bc0" stroke-width="2" marker-end="url(#fArrow)"/>
+
+  <!-- ===== ROW 4: AI · IoT 레이어 ===== -->
+  <text x="30" y="510" class="label-sm" fill="#888" font-weight="bold">AI / IoT</text>
+
+  <!-- IoT 센서 -->
+  <rect x="80" y="490" width="200" height="90" fill="#fce4ec" stroke="#c62828" stroke-width="2" rx="8"/>
+  <rect x="80" y="490" width="200" height="22" fill="#c62828" rx="8"/>
+  <rect x="80" y="500" width="200" height="12" fill="#c62828"/>
+  <text x="180" y="506" text-anchor="middle" class="box-title">IoT 센서 네트워크</text>
+  <text x="180" y="528" text-anchor="middle" class="box-text">온도 센서 (냉동고 내부 4점)</text>
+  <text x="180" y="541" text-anchor="middle" class="box-text">습도 센서 · 냉매 압력 센서</text>
+  <text x="180" y="554" text-anchor="middle" class="box-text">전력 미터 · 수질 센서</text>
+  <text x="180" y="567" text-anchor="middle" class="box-text">도어 개폐 센서 · 진동 센서</text>
+
+  <!-- AI 엔진 -->
+  <rect x="330" y="490" width="250" height="90" fill="#ede7f6" stroke="#4527a0" stroke-width="2" rx="8"/>
+  <rect x="330" y="490" width="250" height="22" fill="#4527a0" rx="8"/>
+  <rect x="330" y="500" width="250" height="12" fill="#4527a0"/>
+  <text x="455" y="506" text-anchor="middle" class="box-title">AI 엔진 (클라우드)</text>
+  <text x="455" y="528" text-anchor="middle" class="box-text">수요예측: POS + 기상 + 행사 딥러닝</text>
+  <text x="455" y="541" text-anchor="middle" class="box-text">예지보전: 설비 이상 패턴 감지</text>
+  <text x="455" y="554" text-anchor="middle" class="box-text">에너지 최적화: JIT 생산 스케줄링</text>
+  <text x="455" y="567" text-anchor="middle" class="box-text">ESG 자동 리포팅 (ISO 14064-1)</text>
+
+  <!-- 관제 대시보드 -->
+  <rect x="630" y="490" width="220" height="90" fill="#e0f2f1" stroke="#00695c" stroke-width="2" rx="8"/>
+  <rect x="630" y="490" width="220" height="22" fill="#00695c" rx="8"/>
+  <rect x="630" y="500" width="220" height="12" fill="#00695c"/>
+  <text x="740" y="506" text-anchor="middle" class="box-title">AI 관제 대시보드 (UX/UI)</text>
+  <text x="740" y="528" text-anchor="middle" class="box-text">실시간 모니터링 (전유닛)</text>
+  <text x="740" y="541" text-anchor="middle" class="box-text">수요예측 + 생산 스케줄 뷰</text>
+  <text x="740" y="554" text-anchor="middle" class="box-text">예지보전 알림 + 이력</text>
+  <text x="740" y="567" text-anchor="middle" class="box-text">ESG 탄소 감축 리포트 뷰</text>
+
+  <!-- Flow arrows IoT -->
+  <line x1="280" y1="535" x2="328" y2="535" stroke="#c62828" stroke-width="2" marker-end="url(#fArrow)"/>
+  <text x="304" y="528" text-anchor="middle" class="label-sm" fill="#c62828">DATA</text>
+  <line x1="580" y1="535" x2="628" y2="535" stroke="#4527a0" stroke-width="2" marker-end="url(#fArrow)"/>
+  <text x="604" y="528" text-anchor="middle" class="label-sm" fill="#4527a0">분석</text>
+
+  <!-- ===== ROW 5: 고객·비즈니스 레이어 ===== -->
+  <text x="30" y="650" class="label-sm" fill="#888" font-weight="bold">BUSINESS</text>
+
+  <!-- B2B 납품 -->
+  <rect x="80" y="630" width="200" height="80" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" rx="8"/>
+  <rect x="80" y="630" width="200" height="22" fill="#2e7d32" rx="8"/>
+  <rect x="80" y="640" width="200" height="12" fill="#2e7d32"/>
+  <text x="180" y="646" text-anchor="middle" class="box-title">B2B 구독 납품</text>
+  <text x="180" y="668" text-anchor="middle" class="box-text">카페 · 바 · 레스토랑 · 호텔</text>
+  <text x="180" y="681" text-anchor="middle" class="box-text">주간 정기 BOX 납품</text>
+  <text x="180" y="694" text-anchor="middle" class="box-text">고정 80% + 가변 20%</text>
+
+  <!-- B2C 키오스크 -->
+  <rect x="320" y="630" width="200" height="80" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="8"/>
+  <rect x="320" y="630" width="200" height="22" fill="#1565c0" rx="8"/>
+  <rect x="320" y="640" width="200" height="12" fill="#1565c0"/>
+  <text x="420" y="646" text-anchor="middle" class="box-title">B2C 무인 판매</text>
+  <text x="420" y="668" text-anchor="middle" class="box-text">키오스크 직접 구매</text>
+  <text x="420" y="681" text-anchor="middle" class="box-text">로봇 바리스타 음료</text>
+  <text x="420" y="694" text-anchor="middle" class="box-text">BYI 텀블러 순환</text>
+
+  <!-- ESG -->
+  <rect x="560" y="630" width="200" height="80" fill="#fce4ec" stroke="#c62828" stroke-width="2" rx="8"/>
+  <rect x="560" y="630" width="200" height="22" fill="#c62828" rx="8"/>
+  <rect x="560" y="640" width="200" height="12" fill="#c62828"/>
+  <text x="660" y="646" text-anchor="middle" class="box-title">ESG 데이터 서비스</text>
+  <text x="660" y="668" text-anchor="middle" class="box-text">탄소 감축 리포트 (자동)</text>
+  <text x="660" y="681" text-anchor="middle" class="box-text">수자원 절감 데이터</text>
+  <text x="660" y="694" text-anchor="middle" class="box-text">기업 ESG 인증 지원</text>
+
+  <!-- Global -->
+  <rect x="800" y="630" width="200" height="80" fill="#fff3e0" stroke="#e65100" stroke-width="2" rx="8"/>
+  <rect x="800" y="630" width="200" height="22" fill="#e65100" rx="8"/>
+  <rect x="800" y="640" width="200" height="12" fill="#e65100"/>
+  <text x="900" y="646" text-anchor="middle" class="box-title">글로벌 PaaS 수출</text>
+  <text x="900" y="668" text-anchor="middle" class="box-text">컨테이너 선적 → 현지 즉시가동</text>
+  <text x="900" y="681" text-anchor="middle" class="box-text">Plug &amp; Play 수출 모델</text>
+  <text x="900" y="694" text-anchor="middle" class="box-text">CES 2027 · IFA 출품</text>
+
+  <!-- Vertical connection lines -->
+  <line x1="170" y1="150" x2="170" y2="188" stroke="#e65100" stroke-width="1.5" marker-end="url(#fArrowOrange)"/>
+  <line x1="390" y1="150" x2="390" y2="230" stroke="#1565c0" stroke-width="1.5" marker-end="url(#fArrowBlue)"/>
+  <line x1="830" y1="150" x2="830" y2="188" stroke="#6a1b9a" stroke-width="1.5"/>
+
+  <!-- IoT to equipment connections (dashed) -->
+  <line x1="180" y1="490" x2="180" y2="445" stroke="#c62828" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="180" y1="445" x2="205" y2="300" stroke="#c62828" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Dashboard to service -->
+  <line x1="740" y1="490" x2="740" y2="445" stroke="#00695c" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Business layer connections -->
+  <line x1="670" y1="440" x2="180" y2="628" stroke="#2e7d32" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="670" y1="440" x2="420" y2="628" stroke="#1565c0" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="740" y1="582" x2="660" y2="628" stroke="#c62828" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Legend -->
+  <rect x="1050" y="70" width="300" height="200" fill="#fafafa" stroke="#ddd" rx="8"/>
+  <text x="1200" y="92" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">범례 (Legend)</text>
+  <line x1="1070" y1="110" x2="1100" y2="110" stroke="#e65100" stroke-width="2" marker-end="url(#fArrowOrange)"/>
+  <text x="1110" y="114" class="box-text">전력 흐름</text>
+  <line x1="1070" y1="130" x2="1100" y2="130" stroke="#1565c0" stroke-width="2" marker-end="url(#fArrowBlue)"/>
+  <text x="1110" y="134" class="box-text">급수 · 냉매 흐름</text>
+  <line x1="1070" y1="150" x2="1100" y2="150" stroke="#2e7d32" stroke-width="2" marker-end="url(#fArrowGreen)"/>
+  <text x="1110" y="154" class="box-text">제품(얼음) 흐름</text>
+  <line x1="1070" y1="170" x2="1100" y2="170" stroke="#c62828" stroke-width="2"/>
+  <text x="1110" y="174" class="box-text">IoT 데이터 흐름</text>
+  <line x1="1070" y1="190" x2="1100" y2="190" stroke="#4527a0" stroke-width="2"/>
+  <text x="1110" y="194" class="box-text">AI 분석 결과</text>
+  <line x1="1070" y1="210" x2="1100" y2="210" stroke="#666" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="1110" y="214" class="box-text">연동 (간접)</text>
+
+  <text x="1200" y="245" text-anchor="middle" class="label-sm" fill="#888">MIF-20: Zone A~D</text>
+  <text x="1200" y="258" text-anchor="middle" class="label-sm" fill="#888">MIF-40: Zone A~E (유틸리티 추가)</text>
+
+  <text x="1350" y="790" text-anchor="end" class="label-sm" fill="#999">© 2026 MasterMinding Group — System Architecture v1.0</text>
+</svg>

@@ -1,0 +1,2476 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIF 마이크로 아이스팩토리 — 전체 사업 대시보드</title>
+<style>
+  :root {
+    --bg: #0f0f1a; --card: #1a1a2e; --card2: #16213e;
+    --accent: #e94560; --blue: #0f3460; --cyan: #00e5ff;
+    --green: #00c853; --orange: #ff9100; --purple: #7c4dff;
+    --text: #e0e0e0; --dim: #888; --border: #2a2a4a;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Malgun Gothic','Segoe UI',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+
+  /* HEADER */
+  .header { background:linear-gradient(135deg,#0f3460,#1a1a2e); padding:30px 40px; border-bottom:3px solid var(--accent); position:sticky; top:0; z-index:100; }
+  .header h1 { font-size:26px; color:white; }
+  .header h1 span { color:var(--accent); }
+  .header .sub { color:var(--dim); font-size:13px; margin-top:4px; }
+
+  /* NAV */
+  .nav { background:var(--blue); padding:12px 40px; display:flex; gap:6px; flex-wrap:wrap; position:sticky; top:85px; z-index:99; border-bottom:1px solid var(--border); }
+  .nav button { background:var(--card); color:var(--text); border:1px solid var(--border); padding:8px 16px; border-radius:20px; cursor:pointer; font-size:12px; transition:all .2s; white-space:nowrap; }
+  .nav button:hover, .nav button.active { background:var(--accent); border-color:var(--accent); color:white; transform:scale(1.05); }
+
+  /* SECTION */
+  .section { display:none; padding:30px 40px; max-width:1400px; margin:0 auto; }
+  .section.active { display:block; }
+  .section h2 { font-size:22px; color:var(--accent); margin-bottom:20px; border-left:4px solid var(--accent); padding-left:12px; }
+  .section h3 { font-size:16px; color:var(--cyan); margin:20px 0 10px; }
+
+  /* CARDS */
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin:16px 0; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; transition:transform .2s, box-shadow .2s; }
+  .card:hover { transform:translateY(-4px); box-shadow:0 8px 30px rgba(233,69,96,.15); }
+  .card .card-icon { font-size:32px; margin-bottom:10px; }
+  .card .card-title { font-size:14px; color:var(--accent); font-weight:bold; margin-bottom:6px; }
+  .card .card-value { font-size:28px; font-weight:bold; color:white; }
+  .card .card-sub { font-size:11px; color:var(--dim); margin-top:4px; }
+
+  /* WIDE CARDS */
+  .wide-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(420px,1fr)); gap:16px; margin:16px 0; }
+  .wide-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; }
+  .wide-card h4 { color:var(--cyan); margin-bottom:12px; font-size:15px; }
+
+  /* TABLE */
+  table { width:100%; border-collapse:collapse; margin:12px 0; font-size:13px; }
+  th { background:var(--blue); color:white; padding:10px 12px; text-align:left; font-weight:600; }
+  td { padding:9px 12px; border-bottom:1px solid var(--border); }
+  tr:hover td { background:rgba(233,69,96,.05); }
+  .highlight { color:var(--accent); font-weight:bold; }
+  .green { color:var(--green); font-weight:bold; }
+  .cyan { color:var(--cyan); font-weight:bold; }
+  .orange { color:var(--orange); font-weight:bold; }
+  .purple { color:var(--purple); font-weight:bold; }
+
+  /* TIMELINE */
+  .timeline { position:relative; padding:20px 0; }
+  .timeline::before { content:''; position:absolute; left:20px; top:0; bottom:0; width:3px; background:var(--accent); border-radius:2px; }
+  .tl-item { position:relative; padding-left:50px; margin-bottom:24px; }
+  .tl-dot { position:absolute; left:12px; top:4px; width:18px; height:18px; border-radius:50%; border:3px solid var(--accent); background:var(--bg); }
+  .tl-dot.done { background:var(--accent); }
+  .tl-dot.current { background:var(--cyan); border-color:var(--cyan); box-shadow:0 0 10px var(--cyan); }
+  .tl-date { font-size:12px; color:var(--accent); font-weight:bold; }
+  .tl-title { font-size:14px; color:white; font-weight:bold; margin:2px 0; }
+  .tl-desc { font-size:12px; color:var(--dim); }
+
+  /* PROGRESS BAR */
+  .progress-wrap { margin:8px 0; }
+  .progress-label { display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; }
+  .progress-bar { height:8px; background:var(--border); border-radius:4px; overflow:hidden; }
+  .progress-fill { height:100%; border-radius:4px; transition:width .5s; }
+
+  /* ZONE MAP */
+  .zone-map { display:flex; gap:4px; margin:16px 0; border-radius:8px; overflow:hidden; height:80px; }
+  .zone { display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:bold; color:white; text-align:center; line-height:1.3; }
+
+  /* TIER */
+  .tier-row { display:flex; gap:8px; margin:8px 0; }
+  .tier-badge { padding:8px 16px; border-radius:20px; font-size:12px; font-weight:bold; color:white; text-align:center; flex:1; }
+
+  /* FOOTER */
+  .footer { text-align:center; padding:30px; color:var(--dim); font-size:12px; border-top:1px solid var(--border); margin-top:40px; }
+
+  /* FLOW */
+  .flow { display:flex; align-items:center; gap:8px; margin:12px 0; flex-wrap:wrap; }
+  .flow-box { background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:10px 16px; text-align:center; font-size:12px; min-width:100px; }
+  .flow-arrow { color:var(--accent); font-size:20px; font-weight:bold; }
+
+  /* RESPONSIVE */
+  @media (max-width:768px) {
+    .header, .nav, .section { padding-left:16px; padding-right:16px; }
+    .cards { grid-template-columns:1fr; }
+    .wide-cards { grid-template-columns:1fr; }
+    .header h1 { font-size:20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span>MIF</span> 마이크로 아이스팩토리 — 전체 사업 대시보드</h1>
+  <div class="sub">㈜마스터마인딩그룹 × 디블러 | 2026 기후테크 + 디자인·기술협업 통합 | "유통을 없애고, 지구를 식힌다"</div>
+</div>
+
+<div class="nav">
+  <button class="active" onclick="show(0)">📊 총괄 현황</button>
+  <button onclick="show(1)">🏗️ 사업 프레임</button>
+  <button onclick="show(2)">🧊 제품·기술</button>
+  <button onclick="show(3)">📐 설계·도면</button>
+  <button onclick="show(4)">📦 생산량 계산</button>
+  <button onclick="show(5)">💰 가격·제품 라인</button>
+  <button onclick="show(6)">🚚 배송·물류</button>
+  <button onclick="show(7)">📅 타임라인</button>
+  <button onclick="show(8)">💼 운영 계획</button>
+  <button onclick="show(9)">📈 재무·KPI</button>
+  <button onclick="show(10)">🖼️ 도면 뷰어</button>
+</div>
+
+<!-- ============ SEC 0: 총괄 현황 ============ -->
+<div class="section active" id="s0">
+  <h2>총괄 현황 대시보드</h2>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <div class="card-title">총 사업비</div>
+      <div class="card-value">1억 6,720만원</div>
+      <div class="card-sub">정부 1.4억 + 자부담 2,720만</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧊</div>
+      <div class="card-title">MIF-20 듀오메이커</div>
+      <div class="card-value">462개</div>
+      <div class="card-sub">7단×2면×3열×11개</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">일 생산량</div>
+      <div class="card-value">1,202개</div>
+      <div class="card-sub">볼 601 + 스틱 601 (162kg)</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏪</div>
+      <div class="card-title">목표 납품처</div>
+      <div class="card-value">5곳</div>
+      <div class="card-sub">성남시 카페·바·호텔</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <div class="card-title">연간 매출 목표</div>
+      <div class="card-value">5,000만원</div>
+      <div class="card-sub">2026년 7~12월</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌱</div>
+      <div class="card-title">탄소 감축</div>
+      <div class="card-value">90%↓</div>
+      <div class="card-sub">미들마일 0km 달성</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💧</div>
+      <div class="card-title">물 절감</div>
+      <div class="card-value">70%↓</div>
+      <div class="card-sub">100% 활용, 폐수 제로</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔌</div>
+      <div class="card-title">전력 절감</div>
+      <div class="card-value">40%↓</div>
+      <div class="card-sub">온디맨드 배치식 vs 24시간</div>
+    </div>
+  </div>
+
+  <h3>프로젝트 진행률 (2026.04 기준)</h3>
+  <div class="wide-cards">
+    <div class="wide-card">
+      <div class="progress-wrap">
+        <div class="progress-label"><span>사업계획 승인</span><span class="highlight">80%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:80%;background:var(--accent)"></div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>브랜드 BI/BX 기획</span><span class="orange">15%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:15%;background:var(--orange)"></div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>시제품 설계</span><span class="cyan">25%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:25%;background:var(--cyan)"></div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>컨테이너 설치</span><span style="color:var(--dim)">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--green)"></div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>납품처 확보</span><span style="color:var(--dim)">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--purple)"></div></div>
+      </div>
+    </div>
+    <div class="wide-card">
+      <h4>팀 구성</h4>
+      <table>
+        <tr><td class="highlight">㈜마스터마인딩그룹 (기술)</td><td>장정훈 대표 외 4명</td></tr>
+        <tr><td class="cyan">디블러 (디자인)</td><td>최은빈 대표 외 4명</td></tr>
+        <tr><td>설립</td><td>2016.07 / 2017.01</td></tr>
+        <tr><td>실적</td><td>펀딩 13억, 킥스타터 $200K</td></tr>
+        <tr><td>글로벌 전시</td><td>CES 2027 · IFA · NextRise</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEC 1: 사업 프레임 ============ -->
+<div class="section" id="s1">
+  <h2>사업 프레임워크</h2>
+
+  <div class="wide-cards">
+    <div class="wide-card">
+      <h4>두 사업 통합 구조</h4>
+      <table>
+        <tr><th>구분</th><th>기후테크 스케일업</th><th>디자인·기술협업 1단계</th><th>합계</th></tr>
+        <tr><td>정부지원금</td><td>4,000만원</td><td>1억원</td><td class="highlight">1억 4,000만원</td></tr>
+        <tr><td>자부담금</td><td>1,720만원</td><td>1,000만원</td><td>2,720만원</td></tr>
+        <tr><td>총 사업비</td><td>5,720만원</td><td>1억 1,000만원</td><td class="highlight">1억 6,720만원</td></tr>
+        <tr><td>기간</td><td>Q2~Q4</td><td>6개월</td><td>병행</td></tr>
+        <tr><td>핵심 목표</td><td>성남 실증, 납품 5곳</td><td>워킹 시제품, 디자인 자산</td><td>—</td></tr>
+      </table>
+    </div>
+    <div class="wide-card">
+      <h4>문제 정의 — 3중 위기</h4>
+      <table>
+        <tr><th>문제</th><th>현황</th><th>규모</th></tr>
+        <tr><td>🔥 탄소 폭탄</td><td>냉동탑차 30km → 2.4kg CO₂</td><td class="highlight">10,000톤/년</td></tr>
+        <tr><td>💧 수자원 낭비</td><td>투입물 70% 폐수 배출</td><td class="highlight">4.6억 리터/년</td></tr>
+        <tr><td>⚡ 전력 과소비</td><td>24시간 연속 살수식</td><td class="highlight">9.3억 kWh/년</td></tr>
+        <tr><td>🦠 위생 위기</td><td>배관 세균·곰팡이</td><td>식중독 고위험</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h3>ESG 탄소 감축 90%</h3>
+  <div class="cards">
+    <div class="card" style="border-left:4px solid var(--green)">
+      <div class="card-title">장거리 운송 제거</div>
+      <div class="card-value green">65%</div>
+      <div class="card-sub">미들마일 0km</div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--cyan)">
+      <div class="card-title">냉동 창고 제거</div>
+      <div class="card-value cyan">25%</div>
+      <div class="card-sub">현장 즉시 소비</div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--purple)">
+      <div class="card-title">냉매 누출 방지</div>
+      <div class="card-value purple">10%</div>
+      <div class="card-sub">밀폐형 친환경</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEC 2: 제품·기술 ============ -->
+<div class="section" id="s2">
+  <h2>핵심 기술 및 제품</h2>
+
+  <div class="cards">
+    <div class="card" style="border-top:3px solid var(--accent)">
+      <div class="card-icon">🔬</div>
+      <div class="card-title">디렉셔널 프리징 (원천특허)</div>
+      <div class="card-sub">삼단방한공법, 기계/화학적 동력 없이 100% 투명 얼음. 해외 의존도 0%, SGS 인증 획득</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--cyan)">
+      <div class="card-icon">🤖</div>
+      <div class="card-title">AI + 로봇 자율 운영</div>
+      <div class="card-sub">수요예측 딥러닝, IoT 예지보전, 로봇 바리스타. 인간 접촉 ZERO 위생 아키텍처</div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--green)">
+      <div class="card-icon">📍</div>
+      <div class="card-title">하이퍼로컬 생산</div>
+      <div class="card-sub">소비지 2km 이내 직접 생산. 미들마일 100% 제거, 탄소 최대 90% 감축</div>
+    </div>
+  </div>
+
+  <h3>기존 제빙기 vs MIF</h3>
+  <table>
+    <tr><th>구분</th><th>기존 제빙기 (LEGACY)</th><th>마이크로 아이스팩토리</th></tr>
+    <tr><td>제빙 공정</td><td>24시간 연속 살수 (낭비)</td><td class="green">듀오메이커 자연결빙 (낭비 제로)</td></tr>
+    <tr><td>수자원</td><td>투입물 70% 폐기</td><td class="green">100% 얼음화</td></tr>
+    <tr><td>위생</td><td>배관 세균/곰팡이</td><td class="green">몰드 분리세척 (SGS 무균)</td></tr>
+    <tr><td>운영</td><td>지속적 청소 필요</td><td class="green">로봇 바리스타 무인 운영</td></tr>
+  </table>
+
+  <h3>제품 모듈</h3>
+  <table>
+    <tr><th>사양</th><th>MIF-20 (무인 키오스크)</th><th>MIF-40 (플래그십 바)</th></tr>
+    <tr><td>컨테이너</td><td>20ft Standard</td><td>40ft High-Cube</td></tr>
+    <tr><td>몰드</td><td>96~462개</td><td>144~1,152개</td></tr>
+    <tr><td>서비스</td><td>로봇 바리스타 + 키오스크</td><td>바리스타+바텐더 (8석)</td></tr>
+    <tr><td>구매가</td><td>$85K~$120K</td><td>$180K~$250K</td></tr>
+    <tr><td>구독료</td><td>$1,500~$2,000/월</td><td>$2,500~$3,500/월</td></tr>
+  </table>
+</div>
+
+<!-- ============ SEC 3: 설계·도면 ============ -->
+<div class="section" id="s3">
+  <h2>설계 · 도면</h2>
+
+  <h3>MIF-20 Zone 구획</h3>
+  <div class="zone-map">
+    <div class="zone" style="flex:0.6;background:#c0392b">A<br>냉동기실<br>600mm</div>
+    <div class="zone" style="flex:2.4;background:#2980b9">B — 워크인 냉동고<br>2,400mm | 462 듀오메이커 | -18℃</div>
+    <div class="zone" style="flex:1.4;background:#e67e22">C<br>가공·포장<br>1,400mm</div>
+    <div class="zone" style="flex:1.5;background:#27ae60">D — 서비스<br>1,498mm<br>로봇·키오스크</div>
+  </div>
+
+  <h3>MIF-40 Zone 구획</h3>
+  <div class="zone-map">
+    <div class="zone" style="flex:0.8;background:#c0392b">A<br>800</div>
+    <div class="zone" style="flex:4.8;background:#2980b9">B — 워크인 냉동고 4,800mm | 1,152개</div>
+    <div class="zone" style="flex:2.4;background:#e67e22">C 가공·포장<br>2,400mm</div>
+    <div class="zone" style="flex:2.4;background:#27ae60">D 서비스 바<br>2,400mm (8석)</div>
+    <div class="zone" style="flex:1.6;background:#8e44ad">E 유틸<br>1,632</div>
+  </div>
+
+  <h3>듀오메이커 · 아블러 제원</h3>
+  <div class="wide-cards">
+    <div class="wide-card">
+      <h4>🧊 듀오메이커 (제빙 유닛)</h4>
+      <table>
+        <tr><td>폭 (W)</td><td class="highlight">181.6 mm</td></tr>
+        <tr><td>깊이 (D)</td><td class="highlight">105.0 mm</td></tr>
+        <tr><td>높이 (H)</td><td class="highlight">170.0 mm</td><td>손잡이 포함</td></tr>
+        <tr><td>생산</td><td colspan="2">아이스볼 Ø65mm + 스틱 동시</td></tr>
+        <tr><td>제빙 시간</td><td colspan="2">12~18시간 (-18℃)</td></tr>
+      </table>
+    </div>
+    <div class="wide-card">
+      <h4>🥤 아블러 텀블러 (BYI 순환용기)</h4>
+      <table>
+        <tr><td>폭 (W)</td><td class="highlight">75.0 mm</td></tr>
+        <tr><td>깊이 (Ø)</td><td class="highlight">87.0 mm</td></tr>
+        <tr><td>높이 (H)</td><td class="highlight">150.0 mm</td><td>뚜껑 포함</td></tr>
+        <tr><td>용량</td><td colspan="2">약 355ml</td></tr>
+        <tr><td>소재</td><td colspan="2">스테인리스 스틸 + PP 뚜껑</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h3>선반 배치 요약</h3>
+  <table>
+    <tr><th>항목</th><th>MIF-20</th><th>MIF-40</th></tr>
+    <tr><td>1열당</td><td>11개</td><td>24개</td></tr>
+    <tr><td>깊이</td><td>3열</td><td>3열</td></tr>
+    <tr><td>단수</td><td>7단</td><td>8단</td></tr>
+    <tr><td>벽면</td><td>2면</td><td>2면</td></tr>
+    <tr><td><strong>총 듀오메이커</strong></td><td class="highlight">462개</td><td class="highlight">1,152개</td></tr>
+  </table>
+
+  <h3>도면 파일</h3>
+  <div class="cards">
+    <div class="card"><div class="card-title">01</div>MIF-20 평면도<div class="card-sub"><a target="_blank" href="MIF_설계도면/01_MIF-20_평면도.svg" style="color:var(--cyan)">SVG</a> · <a target="_blank" href="MIF_설계도면/01_MIF-20_평면도.pdf" style="color:var(--cyan)">PDF</a></div></div>
+    <div class="card"><div class="card-title">02</div>MIF-40 평면도<div class="card-sub"><a target="_blank" href="MIF_설계도면/02_MIF-40_평면도.svg" style="color:var(--cyan)">SVG</a> · <a target="_blank" href="MIF_설계도면/02_MIF-40_평면도.pdf" style="color:var(--cyan)">PDF</a></div></div>
+    <div class="card"><div class="card-title">03</div>냉동고 단면도<div class="card-sub"><a target="_blank" href="MIF_설계도면/03_냉동고_단면도_선반배치.svg" style="color:var(--cyan)">SVG</a> · <a target="_blank" href="MIF_설계도면/03_냉동고_단면도_선반배치.pdf" style="color:var(--cyan)">PDF</a></div></div>
+    <div class="card"><div class="card-title">04</div>MIF-20 종단면도<div class="card-sub"><a target="_blank" href="MIF_설계도면/04_MIF-20_종단면도.svg" style="color:var(--cyan)">SVG</a> · <a target="_blank" href="MIF_설계도면/04_MIF-20_종단면도.pdf" style="color:var(--cyan)">PDF</a></div></div>
+    <div class="card"><div class="card-title">05</div>시스템 구성도<div class="card-sub"><a target="_blank" href="MIF_설계도면/05_시스템_구성도.svg" style="color:var(--cyan)">SVG</a></div></div>
+    <div class="card"><div class="card-title">07</div>외부 조감도<div class="card-sub"><a target="_blank" href="MIF_설계도면/07_MIF-20_외부_조감도.svg" style="color:var(--cyan)">SVG</a></div></div>
+    <div class="card"><div class="card-title">08</div>내부 투시도<div class="card-sub"><a target="_blank" href="MIF_설계도면/08_MIF-20_내부_투시도.svg" style="color:var(--cyan)">SVG</a></div></div>
+    <div class="card"><div class="card-title">📄</div>전체 통합 PDF<div class="card-sub"><a target="_blank" href="MIF_설계도면/MIF_전체도면_통합.pdf" style="color:var(--accent);font-weight:bold">7페이지 PDF</a></div></div>
+  </div>
+</div>
+
+<!-- ============ SEC 4: 생산량 ============ -->
+<div class="section" id="s4">
+  <h2>생산량 계산</h2>
+
+  <div class="cards">
+    <div class="card" style="border-left:4px solid var(--cyan)">
+      <div class="card-title">MIF-20 듀오메이커</div>
+      <div class="card-value">462개</div>
+      <div class="card-sub">11×3열×7단×2면</div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--purple)">
+      <div class="card-title">MIF-40 듀오메이커</div>
+      <div class="card-value">1,152개</div>
+      <div class="card-sub">24×3열×8단×2면</div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--green)">
+      <div class="card-title">MIF-20 일 생산</div>
+      <div class="card-value">1,202개</div>
+      <div class="card-sub">162kg (볼601+스틱601)</div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--orange)">
+      <div class="card-title">MIF-40 일 생산</div>
+      <div class="card-value">2,996개</div>
+      <div class="card-sub">404kg</div>
+    </div>
+  </div>
+
+  <h3>시나리오별 일 생산량</h3>
+  <table>
+    <tr><th>시나리오</th><th colspan="3">MIF-20</th><th colspan="3">MIF-40</th></tr>
+    <tr><th></th><th>볼</th><th>스틱</th><th>중량</th><th>볼</th><th>스틱</th><th>중량</th></tr>
+    <tr><td>보수적 (1.0회/일)</td><td>462</td><td>462</td><td>125kg</td><td>1,152</td><td>1,152</td><td>311kg</td></tr>
+    <tr><td class="highlight">표준 (1.3회/일)</td><td class="highlight">601</td><td class="highlight">601</td><td class="highlight">162kg</td><td class="highlight">1,498</td><td class="highlight">1,498</td><td class="highlight">404kg</td></tr>
+    <tr><td>적극적 (1.5회/일)</td><td>693</td><td>693</td><td>187kg</td><td>1,728</td><td>1,728</td><td>466kg</td></tr>
+  </table>
+
+  <h3>월/연간 생산 (표준, 26일 가동)</h3>
+  <table>
+    <tr><th>기간</th><th>MIF-20 개수</th><th>MIF-20 중량</th><th>MIF-40 개수</th><th>MIF-40 중량</th></tr>
+    <tr><td>일간</td><td>1,202개</td><td>162kg</td><td>2,996개</td><td>404kg</td></tr>
+    <tr><td>월간</td><td class="highlight">31,252개</td><td>4,212kg</td><td class="highlight">77,896개</td><td>10,504kg</td></tr>
+    <tr><td>연간</td><td class="highlight">375,024개</td><td>50.5톤</td><td class="highlight">934,752개</td><td>126톤</td></tr>
+  </table>
+
+  <h3>납품 가능 업체 수 (MIF-20 일 1,202개)</h3>
+  <table>
+    <tr><th>유형</th><th>일 소비</th><th>공급 가능</th></tr>
+    <tr><td>소형 카페</td><td>30~50개</td><td class="green">24~40곳</td></tr>
+    <tr><td>칵테일 바</td><td>80~150개</td><td class="green">8~15곳</td></tr>
+    <tr><td>레스토랑</td><td>50~100개</td><td class="green">12~24곳</td></tr>
+    <tr><td>대형 호텔</td><td>200~500개</td><td class="green">2~6곳</td></tr>
+  </table>
+</div>
+
+<!-- ============ SEC 5: 가격·제품 라인 ============ -->
+<div class="section" id="s5">
+  <h2>5 Tier 가격 전략 · 제품 라인</h2>
+
+  <div class="tier-row">
+    <div class="tier-badge" style="background:#546e7a">T1 Essential<br>800원</div>
+    <div class="tier-badge" style="background:#0277bd">T2 Premium<br>1,800~2,500원</div>
+    <div class="tier-badge" style="background:#6a1b9a">T3 Signature<br>1,500원</div>
+    <div class="tier-badge" style="background:#2e7d32">T4 Botanical<br>1,800~2,500원</div>
+    <div class="tier-badge" style="background:var(--accent)">T5 Bespoke<br>3,500~5,000원</div>
+  </div>
+
+  <table>
+    <tr><th>Tier</th><th>제품</th><th>원수</th><th>생산원가</th><th>B2B 납품가</th><th>마진율</th></tr>
+    <tr><td>T1</td><td>Essential (삼다수)</td><td>삼다수</td><td>280원</td><td class="highlight">800원</td><td>62%</td></tr>
+    <tr><td>T2</td><td>Premium (피지/에비앙)</td><td>피지·에비앙·보스</td><td>730~1,010원</td><td class="cyan">1,800~2,500원</td><td>57~60%</td></tr>
+    <tr><td>T3</td><td>Signature (각인)</td><td>삼다수 (+프리미엄옵션)</td><td>450원</td><td class="purple">1,500원</td><td>69%</td></tr>
+    <tr><td>T4</td><td>Botanical (꽃/허브)</td><td>삼다수</td><td>430~550원</td><td class="green">1,800~2,500원</td><td>76~78%</td></tr>
+    <tr><td>T5</td><td>Bespoke (풀커스텀)</td><td>선택</td><td>900~1,200원</td><td class="highlight">3,500~5,000원</td><td>72~76%</td></tr>
+  </table>
+
+  <h3>프리미엄 워터 차별화</h3>
+  <table>
+    <tr><th>브랜드</th><th>원산지</th><th>500ml</th><th>경도</th><th>특성</th><th>마케팅 멘트</th></tr>
+    <tr><td>삼다수</td><td>제주 화산암반수</td><td>800~1,000원</td><td>18.8 (초연수)</td><td>깨끗, 무미</td><td>"제주의 순수함을 얼리다"</td></tr>
+    <tr><td class="cyan">피지워터</td><td>피지 화산대수층</td><td>2,500~3,500원</td><td>92.1 (중경수)</td><td>실리카 97mg/L</td><td>"남태평양의 실크를 얼리다"</td></tr>
+    <tr><td class="purple">에비앙</td><td>프랑스 알프스</td><td>2,000~3,000원</td><td>345 (경수)</td><td>Ca80, Mg26</td><td>"알프스 만년설을 잔에 담다"</td></tr>
+  </table>
+
+  <h3>해외 대비 가격 경쟁력</h3>
+  <div class="cards">
+    <div class="card" style="border-left:4px solid var(--green)">
+      <div class="card-title">각인 얼음 (vs Wolfe & Kensington)</div>
+      <div class="card-value green">64% 저렴</div>
+      <div class="card-sub">$3.25(4,200원) → MIF 1,500원, 사이즈 27% 더 큼</div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--green)">
+      <div class="card-title">보태니컬 (vs Flouwer Co.)</div>
+      <div class="card-value green">88% 저렴</div>
+      <div class="card-sub">$16(20,800원) → MIF 2,500원</div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--accent)">
+      <div class="card-title">제품믹스 적용 시 매출</div>
+      <div class="card-value highlight">+47%↑</div>
+      <div class="card-sub">단일가 2,813만 → 믹스 4,120만/월</div>
+    </div>
+  </div>
+
+  <h3>보태니컬 식용꽃 가이드</h3>
+  <table>
+    <tr><th>꽃/허브</th><th>색상</th><th>맛/향</th><th>추천 페어링</th><th>계절</th></tr>
+    <tr><td>🌹 장미</td><td>핑크·레드</td><td>은은한 꽃향</td><td>샴페인, 로제</td><td>연중</td></tr>
+    <tr><td>💜 라벤더</td><td>보라</td><td>허브 아로마</td><td>진토닉</td><td>5~9월</td></tr>
+    <tr><td>🌸 벚꽃</td><td>연핑크</td><td>은은한 단맛</td><td>사케, 매실주</td><td>3~4월 한정</td></tr>
+    <tr><td>🌿 민트</td><td>초록</td><td>청량</td><td>모히토, 줄렙</td><td>연중</td></tr>
+    <tr><td>🌼 캐모마일</td><td>흰·노랑</td><td>달콤</td><td>위스키 사워</td><td>5~8월</td></tr>
+  </table>
+</div>
+
+<!-- ============ SEC 6: 배송·물류 ============ -->
+<div class="section" id="s6">
+  <h2>배송 패키지 · 물류비</h2>
+
+  <h3>7개 표준 패키지</h3>
+  <table>
+    <tr><th>패키지</th><th>구성</th><th>드라이아이스</th><th>보냉시간</th><th>납품가</th><th>총원가</th><th>마진율</th></tr>
+    <tr><td>[S] 미니</td><td>볼5+스틱5</td><td>300g</td><td>3시간</td><td>7,000원</td><td>5,210원</td><td>25.6%</td></tr>
+    <tr style="background:rgba(233,69,96,.1)"><td class="highlight">[M] 스탠다드 ★</td><td>볼10+스틱10</td><td>500g</td><td>5시간</td><td class="highlight">14,000원</td><td>9,540원</td><td class="highlight">31.9%</td></tr>
+    <tr><td>[L] 프로</td><td>볼20+스틱20</td><td>800g</td><td>7시간</td><td>28,000원</td><td>16,570원</td><td>40.8%</td></tr>
+    <tr><td>[W] 위클리</td><td>볼50+스틱50</td><td>2.0kg</td><td>12시간</td><td>65,000원</td><td>38,100원</td><td>41.4%</td></tr>
+    <tr><td class="cyan">[P] 프리미엄</td><td>피지10+에비앙10</td><td>500g</td><td>6시간</td><td>43,000원</td><td>21,580원</td><td class="cyan">49.8%</td></tr>
+    <tr><td class="green">[B] 보태니컬</td><td>꽃볼6종×2</td><td>500g</td><td>5시간</td><td>30,000원</td><td>11,868원</td><td class="green">60.4%</td></tr>
+    <tr><td class="highlight">[X] 비스포크</td><td>커스텀10개</td><td>500g</td><td>5시간</td><td>50,000원</td><td>18,040원</td><td class="highlight">63.9%</td></tr>
+  </table>
+
+  <h3>배송 모델 — 하이퍼로컬</h3>
+  <div class="flow">
+    <div class="flow-box" style="border-color:var(--accent)">MIF<br>(현장 생산)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">전기 스쿠터<br>15분</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box" style="border-color:var(--green)">카페·바<br>(반경 2km)</div>
+    <div style="margin-left:20px;font-size:12px;color:var(--green)">물류비 0~3% | 탄소 0% | 30분 이내</div>
+  </div>
+
+  <table>
+    <tr><th>배송 수단</th><th>적재</th><th>반경</th><th>개당 물류비</th></tr>
+    <tr><td>고객 픽업</td><td>—</td><td>0km</td><td class="green">0원</td></tr>
+    <tr><td>전기 자전거</td><td>[M]×2</td><td>2km</td><td>48원</td></tr>
+    <tr><td>전기 스쿠터 (2회전)</td><td>[M]×4~8</td><td>5km</td><td class="highlight">64원</td></tr>
+    <tr><td>경차 (대량)</td><td>[W]×5</td><td>10km</td><td>164원</td></tr>
+  </table>
+
+  <h3>물류비 자재 단가</h3>
+  <table>
+    <tr><th>자재</th><th>단가</th><th>비고</th></tr>
+    <tr><td>드라이아이스</td><td class="highlight">1,200원/kg</td><td>정기계약 기준 (태성산업 30kg 42,000원)</td></tr>
+    <tr><td>EPS 박스 (중형)</td><td>1,300원/개</td><td>275×205×160mm</td></tr>
+    <tr><td>아이스팩 (소형)</td><td>200원/개</td><td>200g</td></tr>
+    <tr><td>은박 보냉팩</td><td>210원/개</td><td>25×30cm</td></tr>
+    <tr><td>전기 스쿠터 렌탈</td><td>100,000원/월</td><td>에이렌탈·모두의바이크</td></tr>
+  </table>
+</div>
+
+<!-- ============ SEC 7: 타임라인 ============ -->
+<div class="section" id="s7">
+  <h2>통합 타임라인 (2026)</h2>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot current"></div>
+      <div class="tl-date">Phase 1 — 4월 (기획 및 요건 정의)</div>
+      <div class="tl-title">킥오프, 인허가 신청, B2B 타겟 분석, BX 전략</div>
+      <div class="tl-desc">양사 R&R 합의, CAD 기본 설계, 고객 인터뷰</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Phase 2 — 5월 (콘셉트 도출)</div>
+      <div class="tl-title">에코-퓨처리즘 하우징, BI 수립, 컨테이너 설치</div>
+      <div class="tl-desc">에코 패키징 기획, 코어 모듈 1차 조립, 부품 선발주</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Phase 3 — 6월 (상세 설계)</div>
+      <div class="tl-title">CMF 확정, AI 대시보드 UX/UI, S/W 외주 착수</div>
+      <div class="tl-desc">시운전, 품질 검증, 로봇 모듈 3D 기구 설계</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Phase 4 — 7월 (시제품 + 납품 시작)</div>
+      <div class="tl-title">MOU 3곳 체결, 정기 납품 시작, API 연동</div>
+      <div class="tl-desc">MIF 뼈대 조립, Usability Test 1차, 키오스크 오픈</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Phase 5 — 8월 (검증 및 개선)</div>
+      <div class="tl-title">풀스케일 시제품 완성, On-site 가동 테스트</div>
+      <div class="tl-desc">탄소 저감 데이터 실측, BYI 텀블러 500개 보급 시작</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Phase 6 — 9월 (최종 패키지화)</div>
+      <div class="tl-title">디자인 가이드 확정, IP 출원, IR 피치덱 완성</div>
+      <div class="tl-desc">3D 렌더링, 최종 보고서, 디자인·기술협업 사업 종료</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">Phase 7 — 10~12월 (확장·달성)</div>
+      <div class="tl-title">납품 5곳 확장, 매출 5천만원 달성, CES 2027 준비</div>
+      <div class="tl-desc">양산형 모듈 고도화, 최종 정산, 기후테크 사업 종료</div>
+    </div>
+  </div>
+
+  <h3>중장기 로드맵 (2026~2029)</h3>
+  <table>
+    <tr><th>연도</th><th>단계</th><th>유닛</th><th>목표</th></tr>
+    <tr><td class="highlight">2026</td><td>성남 실증</td><td>1~3기</td><td>납품 5곳, 5천만원</td></tr>
+    <tr><td class="cyan">2027</td><td>수도권 확산</td><td>10기</td><td>납품 10곳+, CES 출품</td></tr>
+    <tr><td class="green">2028</td><td>전국 표준화</td><td>50기+</td><td>해외수출, 1,000톤 CO₂ 감축</td></tr>
+    <tr><td class="purple">2029</td><td>글로벌 확장</td><td>100기</td><td>Series A $5M, ARR $3M+</td></tr>
+  </table>
+</div>
+
+<!-- ============ SEC 8: 운영 계획 ============ -->
+<div class="section" id="s8">
+  <h2>운영 계획</h2>
+
+  <h3>일일 운영 타임테이블</h3>
+  <table>
+    <tr><th>시간</th><th>활동</th><th>담당</th></tr>
+    <tr><td>06:00~07:00</td><td class="highlight">1차 탈형 (462개 중 배치분)</td><td>운영자</td></tr>
+    <tr><td>07:00~08:30</td><td>QC 검사 → 레이저 각인 → 포장</td><td>운영자</td></tr>
+    <tr><td>09:00~09:30</td><td class="green">1차 납품 출하 (카페 오픈 전)</td><td>운영자</td></tr>
+    <tr><td>09:30~10:00</td><td>듀오메이커 재충수 → 냉동고 재투입</td><td>운영자</td></tr>
+    <tr><td>10:00~13:00</td><td>키오스크 무인 운영 / 점심·점검</td><td>자동/운영자</td></tr>
+    <tr><td>14:00~14:30</td><td class="green">2차 납품 출하</td><td>운영자</td></tr>
+    <tr><td>14:30~17:00</td><td>B2B 영업 / 3차 탈형·재충수</td><td>운영자</td></tr>
+    <tr><td>17:30~익일 06:00</td><td class="cyan">야간 제빙 (완전 자동, IoT 관제)</td><td>자동</td></tr>
+  </table>
+
+  <h3>인력 구성</h3>
+  <div class="cards">
+    <div class="card"><div class="card-title">운영 매니저</div><div class="card-value">1명</div><div class="card-sub">06:00~17:30 / 280만원/월</div></div>
+    <div class="card"><div class="card-title">보조 (피크시)</div><div class="card-value">1명</div><div class="card-sub">08:00~14:00 / 120만원/월</div></div>
+    <div class="card"><div class="card-title">원격 관제</div><div class="card-value">겸직</div><div class="card-sub">24시간 AI 대시보드</div></div>
+  </div>
+
+  <h3>4중 수익 구조</h3>
+  <div class="flow">
+    <div class="flow-box" style="border-color:var(--accent)">B2B 구독<br>고정80%+가변20%</div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box" style="border-color:var(--purple)">각인 Upsell<br>단가+30%</div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box" style="border-color:var(--green)">BYI 텀블러<br>재방문+40%</div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box" style="border-color:var(--cyan)">ESG 데이터<br>ISO 14064</div>
+  </div>
+</div>
+
+<!-- ============ SEC 9: 재무·KPI ============ -->
+<div class="section" id="s9">
+  <h2>재무 · KPI</h2>
+
+  <h3>월 운영비 (MIF-20)</h3>
+  <table>
+    <tr><th>항목</th><th>월 비용</th></tr>
+    <tr><td>인건비 (매니저+보조)</td><td>400만원</td></tr>
+    <tr><td>전기료 (41kWh/일)</td><td>16만원</td></tr>
+    <tr><td>수도료</td><td>5만원</td></tr>
+    <tr><td>원재료 (포장재)</td><td>50만원</td></tr>
+    <tr><td>유지보수</td><td>30만원</td></tr>
+    <tr><td>임대/설치·보험·기타</td><td>70만원</td></tr>
+    <tr style="background:rgba(233,69,96,.1)"><td class="highlight">월 총 운영비</td><td class="highlight">571만원</td></tr>
+  </table>
+
+  <h3>손익 시뮬레이션</h3>
+  <table>
+    <tr><th>가동률</th><th>월 매출</th><th>월 운영비</th><th>월 순이익</th></tr>
+    <tr><td>23% (BEP)</td><td>571만원</td><td>571만원</td><td>0원 (손익분기)</td></tr>
+    <tr><td>30%</td><td>844만원</td><td>571만원</td><td class="green">273만원</td></tr>
+    <tr><td>50%</td><td>1,406만원</td><td>571만원</td><td class="green">835만원</td></tr>
+    <tr><td>75%</td><td>2,110만원</td><td>571만원</td><td class="green">1,539만원</td></tr>
+    <tr style="background:rgba(0,200,83,.1)"><td class="highlight">100% (성수기)</td><td class="highlight">2,813만원</td><td>621만원</td><td class="green" style="font-size:16px">2,192만원</td></tr>
+  </table>
+
+  <div class="cards">
+    <div class="card" style="border:2px solid var(--green)">
+      <div class="card-title">BEP (손익분기점)</div>
+      <div class="card-value green">가동률 23%</div>
+      <div class="card-sub">일 275개 판매 시 흑자 전환</div>
+    </div>
+    <div class="card" style="border:2px solid var(--accent)">
+      <div class="card-title">제품믹스 적용 월매출</div>
+      <div class="card-value highlight">4,120만원</div>
+      <div class="card-sub">5Tier 믹스 시 기존 대비 +47%</div>
+    </div>
+    <div class="card" style="border:2px solid var(--cyan)">
+      <div class="card-title">물류비율</div>
+      <div class="card-value cyan">24.1%</div>
+      <div class="card-sub">5곳 납품 기준 월 33.4만원</div>
+    </div>
+  </div>
+
+  <h3>월별 KPI 로드맵</h3>
+  <table>
+    <tr><th>KPI</th><th>7월</th><th>8월</th><th>9월</th><th>10월</th><th>11월</th><th>12월</th><th>최종</th></tr>
+    <tr><td>납품처</td><td>3</td><td>3</td><td>3</td><td>5</td><td>5</td><td>5</td><td class="highlight">5곳</td></tr>
+    <tr><td>가동률</td><td>30%</td><td>50%</td><td>60%</td><td>70%</td><td>80%</td><td>80%</td><td>70%avg</td></tr>
+    <tr><td>월매출(만)</td><td>200</td><td>600</td><td>900</td><td>1,200</td><td>1,500</td><td>1,800</td><td class="highlight">5,000+</td></tr>
+    <tr><td>BYI보급</td><td>0</td><td>300</td><td>400</td><td>450</td><td>500</td><td>500</td><td class="green">500개</td></tr>
+    <tr><td>전력절감</td><td>—</td><td>30%</td><td>35%</td><td>38%</td><td>40%</td><td>40%</td><td class="green">40%↓</td></tr>
+  </table>
+
+  <h3>Series A 투자 유치 목표</h3>
+  <div class="cards">
+    <div class="card"><div class="card-title">목표 금액</div><div class="card-value">$5M</div><div class="card-sub">약 65억원, 2027 상반기</div></div>
+    <div class="card"><div class="card-title">설치 유닛</div><div class="card-value">100 Units</div><div class="card-sub">국내 70 + 해외 30</div></div>
+    <div class="card"><div class="card-title">ARR</div><div class="card-value">$3M+</div><div class="card-sub">PaaS 구독 기반</div></div>
+    <div class="card"><div class="card-title">탄소 감축</div><div class="card-value">500 tCO₂</div><div class="card-sub">ISO 14064 검증</div></div>
+  </div>
+</div>
+
+
+<!-- EMBEDDED SVG DRAWINGS -->
+<div class="section" id="s_drawings" style="display:none">
+  <h2>설계 도면 뷰어 (내장)</h2>
+  <p style="font-size:12px;color:#888;margin-bottom:12px">아래 드롭다운에서 도면을 선택하세요. 확대하려면 Ctrl+마우스휠을 사용하세요.</p>
+  <div style="margin-bottom:12px">
+    <select id="svgSelect" onchange="showSVG()" style="padding:10px 20px;background:#1a1a2e;color:#e0e0e0;border:1px solid #2a2a4a;border-radius:8px;font-size:14px;cursor:pointer">
+      <option value="svg_0">01 MIF-20 평면도</option>
+      <option value="svg_1">02 MIF-40 평면도</option>
+      <option value="svg_2">03 냉동고 단면도 선반배치</option>
+      <option value="svg_3">04 MIF-20 종단면도</option>
+      <option value="svg_4">05 시스템 구성도</option>
+      <option value="svg_5">07 MIF-20 외부 조감도</option>
+      <option value="svg_6">08 MIF-20 내부 투시도</option>
+    </select>
+  </div>
+  <div id="svg_0" class="svg-embed" style="display:block;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+    <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <defs>
+    <style>
+      text { font-family: 'Malgun Gothic', Arial, sans-serif; }
+      .title { font-size: 18px; font-weight: bold; fill: #1a1a1a; }
+      .subtitle { font-size: 12px; fill: #444; }
+      .dim { font-size: 10px; fill: #d32f2f; }
+      .label { font-size: 11px; fill: #1a1a1a; font-weight: bold; }
+      .label-sm { font-size: 9px; fill: #555; }
+      .zone-label { font-size: 13px; fill: white; font-weight: bold; }
+      .wall { fill: none; stroke: #333; stroke-width: 3; }
+      .inner-wall { fill: none; stroke: #666; stroke-width: 2; stroke-dasharray: 8,4; }
+      .partition { stroke: #444; stroke-width: 2; }
+      .dim-line { stroke: #d32f2f; stroke-width: 1; }
+      .dim-arrow { fill: #d32f2f; }
+      .shelf { fill: #e0e0e0; stroke: #999; stroke-width: 1; }
+      .duo { fill: #fff; stroke: #2196F3; stroke-width: 1.2; rx: 2; }
+      .freezer-fill { fill: #e3f2fd; }
+      .process-fill { fill: #fff3e0; }
+      .service-fill { fill: #e8f5e9; }
+      .machine-fill { fill: #fce4ec; }
+      .equipment { fill: #f5f5f5; stroke: #777; stroke-width: 1.5; rx: 3; }
+    </style>
+    <marker id="arrowR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" class="dim-arrow"/>
+    </marker>
+    <marker id="arrowL" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+      <polygon points="8,0 0,3 8,6" class="dim-arrow"/>
+    </marker>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#ccc" stroke-width="1"/>
+    </pattern>
+    <pattern id="cold-hatch" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#e3f2fd"/>
+      <circle cx="4" cy="4" r="1" fill="#90caf9" opacity="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" class="title">MIF-20 마이크로 아이스팩토리 — 평면도 (FLOOR PLAN)</text>
+  <text x="600" y="48" text-anchor="middle" class="subtitle">20ft Standard Container | 내부: 5,898 × 2,352 × 2,393 mm | Scale ≈ 1:60</text>
+
+  <!-- Container outer wall -->
+  <rect x="100" y="80" width="984" height="392" class="wall" fill="url(#hatch)" rx="2"/>
+
+  <!-- Insulation (10mm = ~1.7px at scale, shown as wall thickness) -->
+  <rect x="108" y="88" width="968" height="376" fill="white" stroke="#999" stroke-width="1" rx="1"/>
+
+  <!-- ===== ZONE A: 냉동기실 (600mm → 100px) ===== -->
+  <rect x="108" y="88" width="100" height="376" class="machine-fill" stroke="#999" stroke-width="1"/>
+  <line x1="208" y1="88" x2="208" y2="464" class="partition"/>
+  <text x="158" y="260" text-anchor="middle" class="zone-label" fill="#c62828">A</text>
+  <text x="158" y="278" text-anchor="middle" class="label-sm" fill="#c62828">냉동기실</text>
+  <text x="158" y="292" text-anchor="middle" class="label-sm" fill="#c62828">600mm</text>
+  <!-- Compressor -->
+  <rect x="120" y="120" width="70" height="50" class="equipment" fill="#ffcdd2"/>
+  <text x="155" y="148" text-anchor="middle" class="label-sm">컴프레서</text>
+  <text x="155" y="160" text-anchor="middle" class="label-sm">1HP</text>
+  <!-- Condenser -->
+  <rect x="120" y="185" width="70" height="40" class="equipment" fill="#ffcdd2"/>
+  <text x="155" y="208" text-anchor="middle" class="label-sm">콘덴서</text>
+  <!-- Electric Panel -->
+  <rect x="120" y="340" width="70" height="55" class="equipment" fill="#fff9c4"/>
+  <text x="155" y="363" text-anchor="middle" class="label-sm">전기</text>
+  <text x="155" y="375" text-anchor="middle" class="label-sm">패널</text>
+
+  <!-- ===== ZONE B: 워크인 냉동고 (2,400mm → 400px) ===== -->
+  <rect x="208" y="88" width="400" height="376" fill="url(#cold-hatch)" stroke="#1565c0" stroke-width="2"/>
+  <line x1="608" y1="88" x2="608" y2="464" class="partition" stroke="#1565c0" stroke-width="2"/>
+  <text x="408" y="115" text-anchor="middle" class="zone-label" fill="#1565c0">B — 워크인 냉동고 (-18℃)</text>
+  <text x="408" y="132" text-anchor="middle" class="label-sm" fill="#1565c0">2,400mm | 듀오메이커 96개 | PUR 단열 100mm</text>
+
+  <!-- Freezer door -->
+  <rect x="600" y="240" width="16" height="80" fill="#ffab00" stroke="#f57f17" stroke-width="1.5" rx="2"/>
+  <text x="630" y="285" class="label-sm" fill="#f57f17">슬라이딩도어</text>
+  <text x="630" y="297" class="label-sm" fill="#f57f17">W900×H1900</text>
+
+  <!-- Left wall shelves (선반 - 좌측 벽면) -->
+  <rect x="216" y="140" width="380" height="60" class="shelf"/>
+  <text x="406" y="160" text-anchor="middle" class="label-sm">좌측 선반 (7단 × 11개 × 2열 = 가용 48개)</text>
+  <!-- Duo Maker icons on shelf -->
+  <g transform="translate(220, 165)">
+    <rect x="0" y="0" width="15" height="9" class="duo"/><rect x="18" y="0" width="15" height="9" class="duo"/>
+    <rect x="36" y="0" width="15" height="9" class="duo"/><rect x="54" y="0" width="15" height="9" class="duo"/>
+    <rect x="72" y="0" width="15" height="9" class="duo"/><rect x="90" y="0" width="15" height="9" class="duo"/>
+    <rect x="108" y="0" width="15" height="9" class="duo"/><rect x="126" y="0" width="15" height="9" class="duo"/>
+    <rect x="144" y="0" width="15" height="9" class="duo"/><rect x="162" y="0" width="15" height="9" class="duo"/>
+    <rect x="180" y="0" width="15" height="9" class="duo"/>
+    <!-- Row 2 -->
+    <rect x="0" y="12" width="15" height="9" class="duo"/><rect x="18" y="12" width="15" height="9" class="duo"/>
+    <rect x="36" y="12" width="15" height="9" class="duo"/><rect x="54" y="12" width="15" height="9" class="duo"/>
+    <rect x="72" y="12" width="15" height="9" class="duo"/><rect x="90" y="12" width="15" height="9" class="duo"/>
+    <rect x="108" y="12" width="15" height="9" class="duo"/><rect x="126" y="12" width="15" height="9" class="duo"/>
+    <rect x="144" y="12" width="15" height="9" class="duo"/><rect x="162" y="12" width="15" height="9" class="duo"/>
+    <rect x="180" y="12" width="15" height="9" class="duo"/>
+  </g>
+
+  <!-- Center aisle -->
+  <rect x="216" y="210" width="380" height="65" fill="white" stroke="#bbb" stroke-width="0.5" stroke-dasharray="4,3"/>
+  <text x="406" y="248" text-anchor="middle" class="label-sm" fill="#888">작업 통로 600mm</text>
+
+  <!-- Right wall shelves (선반 - 우측 벽면) -->
+  <rect x="216" y="285" width="380" height="60" class="shelf"/>
+  <text x="406" y="305" text-anchor="middle" class="label-sm">우측 선반 (7단 × 11개 × 2열 = 가용 48개)</text>
+  <g transform="translate(220, 310)">
+    <rect x="0" y="0" width="15" height="9" class="duo"/><rect x="18" y="0" width="15" height="9" class="duo"/>
+    <rect x="36" y="0" width="15" height="9" class="duo"/><rect x="54" y="0" width="15" height="9" class="duo"/>
+    <rect x="72" y="0" width="15" height="9" class="duo"/><rect x="90" y="0" width="15" height="9" class="duo"/>
+    <rect x="108" y="0" width="15" height="9" class="duo"/><rect x="126" y="0" width="15" height="9" class="duo"/>
+    <rect x="144" y="0" width="15" height="9" class="duo"/><rect x="162" y="0" width="15" height="9" class="duo"/>
+    <rect x="180" y="0" width="15" height="9" class="duo"/>
+    <rect x="0" y="12" width="15" height="9" class="duo"/><rect x="18" y="12" width="15" height="9" class="duo"/>
+    <rect x="36" y="12" width="15" height="9" class="duo"/><rect x="54" y="12" width="15" height="9" class="duo"/>
+    <rect x="72" y="12" width="15" height="9" class="duo"/><rect x="90" y="12" width="15" height="9" class="duo"/>
+    <rect x="108" y="12" width="15" height="9" class="duo"/><rect x="126" y="12" width="15" height="9" class="duo"/>
+    <rect x="144" y="12" width="15" height="9" class="duo"/><rect x="162" y="12" width="15" height="9" class="duo"/>
+    <rect x="180" y="12" width="15" height="9" class="duo"/>
+  </g>
+
+  <!-- Unit cooler in freezer ceiling -->
+  <rect x="360" y="365" width="100" height="30" fill="#bbdefb" stroke="#1565c0" stroke-width="1" rx="3"/>
+  <text x="410" y="384" text-anchor="middle" class="label-sm" fill="#1565c0">유닛쿨러</text>
+
+  <!-- ===== ZONE C: 가공·포장실 (1,400mm → 233px) ===== -->
+  <rect x="608" y="88" width="233" height="376" class="process-fill" stroke="#999" stroke-width="1"/>
+  <line x1="841" y1="88" x2="841" y2="464" class="partition"/>
+  <text x="725" y="115" text-anchor="middle" class="zone-label" fill="#e65100">C — 가공·포장실</text>
+  <text x="725" y="132" text-anchor="middle" class="label-sm" fill="#e65100">1,400mm</text>
+
+  <!-- Work table -->
+  <rect x="620" y="150" width="210" height="60" class="equipment" fill="#ffe0b2"/>
+  <text x="725" y="175" text-anchor="middle" class="label-sm">탈형 작업대 (스테인리스)</text>
+  <text x="725" y="188" text-anchor="middle" class="label-sm">W1,200 × D450</text>
+
+  <!-- Laser engraver -->
+  <rect x="620" y="230" width="100" height="60" class="equipment" fill="#fff9c4"/>
+  <text x="670" y="255" text-anchor="middle" class="label-sm">레이저</text>
+  <text x="670" y="267" text-anchor="middle" class="label-sm">각인기</text>
+
+  <!-- Packaging area -->
+  <rect x="730" y="230" width="100" height="60" class="equipment" fill="#ffe0b2"/>
+  <text x="780" y="255" text-anchor="middle" class="label-sm">포장</text>
+  <text x="780" y="267" text-anchor="middle" class="label-sm">작업대</text>
+
+  <!-- Sink -->
+  <rect x="620" y="350" width="80" height="50" class="equipment" fill="#e0f7fa"/>
+  <text x="660" y="378" text-anchor="middle" class="label-sm">싱크대</text>
+
+  <!-- Storage fridge -->
+  <rect x="720" y="340" width="110" height="65" class="equipment" fill="#e8eaf6"/>
+  <text x="775" y="368" text-anchor="middle" class="label-sm">완제품</text>
+  <text x="775" y="382" text-anchor="middle" class="label-sm">보관냉장고</text>
+
+  <!-- ===== ZONE D: 서비스·판매 (1,498mm → 235px) ===== -->
+  <rect x="841" y="88" width="235" height="376" class="service-fill" stroke="#999" stroke-width="1"/>
+  <text x="958" y="115" text-anchor="middle" class="zone-label" fill="#2e7d32">D — 서비스·판매</text>
+  <text x="958" y="132" text-anchor="middle" class="label-sm" fill="#2e7d32">1,498mm</text>
+
+  <!-- Robot barista -->
+  <rect x="870" y="155" width="90" height="90" fill="#c8e6c9" stroke="#388e3c" stroke-width="1.5" rx="45"/>
+  <text x="915" y="197" text-anchor="middle" class="label-sm" fill="#2e7d32">로봇</text>
+  <text x="915" y="210" text-anchor="middle" class="label-sm" fill="#2e7d32">바리스타</text>
+
+  <!-- Kiosk -->
+  <rect x="975" y="155" width="80" height="90" class="equipment" fill="#c8e6c9"/>
+  <text x="1015" y="195" text-anchor="middle" class="label-sm">무인</text>
+  <text x="1015" y="208" text-anchor="middle" class="label-sm">키오스크</text>
+
+  <!-- Tumbler storage -->
+  <rect x="860" y="280" width="90" height="70" class="equipment" fill="#e8eaf6"/>
+  <text x="905" y="310" text-anchor="middle" class="label-sm">아블러</text>
+  <text x="905" y="323" text-anchor="middle" class="label-sm">텀블러</text>
+  <text x="905" y="336" text-anchor="middle" class="label-sm">보관대</text>
+
+  <!-- Water purifier -->
+  <rect x="965" y="280" width="90" height="70" class="equipment" fill="#e0f7fa"/>
+  <text x="1010" y="310" text-anchor="middle" class="label-sm">정수</text>
+  <text x="1010" y="323" text-anchor="middle" class="label-sm">시스템</text>
+
+  <!-- Service window -->
+  <rect x="1060" y="370" width="16" height="80" fill="#66bb6a" stroke="#2e7d32" stroke-width="1.5" rx="2"/>
+  <text x="1045" y="415" text-anchor="end" class="label-sm" fill="#2e7d32">서비스</text>
+  <text x="1045" y="427" text-anchor="end" class="label-sm" fill="#2e7d32">창구</text>
+
+  <!-- Ice display -->
+  <rect x="860" y="380" width="170" height="40" class="equipment" fill="#e1f5fe"/>
+  <text x="945" y="405" text-anchor="middle" class="label-sm">얼음 디스플레이 쇼케이스</text>
+
+  <!-- ===== Dimension Lines ===== -->
+  <!-- Total length -->
+  <line x1="108" y1="510" x2="1076" y2="510" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="592" y="528" text-anchor="middle" class="dim">5,898 mm (내부 유효 길이)</text>
+
+  <!-- Zone widths -->
+  <line x1="108" y1="490" x2="208" y2="490" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="158" y="500" text-anchor="middle" class="dim">600</text>
+
+  <line x1="208" y1="490" x2="608" y2="490" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="408" y="500" text-anchor="middle" class="dim">2,400</text>
+
+  <line x1="608" y1="490" x2="841" y2="490" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="725" y="500" text-anchor="middle" class="dim">1,400</text>
+
+  <line x1="841" y1="490" x2="1076" y2="490" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="958" y="500" text-anchor="middle" class="dim">1,498</text>
+
+  <!-- Width dimension -->
+  <line x1="1100" y1="88" x2="1100" y2="464" class="dim-line" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="1120" y="280" text-anchor="middle" class="dim" transform="rotate(90,1120,280)">2,352 mm</text>
+
+  <!-- Legend -->
+  <rect x="100" y="545" width="15" height="12" fill="url(#cold-hatch)" stroke="#1565c0" stroke-width="1"/>
+  <text x="120" y="555" class="label-sm">워크인 냉동고</text>
+  <rect x="210" y="545" width="15" height="12" class="process-fill" stroke="#999" stroke-width="1"/>
+  <text x="230" y="555" class="label-sm">가공·포장실</text>
+  <rect x="320" y="545" width="15" height="12" class="service-fill" stroke="#999" stroke-width="1"/>
+  <text x="340" y="555" class="label-sm">서비스·판매</text>
+  <rect x="430" y="545" width="15" height="12" class="machine-fill" stroke="#999" stroke-width="1"/>
+  <text x="450" y="555" class="label-sm">냉동기실</text>
+  <rect x="540" y="545" width="15" height="9" class="duo"/>
+  <text x="560" y="555" class="label-sm">듀오메이커 (181.6×105mm)</text>
+  <rect x="730" y="545" width="15" height="12" fill="#ffab00" rx="2"/>
+  <text x="750" y="555" class="label-sm">도어</text>
+
+  <!-- North arrow -->
+  <g transform="translate(50, 520)">
+    <polygon points="0,-15 5,5 -5,5" fill="#333"/>
+    <text x="0" y="18" text-anchor="middle" class="label-sm">N</text>
+  </g>
+
+  <!-- Copyright -->
+  <text x="1080" y="590" text-anchor="end" class="label-sm" fill="#999">© 2026 MasterMinding Group — MIF-20 Floor Plan v1.0</text>
+</svg>
+
+  </div>
+  <div id="svg_1" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+    <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 600" width="1800" height="600">
+  <defs>
+    <style>
+      text { font-family: 'Malgun Gothic', Arial, sans-serif; }
+      .title { font-size: 18px; font-weight: bold; fill: #1a1a1a; }
+      .subtitle { font-size: 12px; fill: #444; }
+      .dim { font-size: 10px; fill: #d32f2f; }
+      .label { font-size: 11px; fill: #1a1a1a; font-weight: bold; }
+      .label-sm { font-size: 9px; fill: #555; }
+      .zone-label { font-size: 13px; fill: white; font-weight: bold; }
+      .wall { fill: none; stroke: #333; stroke-width: 3; }
+      .partition { stroke: #444; stroke-width: 2; }
+      .shelf { fill: #e0e0e0; stroke: #999; stroke-width: 1; }
+      .duo { fill: #fff; stroke: #2196F3; stroke-width: 1; rx: 1; }
+      .equipment { fill: #f5f5f5; stroke: #777; stroke-width: 1.5; rx: 3; }
+    </style>
+    <marker id="arR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#d32f2f"/>
+    </marker>
+    <marker id="arL" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+      <polygon points="8,0 0,3 8,6" fill="#d32f2f"/>
+    </marker>
+    <pattern id="cold" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#e3f2fd"/>
+      <circle cx="4" cy="4" r="1" fill="#90caf9" opacity="0.5"/>
+    </pattern>
+    <pattern id="hatch40" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#ccc" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Title -->
+  <text x="900" y="30" text-anchor="middle" class="title">MIF-40 마이크로 아이스팩토리 — 평면도 (FLOOR PLAN)</text>
+  <text x="900" y="48" text-anchor="middle" class="subtitle">40ft High-Cube Container | 내부: 12,032 × 2,352 × 2,698 mm | Scale ≈ 1:80</text>
+
+  <!-- Container outer wall -->
+  <rect x="60" y="80" width="1680" height="370" class="wall" fill="url(#hatch40)" rx="2"/>
+  <!-- Inner wall -->
+  <rect x="68" y="88" width="1664" height="354" fill="white" stroke="#999" stroke-width="1"/>
+
+  <!-- ===== ZONE A: 냉동기실 (800mm → 110px) ===== -->
+  <rect x="68" y="88" width="110" height="354" fill="#fce4ec" stroke="#999" stroke-width="1"/>
+  <line x1="178" y1="88" x2="178" y2="442" class="partition"/>
+  <text x="123" y="250" text-anchor="middle" font-size="13" font-weight="bold" fill="#c62828">A</text>
+  <text x="123" y="268" text-anchor="middle" class="label-sm" fill="#c62828">냉동기실</text>
+  <text x="123" y="280" text-anchor="middle" class="label-sm" fill="#c62828">800mm</text>
+  <!-- Equipment -->
+  <rect x="78" y="105" width="90" height="45" class="equipment" fill="#ffcdd2"/>
+  <text x="123" y="130" text-anchor="middle" class="label-sm">컴프레서①</text>
+  <rect x="78" y="160" width="90" height="45" class="equipment" fill="#ffcdd2"/>
+  <text x="123" y="185" text-anchor="middle" class="label-sm">컴프레서②</text>
+  <rect x="78" y="215" width="90" height="35" class="equipment" fill="#ffcdd2"/>
+  <text x="123" y="236" text-anchor="middle" class="label-sm">콘덴서</text>
+  <rect x="78" y="350" width="90" height="45" class="equipment" fill="#fff9c4"/>
+  <text x="123" y="376" text-anchor="middle" class="label-sm">전기패널</text>
+
+  <!-- ===== ZONE B: 워크인 냉동고 (4,800mm → 664px) ===== -->
+  <rect x="178" y="88" width="664" height="354" fill="url(#cold)" stroke="#1565c0" stroke-width="2"/>
+  <line x1="842" y1="88" x2="842" y2="442" class="partition" stroke="#1565c0" stroke-width="2"/>
+  <text x="510" y="110" text-anchor="middle" font-size="13" font-weight="bold" fill="#1565c0">B — 워크인 냉동고 (-18℃)</text>
+  <text x="510" y="127" text-anchor="middle" class="label-sm" fill="#1565c0">4,800mm | 듀오메이커 144개 | PUR 단열 100mm</text>
+
+  <!-- Left wall shelf -->
+  <rect x="186" y="138" width="640" height="48" class="shelf"/>
+  <text x="506" y="158" text-anchor="middle" class="label-sm">좌측 벽면 선반 (7단) — 듀오메이커 배치</text>
+  <!-- Duo makers row -->
+  <g transform="translate(190,168)">
+    <rect x="0" y="0" width="12" height="7" class="duo"/><rect x="14" y="0" width="12" height="7" class="duo"/>
+    <rect x="28" y="0" width="12" height="7" class="duo"/><rect x="42" y="0" width="12" height="7" class="duo"/>
+    <rect x="56" y="0" width="12" height="7" class="duo"/><rect x="70" y="0" width="12" height="7" class="duo"/>
+    <rect x="84" y="0" width="12" height="7" class="duo"/><rect x="98" y="0" width="12" height="7" class="duo"/>
+    <rect x="112" y="0" width="12" height="7" class="duo"/><rect x="126" y="0" width="12" height="7" class="duo"/>
+    <rect x="140" y="0" width="12" height="7" class="duo"/><rect x="154" y="0" width="12" height="7" class="duo"/>
+    <rect x="168" y="0" width="12" height="7" class="duo"/><rect x="182" y="0" width="12" height="7" class="duo"/>
+    <rect x="196" y="0" width="12" height="7" class="duo"/><rect x="210" y="0" width="12" height="7" class="duo"/>
+    <rect x="224" y="0" width="12" height="7" class="duo"/><rect x="238" y="0" width="12" height="7" class="duo"/>
+    <rect x="252" y="0" width="12" height="7" class="duo"/><rect x="266" y="0" width="12" height="7" class="duo"/>
+    <rect x="280" y="0" width="12" height="7" class="duo"/><rect x="294" y="0" width="12" height="7" class="duo"/>
+    <rect x="308" y="0" width="12" height="7" class="duo"/><rect x="322" y="0" width="12" height="7" class="duo"/>
+    <rect x="336" y="0" width="12" height="7" class="duo"/><rect x="350" y="0" width="12" height="7" class="duo"/>
+  </g>
+
+  <!-- Center aisle -->
+  <rect x="186" y="195" width="640" height="55" fill="rgba(255,255,255,0.6)" stroke="#bbb" stroke-width="0.5" stroke-dasharray="4,3"/>
+  <text x="506" y="227" text-anchor="middle" class="label-sm" fill="#888">중앙 작업 통로 600mm</text>
+
+  <!-- Center island shelf (optional for 144 units) -->
+  <!-- Right wall shelf -->
+  <rect x="186" y="260" width="640" height="48" class="shelf"/>
+  <text x="506" y="280" text-anchor="middle" class="label-sm">우측 벽면 선반 (7단) — 듀오메이커 배치</text>
+  <g transform="translate(190,290)">
+    <rect x="0" y="0" width="12" height="7" class="duo"/><rect x="14" y="0" width="12" height="7" class="duo"/>
+    <rect x="28" y="0" width="12" height="7" class="duo"/><rect x="42" y="0" width="12" height="7" class="duo"/>
+    <rect x="56" y="0" width="12" height="7" class="duo"/><rect x="70" y="0" width="12" height="7" class="duo"/>
+    <rect x="84" y="0" width="12" height="7" class="duo"/><rect x="98" y="0" width="12" height="7" class="duo"/>
+    <rect x="112" y="0" width="12" height="7" class="duo"/><rect x="126" y="0" width="12" height="7" class="duo"/>
+    <rect x="140" y="0" width="12" height="7" class="duo"/><rect x="154" y="0" width="12" height="7" class="duo"/>
+    <rect x="168" y="0" width="12" height="7" class="duo"/><rect x="182" y="0" width="12" height="7" class="duo"/>
+    <rect x="196" y="0" width="12" height="7" class="duo"/><rect x="210" y="0" width="12" height="7" class="duo"/>
+    <rect x="224" y="0" width="12" height="7" class="duo"/><rect x="238" y="0" width="12" height="7" class="duo"/>
+    <rect x="252" y="0" width="12" height="7" class="duo"/><rect x="266" y="0" width="12" height="7" class="duo"/>
+    <rect x="280" y="0" width="12" height="7" class="duo"/><rect x="294" y="0" width="12" height="7" class="duo"/>
+    <rect x="308" y="0" width="12" height="7" class="duo"/><rect x="322" y="0" width="12" height="7" class="duo"/>
+    <rect x="336" y="0" width="12" height="7" class="duo"/><rect x="350" y="0" width="12" height="7" class="duo"/>
+  </g>
+
+  <!-- Unit coolers -->
+  <rect x="350" y="380" width="80" height="25" fill="#bbdefb" stroke="#1565c0" rx="3"/>
+  <text x="390" y="396" text-anchor="middle" class="label-sm" fill="#1565c0">유닛쿨러①</text>
+  <rect x="560" y="380" width="80" height="25" fill="#bbdefb" stroke="#1565c0" rx="3"/>
+  <text x="600" y="396" text-anchor="middle" class="label-sm" fill="#1565c0">유닛쿨러②</text>
+
+  <!-- Freezer door -->
+  <rect x="833" y="220" width="16" height="70" fill="#ffab00" stroke="#f57f17" stroke-width="1.5" rx="2"/>
+  <text x="860" y="260" class="label-sm" fill="#f57f17">도어</text>
+
+  <!-- ===== ZONE C: 가공·포장실 (2,400mm → 332px) ===== -->
+  <rect x="842" y="88" width="332" height="354" fill="#fff3e0" stroke="#999" stroke-width="1"/>
+  <line x1="1174" y1="88" x2="1174" y2="442" class="partition"/>
+  <text x="1008" y="110" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">C — 가공·포장실</text>
+  <text x="1008" y="127" text-anchor="middle" class="label-sm" fill="#e65100">2,400mm</text>
+
+  <!-- Work tables -->
+  <rect x="855" y="145" width="305" height="50" class="equipment" fill="#ffe0b2"/>
+  <text x="1008" y="174" text-anchor="middle" class="label-sm">탈형 작업대 (스테인리스) W2,200 × D450</text>
+  <rect x="855" y="215" width="140" height="55" class="equipment" fill="#fff9c4"/>
+  <text x="925" y="240" text-anchor="middle" class="label-sm">레이저 각인기</text>
+  <text x="925" y="253" text-anchor="middle" class="label-sm">(대형)</text>
+  <rect x="1010" y="215" width="150" height="55" class="equipment" fill="#ffe0b2"/>
+  <text x="1085" y="240" text-anchor="middle" class="label-sm">포장 작업대</text>
+  <text x="1085" y="253" text-anchor="middle" class="label-sm">+ QC 검사</text>
+  <!-- Sink & wash -->
+  <rect x="855" y="310" width="120" height="55" class="equipment" fill="#e0f7fa"/>
+  <text x="915" y="341" text-anchor="middle" class="label-sm">3조 싱크대</text>
+  <!-- Product fridge -->
+  <rect x="990" y="310" width="170" height="55" class="equipment" fill="#e8eaf6"/>
+  <text x="1075" y="341" text-anchor="middle" class="label-sm">완제품 보관 냉장고 (대형)</text>
+
+  <!-- ===== ZONE D: 서비스 바 (2,400mm → 332px) ===== -->
+  <rect x="1174" y="88" width="332" height="354" fill="#e8f5e9" stroke="#999" stroke-width="1"/>
+  <line x1="1506" y1="88" x2="1506" y2="442" class="partition"/>
+  <text x="1340" y="110" text-anchor="middle" font-size="13" font-weight="bold" fill="#2e7d32">D — 서비스 바 (8석)</text>
+  <text x="1340" y="127" text-anchor="middle" class="label-sm" fill="#2e7d32">2,400mm | 로봇 바리스타 + 바텐더</text>
+
+  <!-- Robot area -->
+  <rect x="1190" y="150" width="80" height="80" fill="#c8e6c9" stroke="#388e3c" stroke-width="1.5" rx="40"/>
+  <text x="1230" y="190" text-anchor="middle" class="label-sm" fill="#2e7d32">로봇</text>
+  <text x="1230" y="203" text-anchor="middle" class="label-sm" fill="#2e7d32">바리스타</text>
+
+  <!-- Bar counter -->
+  <rect x="1285" y="145" width="210" height="25" fill="#a5d6a7" stroke="#388e3c" stroke-width="1" rx="3"/>
+  <text x="1390" y="161" text-anchor="middle" class="label-sm" fill="#2e7d32">바 카운터 (8석)</text>
+  <!-- Bar stools -->
+  <g transform="translate(1290,180)">
+    <circle cx="0" cy="0" r="8" fill="#81c784" stroke="#388e3c"/><circle cx="30" cy="0" r="8" fill="#81c784" stroke="#388e3c"/>
+    <circle cx="60" cy="0" r="8" fill="#81c784" stroke="#388e3c"/><circle cx="90" cy="0" r="8" fill="#81c784" stroke="#388e3c"/>
+    <circle cx="120" cy="0" r="8" fill="#81c784" stroke="#388e3c"/><circle cx="150" cy="0" r="8" fill="#81c784" stroke="#388e3c"/>
+    <circle cx="180" cy="0" r="8" fill="#81c784" stroke="#388e3c"/><circle cx="210" cy="0" r="8" fill="#81c784" stroke="#388e3c"/>
+  </g>
+
+  <!-- Display -->
+  <rect x="1190" y="260" width="145" height="55" class="equipment" fill="#e1f5fe"/>
+  <text x="1263" y="285" text-anchor="middle" class="label-sm">얼음 디스플레이</text>
+  <text x="1263" y="298" text-anchor="middle" class="label-sm">쇼케이스</text>
+
+  <!-- Kiosk -->
+  <rect x="1350" y="260" width="145" height="55" class="equipment" fill="#c8e6c9"/>
+  <text x="1423" y="285" text-anchor="middle" class="label-sm">무인 키오스크</text>
+  <text x="1423" y="298" text-anchor="middle" class="label-sm">× 2대</text>
+
+  <!-- Service window -->
+  <rect x="1490" y="340" width="16" height="80" fill="#66bb6a" stroke="#2e7d32" stroke-width="1.5" rx="2"/>
+
+  <!-- ===== ZONE E: 창고·유틸리티 (1,632mm → 226px) ===== -->
+  <rect x="1506" y="88" width="226" height="354" fill="#f3e5f5" stroke="#999" stroke-width="1"/>
+  <text x="1619" y="110" text-anchor="middle" font-size="13" font-weight="bold" fill="#6a1b9a">E — 창고·유틸리티</text>
+  <text x="1619" y="127" text-anchor="middle" class="label-sm" fill="#6a1b9a">1,632mm</text>
+
+  <!-- Tumbler storage -->
+  <rect x="1518" y="145" width="200" height="60" class="equipment" fill="#e8eaf6"/>
+  <text x="1618" y="172" text-anchor="middle" class="label-sm">아블러 텀블러 보관대 (500개)</text>
+  <text x="1618" y="185" text-anchor="middle" class="label-sm">Ø87mm × H150mm × 500 = 선반 5단</text>
+
+  <!-- Washer -->
+  <rect x="1518" y="220" width="95" height="60" class="equipment" fill="#e0f7fa"/>
+  <text x="1566" y="248" text-anchor="middle" class="label-sm">텀블러</text>
+  <text x="1566" y="260" text-anchor="middle" class="label-sm">세척기</text>
+
+  <!-- Water system -->
+  <rect x="1623" y="220" width="95" height="60" class="equipment" fill="#e0f7fa"/>
+  <text x="1671" y="248" text-anchor="middle" class="label-sm">정수</text>
+  <text x="1671" y="260" text-anchor="middle" class="label-sm">시스템</text>
+
+  <!-- Supply storage -->
+  <rect x="1518" y="310" width="200" height="60" class="equipment" fill="#f5f5f5"/>
+  <text x="1618" y="338" text-anchor="middle" class="label-sm">부자재·소모품 창고</text>
+  <text x="1618" y="351" text-anchor="middle" class="label-sm">(포장재, 컵, 빨대 등)</text>
+
+  <!-- ===== Dimension Lines ===== -->
+  <line x1="68" y1="478" x2="1732" y2="478" class="dim-line" marker-start="url(#arL)" marker-end="url(#arR)"/>
+  <text x="900" y="496" text-anchor="middle" class="dim">12,032 mm (내부 유효 길이)</text>
+
+  <line x1="68" y1="460" x2="178" y2="460" class="dim-line" marker-start="url(#arL)" marker-end="url(#arR)"/>
+  <text x="123" y="470" text-anchor="middle" class="dim">800</text>
+  <line x1="178" y1="460" x2="842" y2="460" class="dim-line" marker-start="url(#arL)" marker-end="url(#arR)"/>
+  <text x="510" y="470" text-anchor="middle" class="dim">4,800</text>
+  <line x1="842" y1="460" x2="1174" y2="460" class="dim-line" marker-start="url(#arL)" marker-end="url(#arR)"/>
+  <text x="1008" y="470" text-anchor="middle" class="dim">2,400</text>
+  <line x1="1174" y1="460" x2="1506" y2="460" class="dim-line" marker-start="url(#arL)" marker-end="url(#arR)"/>
+  <text x="1340" y="470" text-anchor="middle" class="dim">2,400</text>
+  <line x1="1506" y1="460" x2="1732" y2="460" class="dim-line" marker-start="url(#arL)" marker-end="url(#arR)"/>
+  <text x="1619" y="470" text-anchor="middle" class="dim">1,632</text>
+
+  <!-- Width -->
+  <line x1="1755" y1="88" x2="1755" y2="442" class="dim-line" marker-start="url(#arL)" marker-end="url(#arR)"/>
+  <text x="1775" y="270" text-anchor="middle" class="dim" transform="rotate(90,1775,270)">2,352 mm</text>
+
+  <!-- Legend -->
+  <g transform="translate(60,520)">
+    <rect x="0" y="0" width="14" height="11" fill="url(#cold)" stroke="#1565c0"/>
+    <text x="18" y="10" class="label-sm">냉동고</text>
+    <rect x="80" y="0" width="14" height="11" fill="#fff3e0" stroke="#999"/>
+    <text x="98" y="10" class="label-sm">가공·포장</text>
+    <rect x="170" y="0" width="14" height="11" fill="#e8f5e9" stroke="#999"/>
+    <text x="188" y="10" class="label-sm">서비스바</text>
+    <rect x="250" y="0" width="14" height="11" fill="#f3e5f5" stroke="#999"/>
+    <text x="268" y="10" class="label-sm">유틸리티</text>
+    <rect x="340" y="0" width="14" height="11" fill="#fce4ec" stroke="#999"/>
+    <text x="358" y="10" class="label-sm">냉동기실</text>
+    <rect x="430" y="0" width="12" height="8" class="duo"/>
+    <text x="446" y="10" class="label-sm">듀오메이커</text>
+    <circle cx="530" cy="5" r="8" fill="#81c784" stroke="#388e3c"/>
+    <text x="542" y="10" class="label-sm">좌석(8석)</text>
+  </g>
+
+  <text x="1720" y="560" text-anchor="end" class="label-sm" fill="#999">© 2026 MasterMinding Group — MIF-40 Floor Plan v1.0</text>
+</svg>
+
+  </div>
+  <div id="svg_2" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+    <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 750" width="1400" height="750">
+  <defs>
+    <style>
+      text { font-family: 'Malgun Gothic', Arial, sans-serif; }
+      .title { font-size: 16px; font-weight: bold; fill: #1a1a1a; }
+      .subtitle { font-size: 11px; fill: #444; }
+      .dim { font-size: 9px; fill: #d32f2f; }
+      .label-sm { font-size: 9px; fill: #555; }
+      .label { font-size: 11px; fill: #1a1a1a; font-weight: bold; }
+      .wall-thick { fill: #bdbdbd; stroke: #666; stroke-width: 1; }
+      .insulation { fill: #fff9c4; stroke: #f9a825; stroke-width: 0.5; }
+      .shelf-bar { fill: #9e9e9e; stroke: #616161; stroke-width: 1; }
+      .duo-side { fill: #e3f2fd; stroke: #1565c0; stroke-width: 1; rx: 2; }
+      .duo-detail { fill: #bbdefb; stroke: #1565c0; stroke-width: 0.8; }
+      .floor { fill: #e0e0e0; stroke: #666; stroke-width: 1; }
+      .cold-air { fill: none; stroke: #42a5f5; stroke-width: 1; stroke-dasharray: 4,3; }
+    </style>
+    <marker id="ar" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <polygon points="0,0 6,2.5 0,5" fill="#d32f2f"/>
+    </marker>
+    <marker id="al" markerWidth="6" markerHeight="5" refX="0" refY="2.5" orient="auto">
+      <polygon points="6,0 0,2.5 6,5" fill="#d32f2f"/>
+    </marker>
+  </defs>
+
+  <!-- ========== SECTION 1: 냉동고 횡단면 (정면에서 본) ========== -->
+  <text x="350" y="25" text-anchor="middle" class="title">워크인 냉동고 횡단면도 (CROSS SECTION A-A')</text>
+  <text x="350" y="42" text-anchor="middle" class="subtitle">컨테이너 폭 방향 절단 | 듀오메이커 선반 7단 배치 | Scale ≈ 1:20</text>
+
+  <!-- Container shell -->
+  <rect x="50" y="60" width="600" height="430" class="wall-thick"/>
+  <!-- Insulation -->
+  <rect x="65" y="75" width="570" height="400" class="insulation"/>
+  <!-- Inner space -->
+  <rect x="80" y="90" width="540" height="370" fill="#f0f8ff" stroke="#1565c0" stroke-width="1"/>
+
+  <!-- Floor -->
+  <rect x="50" y="460" width="600" height="30" class="floor"/>
+  <text x="350" y="480" text-anchor="middle" class="label-sm">스틸 플로어 + PUR 단열 100mm</text>
+
+  <!-- Ceiling unit cooler -->
+  <rect x="260" y="95" width="180" height="30" fill="#bbdefb" stroke="#1565c0" stroke-width="1.5" rx="5"/>
+  <text x="350" y="114" text-anchor="middle" class="label-sm" fill="#1565c0">유닛쿨러 (증발기)</text>
+  <!-- Cold air arrows -->
+  <path d="M280,130 L280,160" class="cold-air" marker-end="url(#ar)"/>
+  <path d="M350,130 L350,160" class="cold-air" marker-end="url(#ar)"/>
+  <path d="M420,130 L420,160" class="cold-air" marker-end="url(#ar)"/>
+
+  <!-- ===== LEFT SHELF (좌측 벽면 선반) ===== -->
+  <!-- Shelf frame -->
+  <rect x="90" y="130" width="180" height="320" fill="none" stroke="#9e9e9e" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="180" y="148" text-anchor="middle" class="label" fill="#1565c0">좌측 선반</text>
+
+  <!-- 7 shelf levels with duo makers -->
+  <!-- Shelf 1 (bottom) -->
+  <rect x="92" y="405" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="370" width="30" height="35" class="duo-side"/><text x="110" y="393" text-anchor="middle" style="font-size:6px;fill:#1565c0">DUO</text>
+  <rect x="128" y="370" width="30" height="35" class="duo-side"/><text x="143" y="393" text-anchor="middle" style="font-size:6px;fill:#1565c0">DUO</text>
+  <rect x="161" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="194" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="227" y="370" width="30" height="35" class="duo-side"/>
+
+  <!-- Shelf 2 -->
+  <rect x="92" y="360" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="128" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="161" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="194" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="227" y="325" width="30" height="35" class="duo-side"/>
+
+  <!-- Shelf 3 -->
+  <rect x="92" y="315" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="128" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="161" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="194" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="227" y="280" width="30" height="35" class="duo-side"/>
+
+  <!-- Shelf 4 -->
+  <rect x="92" y="270" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="128" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="161" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="194" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="227" y="235" width="30" height="35" class="duo-side"/>
+
+  <!-- Shelf 5 -->
+  <rect x="92" y="225" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="128" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="161" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="194" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="227" y="190" width="30" height="35" class="duo-side"/>
+
+  <!-- Shelf 6 -->
+  <rect x="92" y="180" width="176" height="4" class="shelf-bar"/>
+  <rect x="95" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="128" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="161" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="194" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="227" y="158" width="30" height="22" class="duo-side"/>
+
+  <!-- CENTER AISLE -->
+  <rect x="275" y="130" width="150" height="320" fill="rgba(255,255,255,0.3)" stroke="#bbb" stroke-dasharray="5,3"/>
+  <text x="350" y="300" text-anchor="middle" class="label" fill="#888" transform="rotate(-90,350,300)">작업 통로 600mm</text>
+
+  <!-- ===== RIGHT SHELF (우측 벽면 선반) ===== -->
+  <rect x="430" y="130" width="180" height="320" fill="none" stroke="#9e9e9e" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="520" y="148" text-anchor="middle" class="label" fill="#1565c0">우측 선반</text>
+
+  <!-- 7 shelf levels right side -->
+  <rect x="432" y="405" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="468" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="501" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="534" y="370" width="30" height="35" class="duo-side"/>
+  <rect x="567" y="370" width="30" height="35" class="duo-side"/>
+
+  <rect x="432" y="360" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="468" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="501" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="534" y="325" width="30" height="35" class="duo-side"/>
+  <rect x="567" y="325" width="30" height="35" class="duo-side"/>
+
+  <rect x="432" y="315" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="468" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="501" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="534" y="280" width="30" height="35" class="duo-side"/>
+  <rect x="567" y="280" width="30" height="35" class="duo-side"/>
+
+  <rect x="432" y="270" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="468" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="501" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="534" y="235" width="30" height="35" class="duo-side"/>
+  <rect x="567" y="235" width="30" height="35" class="duo-side"/>
+
+  <rect x="432" y="225" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="468" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="501" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="534" y="190" width="30" height="35" class="duo-side"/>
+  <rect x="567" y="190" width="30" height="35" class="duo-side"/>
+
+  <rect x="432" y="180" width="176" height="4" class="shelf-bar"/>
+  <rect x="435" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="468" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="501" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="534" y="158" width="30" height="22" class="duo-side"/>
+  <rect x="567" y="158" width="30" height="22" class="duo-side"/>
+
+  <!-- Dimension lines - Cross section -->
+  <!-- Total width -->
+  <line x1="50" y1="510" x2="650" y2="510" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="350" y="525" text-anchor="middle" class="dim">2,438 mm (외부 폭)</text>
+
+  <!-- Inner width -->
+  <line x1="80" y1="535" x2="620" y2="535" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="350" y="550" text-anchor="middle" class="dim">2,152 mm (냉동고 내부 유효 폭 — 단열재 제외)</text>
+
+  <!-- Shelf depth -->
+  <line x1="90" y1="425" x2="270" y2="425" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="180" y="438" text-anchor="middle" class="dim">선반 깊이 450mm</text>
+
+  <!-- Aisle -->
+  <line x1="275" y1="425" x2="425" y2="425" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="350" y="438" text-anchor="middle" class="dim">통로 600mm</text>
+
+  <!-- Height -->
+  <line x1="30" y1="60" x2="30" y2="490" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="20" y="280" text-anchor="middle" class="dim" transform="rotate(-90,20,280)">2,591 mm (외부 높이)</text>
+
+  <!-- Shelf spacing -->
+  <line x1="660" y1="405" x2="660" y2="360" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="695" y="385" text-anchor="middle" class="dim">250mm</text>
+  <text x="695" y="395" text-anchor="middle" class="dim">(단 간격)</text>
+
+
+  <!-- ========== SECTION 2: 듀오메이커 상세 확대도 ========== -->
+  <text x="1050" y="25" text-anchor="middle" class="title">듀오메이커 선반 배치 상세도</text>
+  <text x="1050" y="42" text-anchor="middle" class="subtitle">1단 선반 평면 (위에서 본) | Scale ≈ 1:5</text>
+
+  <!-- Shelf top view -->
+  <rect x="770" y="70" width="560" height="200" fill="#f5f5f5" stroke="#9e9e9e" stroke-width="2"/>
+  <text x="1050" y="90" text-anchor="middle" class="label">1단 선반 평면도 (벽면 1면) — 2열 × 11개 = 22개</text>
+
+  <!-- Row labels -->
+  <text x="790" y="130" class="label-sm" fill="#1565c0">전열 (Front)</text>
+  <text x="790" y="210" class="label-sm" fill="#1565c0">후열 (Back)</text>
+
+  <!-- Front row: 11 duo makers -->
+  <g transform="translate(855,105)">
+    <rect x="0" y="0" width="38" height="22" class="duo-detail"/><text x="19" y="15" text-anchor="middle" style="font-size:7px;fill:#1565c0">182</text>
+    <rect x="42" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="84" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="126" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="168" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="210" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="252" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="294" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="336" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="378" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="420" y="0" width="38" height="22" class="duo-detail"/>
+  </g>
+
+  <!-- Back row: 11 duo makers -->
+  <g transform="translate(855,185)">
+    <rect x="0" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="42" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="84" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="126" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="168" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="210" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="252" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="294" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="336" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="378" y="0" width="38" height="22" class="duo-detail"/>
+    <rect x="420" y="0" width="38" height="22" class="duo-detail"/>
+  </g>
+
+  <!-- Dimensions for shelf detail -->
+  <line x1="855" y1="145" x2="893" y2="145" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="874" y="155" text-anchor="middle" class="dim">182mm</text>
+
+  <line x1="855" y1="100" x2="855" y2="135" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="840" y="120" text-anchor="middle" class="dim" transform="rotate(-90,840,120)">105mm</text>
+
+  <!-- Total shelf length -->
+  <line x1="855" y1="85" x2="1313" y2="85" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1084" y="80" text-anchor="middle" class="dim">11개 × 182mm + 간격 = ~2,100mm (벽면 유효 길이)</text>
+
+  <!-- Shelf depth -->
+  <line x1="1340" y1="105" x2="1340" y2="207" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1370" y="160" text-anchor="middle" class="dim" transform="rotate(90,1370,160)">선반 깊이 450mm (2열)</text>
+
+  <!-- ========== SECTION 3: 듀오메이커 제품 상세 ========== -->
+  <text x="1050" y="310" text-anchor="middle" class="title">듀오메이커 제품 치수 상세</text>
+
+  <!-- Duo Maker front view -->
+  <rect x="850" y="340" width="150" height="120" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="8"/>
+  <!-- Handle -->
+  <rect x="895" y="330" width="60" height="15" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="5"/>
+  <!-- Ribs -->
+  <line x1="860" y1="360" x2="860" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="870" y1="360" x2="870" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="880" y1="360" x2="880" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="890" y1="360" x2="890" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="960" y1="360" x2="960" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="970" y1="360" x2="970" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="980" y1="360" x2="980" y2="455" stroke="#90caf9" stroke-width="1"/>
+  <line x1="990" y1="360" x2="990" y2="455" stroke="#90caf9" stroke-width="1"/>
+
+  <!-- Duo maker dimensions -->
+  <line x1="850" y1="475" x2="1000" y2="475" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="925" y="490" text-anchor="middle" class="dim">W 181.6 mm</text>
+
+  <line x1="1020" y1="340" x2="1020" y2="460" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1055" y="390" text-anchor="middle" class="dim">H 143.2mm</text>
+  <text x="1055" y="402" text-anchor="middle" class="dim">(본체)</text>
+
+  <line x1="1080" y1="330" x2="1080" y2="460" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1120" y="390" text-anchor="middle" class="dim">H 170mm</text>
+  <text x="1120" y="402" text-anchor="middle" class="dim">(손잡이포함)</text>
+
+  <!-- Side view -->
+  <rect x="1170" y="340" width="88" height="120" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="5"/>
+  <rect x="1190" y="330" width="48" height="15" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="5"/>
+  <text x="1214" y="410" text-anchor="middle" class="label-sm" fill="#1565c0">측면</text>
+
+  <line x1="1170" y1="475" x2="1258" y2="475" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1214" y="490" text-anchor="middle" class="dim">D 105.0 mm</text>
+
+  <!-- ========== SECTION 4: 아블러 텀블러 상세 ========== -->
+  <text x="1050" y="530" text-anchor="middle" class="title">아블러 텀블러 치수 상세</text>
+
+  <!-- Tumbler front view -->
+  <rect x="900" y="560" width="62" height="95" fill="#f5f5f5" stroke="#777" stroke-width="2" rx="5"/>
+  <!-- Cap -->
+  <rect x="893" y="550" width="76" height="18" fill="#eee" stroke="#777" stroke-width="2" rx="8"/>
+  <circle cx="931" cy="548" r="7" fill="#eee" stroke="#777" stroke-width="1.5"/>
+  <text x="931" y="615" text-anchor="middle" class="label-sm">abler</text>
+
+  <!-- Tumbler dimensions -->
+  <line x1="900" y1="670" x2="962" y2="670" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="931" y="685" text-anchor="middle" class="dim">W 75.0 mm</text>
+
+  <line x1="978" y1="560" x2="978" y2="655" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1010" y="600" text-anchor="middle" class="dim">H 114mm</text>
+  <text x="1010" y="612" text-anchor="middle" class="dim">(본체)</text>
+
+  <line x1="1040" y1="548" x2="1040" y2="655" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="1075" y="600" text-anchor="middle" class="dim">H 150mm</text>
+  <text x="1075" y="612" text-anchor="middle" class="dim">(뚜껑포함)</text>
+
+  <!-- Diameter -->
+  <line x1="893" y1="700" x2="969" y2="700" stroke="#d32f2f" stroke-width="1" marker-start="url(#al)" marker-end="url(#ar)"/>
+  <text x="931" y="715" text-anchor="middle" class="dim">Ø 87.0 mm (뚜껑)</text>
+
+  <!-- Capacity -->
+  <text x="931" y="735" text-anchor="middle" class="label-sm" fill="#1565c0">용량: ~355ml</text>
+
+  <!-- Info box -->
+  <rect x="1140" y="560" width="220" height="140" fill="#f5f5f5" stroke="#999" rx="5"/>
+  <text x="1250" y="580" text-anchor="middle" class="label">선반 배치 요약</text>
+  <text x="1155" y="600" class="label-sm">• MIF-20: 양벽 선반 7단</text>
+  <text x="1155" y="616" class="label-sm">  → 2열×11개×7단×2면 = 308 (가용96)</text>
+  <text x="1155" y="632" class="label-sm">• MIF-40: 양벽+중앙 선반 7단</text>
+  <text x="1155" y="648" class="label-sm">  → 확장 배치 = 가용 144개</text>
+  <text x="1155" y="668" class="label-sm">• 단 간격: 250mm</text>
+  <text x="1155" y="684" class="label-sm">• 선반 깊이: 450mm (2열)</text>
+  <text x="1155" y="700" class="label-sm">• 통로: 600mm (작업자 이동)</text>
+
+  <text x="1350" y="745" text-anchor="end" class="label-sm" fill="#999">© 2026 MasterMinding Group — Section &amp; Detail v1.0</text>
+</svg>
+
+  </div>
+  <div id="svg_3" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+    <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 550" width="1200" height="550">
+  <defs>
+    <style>
+      text { font-family: 'Malgun Gothic', Arial, sans-serif; }
+      .title { font-size: 16px; font-weight: bold; fill: #1a1a1a; }
+      .subtitle { font-size: 11px; fill: #444; }
+      .dim { font-size: 9px; fill: #d32f2f; }
+      .label-sm { font-size: 9px; fill: #555; }
+      .label { font-size: 10px; fill: #1a1a1a; font-weight: bold; }
+    </style>
+    <marker id="aR" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <polygon points="0,0 6,2.5 0,5" fill="#d32f2f"/>
+    </marker>
+    <marker id="aL" markerWidth="6" markerHeight="5" refX="0" refY="2.5" orient="auto">
+      <polygon points="6,0 0,2.5 6,5" fill="#d32f2f"/>
+    </marker>
+  </defs>
+
+  <text x="600" y="25" text-anchor="middle" class="title">MIF-20 종단면도 (LONGITUDINAL SECTION B-B')</text>
+  <text x="600" y="42" text-anchor="middle" class="subtitle">컨테이너 길이 방향 중앙 절단 | 장비 배치 높이 관계 | Scale ≈ 1:50</text>
+
+  <!-- Container shell -->
+  <rect x="60" y="60" width="1080" height="380" fill="#f9f9f9" stroke="#333" stroke-width="3" rx="2"/>
+  <!-- Floor -->
+  <rect x="60" y="410" width="1080" height="30" fill="#e0e0e0" stroke="#666"/>
+
+  <!-- ===== ZONE A: 냉동기실 ===== -->
+  <rect x="65" y="65" width="110" height="340" fill="#fce4ec" stroke="#c62828" stroke-width="1"/>
+  <text x="120" y="85" text-anchor="middle" class="label" fill="#c62828">A 냉동기실</text>
+
+  <!-- Compressor -->
+  <rect x="75" y="280" width="90" height="70" fill="#ffcdd2" stroke="#c62828" rx="3"/>
+  <text x="120" y="310" text-anchor="middle" class="label-sm">컴프레서</text>
+  <text x="120" y="322" text-anchor="middle" class="label-sm">1HP</text>
+  <!-- Condenser (top) -->
+  <rect x="75" y="100" width="90" height="50" fill="#ffcdd2" stroke="#c62828" rx="3"/>
+  <text x="120" y="128" text-anchor="middle" class="label-sm">콘덴서</text>
+  <!-- Vent -->
+  <rect x="75" y="65" width="30" height="30" fill="none" stroke="#c62828" stroke-width="1.5"/>
+  <text x="90" y="83" text-anchor="middle" style="font-size:7px;fill:#c62828">환기</text>
+  <!-- Electric -->
+  <rect x="75" y="360" width="90" height="45" fill="#fff9c4" stroke="#f9a825" rx="3"/>
+  <text x="120" y="387" text-anchor="middle" class="label-sm">전기패널</text>
+
+  <!-- Partition wall -->
+  <rect x="175" y="65" width="8" height="340" fill="#bdbdbd" stroke="#666"/>
+
+  <!-- ===== ZONE B: 워크인 냉동고 ===== -->
+  <rect x="183" y="65" width="440" height="340" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="403" y="85" text-anchor="middle" class="label" fill="#1565c0">B 워크인 냉동고 (-18℃)</text>
+
+  <!-- Insulation indicator -->
+  <rect x="183" y="65" width="10" height="340" fill="#fff9c4" opacity="0.5"/>
+  <rect x="613" y="65" width="10" height="340" fill="#fff9c4" opacity="0.5"/>
+  <rect x="183" y="65" width="440" height="10" fill="#fff9c4" opacity="0.5"/>
+
+  <!-- Shelves (side view - 7 tiers) -->
+  <g>
+    <!-- Shelf supports -->
+    <rect x="200" y="370" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="325" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="280" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="235" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="190" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="145" width="410" height="3" fill="#9e9e9e"/>
+    <rect x="200" y="100" width="410" height="3" fill="#9e9e9e"/>
+
+    <!-- Duo makers on shelves (side view) -->
+    <g fill="#bbdefb" stroke="#1565c0" stroke-width="0.8">
+      <!-- Tier 1 -->
+      <rect x="205" y="340" width="18" height="28" rx="2"/><rect x="226" y="340" width="18" height="28" rx="2"/>
+      <rect x="247" y="340" width="18" height="28" rx="2"/><rect x="268" y="340" width="18" height="28" rx="2"/>
+      <rect x="289" y="340" width="18" height="28" rx="2"/><rect x="310" y="340" width="18" height="28" rx="2"/>
+      <rect x="331" y="340" width="18" height="28" rx="2"/><rect x="352" y="340" width="18" height="28" rx="2"/>
+      <rect x="373" y="340" width="18" height="28" rx="2"/><rect x="394" y="340" width="18" height="28" rx="2"/>
+      <rect x="415" y="340" width="18" height="28" rx="2"/>
+      <!-- Tier 2 -->
+      <rect x="205" y="295" width="18" height="28" rx="2"/><rect x="226" y="295" width="18" height="28" rx="2"/>
+      <rect x="247" y="295" width="18" height="28" rx="2"/><rect x="268" y="295" width="18" height="28" rx="2"/>
+      <rect x="289" y="295" width="18" height="28" rx="2"/><rect x="310" y="295" width="18" height="28" rx="2"/>
+      <rect x="331" y="295" width="18" height="28" rx="2"/><rect x="352" y="295" width="18" height="28" rx="2"/>
+      <rect x="373" y="295" width="18" height="28" rx="2"/><rect x="394" y="295" width="18" height="28" rx="2"/>
+      <rect x="415" y="295" width="18" height="28" rx="2"/>
+      <!-- Tier 3 -->
+      <rect x="205" y="250" width="18" height="28" rx="2"/><rect x="226" y="250" width="18" height="28" rx="2"/>
+      <rect x="247" y="250" width="18" height="28" rx="2"/><rect x="268" y="250" width="18" height="28" rx="2"/>
+      <rect x="289" y="250" width="18" height="28" rx="2"/><rect x="310" y="250" width="18" height="28" rx="2"/>
+      <rect x="331" y="250" width="18" height="28" rx="2"/><rect x="352" y="250" width="18" height="28" rx="2"/>
+      <rect x="373" y="250" width="18" height="28" rx="2"/><rect x="394" y="250" width="18" height="28" rx="2"/>
+      <rect x="415" y="250" width="18" height="28" rx="2"/>
+      <!-- Tier 4 -->
+      <rect x="205" y="205" width="18" height="28" rx="2"/><rect x="226" y="205" width="18" height="28" rx="2"/>
+      <rect x="247" y="205" width="18" height="28" rx="2"/><rect x="268" y="205" width="18" height="28" rx="2"/>
+      <rect x="289" y="205" width="18" height="28" rx="2"/><rect x="310" y="205" width="18" height="28" rx="2"/>
+      <rect x="331" y="205" width="18" height="28" rx="2"/>
+      <!-- Tier 5-6 abbreviated -->
+      <rect x="205" y="160" width="18" height="28" rx="2"/><rect x="226" y="160" width="18" height="28" rx="2"/>
+      <rect x="247" y="160" width="18" height="28" rx="2"/><rect x="268" y="160" width="18" height="28" rx="2"/>
+      <rect x="205" y="115" width="18" height="28" rx="2"/><rect x="226" y="115" width="18" height="28" rx="2"/>
+      <rect x="247" y="115" width="18" height="28" rx="2"/>
+    </g>
+  </g>
+
+  <!-- Unit cooler (ceiling) -->
+  <rect x="310" y="70" width="150" height="25" fill="#64b5f6" stroke="#1565c0" stroke-width="1.5" rx="5"/>
+  <text x="385" y="87" text-anchor="middle" class="label-sm" fill="white">유닛쿨러</text>
+
+  <!-- Cold air flow -->
+  <path d="M340,97 C340,120 320,130 320,160" fill="none" stroke="#42a5f5" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#aR)"/>
+  <path d="M400,97 C400,120 400,130 400,160" fill="none" stroke="#42a5f5" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#aR)"/>
+  <text x="460" y="130" class="label-sm" fill="#42a5f5">냉기 순환</text>
+
+  <!-- Partition wall -->
+  <rect x="623" y="65" width="8" height="340" fill="#bdbdbd" stroke="#666"/>
+
+  <!-- ===== ZONE C: 가공·포장실 ===== -->
+  <rect x="631" y="65" width="256" height="340" fill="#fff3e0" stroke="#e65100" stroke-width="1"/>
+  <text x="759" y="85" text-anchor="middle" class="label" fill="#e65100">C 가공·포장실</text>
+
+  <!-- Work table -->
+  <rect x="645" y="310" width="230" height="50" fill="#ffe0b2" stroke="#e65100" rx="3"/>
+  <text x="760" y="337" text-anchor="middle" class="label-sm">작업대 H850mm</text>
+
+  <!-- Laser -->
+  <rect x="645" y="200" width="100" height="80" fill="#fff9c4" stroke="#f9a825" rx="3"/>
+  <text x="695" y="238" text-anchor="middle" class="label-sm">레이저</text>
+  <text x="695" y="250" text-anchor="middle" class="label-sm">각인기</text>
+
+  <!-- Fridge -->
+  <rect x="765" y="120" width="110" height="160" fill="#e8eaf6" stroke="#5c6bc0" rx="3"/>
+  <text x="820" y="195" text-anchor="middle" class="label-sm">보관</text>
+  <text x="820" y="207" text-anchor="middle" class="label-sm">냉장고</text>
+  <text x="820" y="219" text-anchor="middle" class="label-sm">H1,800</text>
+
+  <!-- LED lighting -->
+  <rect x="645" y="70" width="230" height="8" fill="#fff176" stroke="#f9a825" rx="2"/>
+  <text x="760" y="95" text-anchor="middle" class="label-sm" fill="#f9a825">LED 조명 (위생등급)</text>
+
+  <!-- Partition wall -->
+  <rect x="887" y="65" width="8" height="340" fill="#bdbdbd" stroke="#666"/>
+
+  <!-- ===== ZONE D: 서비스·판매 ===== -->
+  <rect x="895" y="65" width="240" height="340" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="1015" y="85" text-anchor="middle" class="label" fill="#2e7d32">D 서비스·판매</text>
+
+  <!-- Robot barista -->
+  <rect x="910" y="200" width="80" height="130" fill="#c8e6c9" stroke="#388e3c" rx="5"/>
+  <text x="950" y="260" text-anchor="middle" class="label-sm" fill="#2e7d32">로봇</text>
+  <text x="950" y="272" text-anchor="middle" class="label-sm" fill="#2e7d32">바리스타</text>
+  <text x="950" y="284" text-anchor="middle" class="label-sm" fill="#2e7d32">H1,500</text>
+
+  <!-- Kiosk -->
+  <rect x="1010" y="130" width="60" height="130" fill="#a5d6a7" stroke="#388e3c" rx="3"/>
+  <text x="1040" y="193" text-anchor="middle" class="label-sm" fill="#2e7d32">키오스크</text>
+  <text x="1040" y="205" text-anchor="middle" class="label-sm" fill="#2e7d32">H1,700</text>
+
+  <!-- Service window -->
+  <rect x="1095" y="250" width="35" height="80" fill="#66bb6a" stroke="#2e7d32" stroke-width="2" rx="3"/>
+  <text x="1112" y="295" text-anchor="middle" style="font-size:7px;fill:white" transform="rotate(-90,1112,295)">서비스창</text>
+
+  <!-- Tumbler shelf -->
+  <rect x="910" y="350" width="210" height="50" fill="#e8eaf6" stroke="#5c6bc0" rx="3"/>
+  <text x="1015" y="378" text-anchor="middle" class="label-sm">아블러 텀블러 보관 (Ø87 × H150)</text>
+
+  <!-- ===== DIMENSION LINES ===== -->
+  <!-- Total length -->
+  <line x1="60" y1="465" x2="1140" y2="465" stroke="#d32f2f" stroke-width="1" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="600" y="480" text-anchor="middle" class="dim">5,898 mm (내부)</text>
+
+  <!-- Zone lengths -->
+  <line x1="65" y1="450" x2="175" y2="450" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="120" y="448" text-anchor="middle" class="dim">600</text>
+  <line x1="183" y1="450" x2="623" y2="450" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="403" y="448" text-anchor="middle" class="dim">2,400</text>
+  <line x1="631" y1="450" x2="887" y2="450" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="759" y="448" text-anchor="middle" class="dim">1,400</text>
+  <line x1="895" y1="450" x2="1135" y2="450" stroke="#d32f2f" stroke-width="0.8" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="1015" y="448" text-anchor="middle" class="dim">1,498</text>
+
+  <!-- Height -->
+  <line x1="40" y1="60" x2="40" y2="440" stroke="#d32f2f" stroke-width="1" marker-start="url(#aL)" marker-end="url(#aR)"/>
+  <text x="25" y="255" text-anchor="middle" class="dim" transform="rotate(-90,25,255)">2,591 mm (외부높이)</text>
+
+  <!-- Work height reference -->
+  <line x1="631" y1="310" x2="895" y2="310" stroke="#888" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <text x="760" y="305" text-anchor="middle" class="label-sm" fill="#888">작업대 높이 H850mm</text>
+
+  <text x="1130" y="530" text-anchor="end" class="label-sm" fill="#999">© 2026 MasterMinding Group — MIF-20 Longitudinal Section v1.0</text>
+</svg>
+
+  </div>
+  <div id="svg_4" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+    <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800">
+  <defs>
+    <style>
+      text { font-family: 'Malgun Gothic', Arial, sans-serif; }
+      .title { font-size: 18px; font-weight: bold; fill: #1a1a1a; }
+      .subtitle { font-size: 11px; fill: #444; }
+      .box-title { font-size: 11px; font-weight: bold; fill: white; }
+      .box-text { font-size: 9px; fill: #333; }
+      .flow-line { fill: none; stroke-width: 2; }
+      .label-sm { font-size: 9px; fill: #555; }
+    </style>
+    <marker id="fArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#666"/>
+    </marker>
+    <marker id="fArrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#1565c0"/>
+    </marker>
+    <marker id="fArrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#2e7d32"/>
+    </marker>
+    <marker id="fArrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#e65100"/>
+    </marker>
+  </defs>
+
+  <text x="700" y="30" text-anchor="middle" class="title">마이크로 아이스팩토리 — 통합 시스템 구성도</text>
+  <text x="700" y="50" text-anchor="middle" class="subtitle">전력 · 급수 · 냉동 · 제빙 · AI · 서비스 연동 다이어그램</text>
+
+  <!-- ===== ROW 1: 인프라 레이어 ===== -->
+  <text x="30" y="90" class="label-sm" fill="#888" font-weight="bold">INFRA</text>
+
+  <!-- 전력 -->
+  <rect x="80" y="70" width="180" height="80" fill="#fff3e0" stroke="#e65100" stroke-width="2" rx="8"/>
+  <rect x="80" y="70" width="180" height="22" fill="#e65100" rx="8"/>
+  <rect x="80" y="80" width="180" height="12" fill="#e65100"/>
+  <text x="170" y="86" text-anchor="middle" class="box-title">전력 시스템</text>
+  <text x="170" y="108" text-anchor="middle" class="box-text">3상 380V / 단상 220V</text>
+  <text x="170" y="121" text-anchor="middle" class="box-text">총 소비전력: 8~12kW</text>
+  <text x="170" y="134" text-anchor="middle" class="box-text">태양광 ESS (Add-on)</text>
+
+  <!-- 급수 -->
+  <rect x="300" y="70" width="180" height="80" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="8"/>
+  <rect x="300" y="70" width="180" height="22" fill="#1565c0" rx="8"/>
+  <rect x="300" y="80" width="180" height="12" fill="#1565c0"/>
+  <text x="390" y="86" text-anchor="middle" class="box-title">급수 시스템</text>
+  <text x="390" y="108" text-anchor="middle" class="box-text">상수도 직결 / 탱크 겸용</text>
+  <text x="390" y="121" text-anchor="middle" class="box-text">정수 필터 (5단계)</text>
+  <text x="390" y="134" text-anchor="middle" class="box-text">프리미엄 워터 전환 가능</text>
+
+  <!-- 배수 -->
+  <rect x="520" y="70" width="180" height="80" fill="#e0f7fa" stroke="#00838f" stroke-width="2" rx="8"/>
+  <rect x="520" y="70" width="180" height="22" fill="#00838f" rx="8"/>
+  <rect x="520" y="80" width="180" height="12" fill="#00838f"/>
+  <text x="610" y="86" text-anchor="middle" class="box-title">배수 시스템</text>
+  <text x="610" y="108" text-anchor="middle" class="box-text">제상수 배수 (자동)</text>
+  <text x="610" y="121" text-anchor="middle" class="box-text">싱크대 · 세척기 배수</text>
+  <text x="610" y="134" text-anchor="middle" class="box-text">폐수 0% (100% 활용)</text>
+
+  <!-- 통신 -->
+  <rect x="740" y="70" width="180" height="80" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2" rx="8"/>
+  <rect x="740" y="70" width="180" height="22" fill="#6a1b9a" rx="8"/>
+  <rect x="740" y="80" width="180" height="12" fill="#6a1b9a"/>
+  <text x="830" y="86" text-anchor="middle" class="box-title">통신 시스템</text>
+  <text x="830" y="108" text-anchor="middle" class="box-text">5G / WiFi 듀얼</text>
+  <text x="830" y="121" text-anchor="middle" class="box-text">IoT 센서 게이트웨이</text>
+  <text x="830" y="134" text-anchor="middle" class="box-text">클라우드 연동 (AWS/GCP)</text>
+
+  <!-- ===== ROW 2: 냉동·제빙 레이어 ===== -->
+  <text x="30" y="210" class="label-sm" fill="#888" font-weight="bold">COOLING</text>
+
+  <!-- 냉동 시스템 -->
+  <rect x="80" y="190" width="250" height="110" fill="#e8eaf6" stroke="#283593" stroke-width="2" rx="8"/>
+  <rect x="80" y="190" width="250" height="22" fill="#283593" rx="8"/>
+  <rect x="80" y="200" width="250" height="12" fill="#283593"/>
+  <text x="205" y="206" text-anchor="middle" class="box-title">냉동 시스템 (Zone A)</text>
+  <text x="205" y="228" text-anchor="middle" class="box-text">컴프레서: 1HP (MIF-20) / 2HP (MIF-40)</text>
+  <text x="205" y="241" text-anchor="middle" class="box-text">냉매: R-404A (친환경 전환 예정)</text>
+  <text x="205" y="254" text-anchor="middle" class="box-text">응축기 + 팽창밸브 + 증발기</text>
+  <text x="205" y="267" text-anchor="middle" class="box-text">설정 온도: -18℃ ~ -22℃</text>
+  <text x="205" y="280" text-anchor="middle" class="box-text">제상: 전기 히터 자동 제상 (6h 주기)</text>
+
+  <!-- 워크인 냉동고 -->
+  <rect x="380" y="190" width="300" height="110" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="8"/>
+  <rect x="380" y="190" width="300" height="22" fill="#1565c0" rx="8"/>
+  <rect x="380" y="200" width="300" height="12" fill="#1565c0"/>
+  <text x="530" y="206" text-anchor="middle" class="box-title">워크인 냉동고 (Zone B)</text>
+  <text x="530" y="228" text-anchor="middle" class="box-text">단열: PUR 폼 100mm (벽·천장·바닥)</text>
+  <text x="530" y="241" text-anchor="middle" class="box-text">도어: 슬라이딩 단열도어 W900×H1900</text>
+  <text x="530" y="254" text-anchor="middle" class="box-text">선반: 스테인리스 7단 × 양벽 (450mm 깊이)</text>
+  <text x="530" y="267" text-anchor="middle" class="box-text">듀오메이커: 96개 (MIF-20) / 144개 (MIF-40)</text>
+  <text x="530" y="280" text-anchor="middle" class="box-text">제빙시간: 12~18시간 (디렉셔널 프리징)</text>
+
+  <!-- Flow: 냉동 → 냉동고 -->
+  <line x1="330" y1="245" x2="378" y2="245" stroke="#283593" stroke-width="2" marker-end="url(#fArrowBlue)"/>
+  <text x="354" y="238" text-anchor="middle" class="label-sm" fill="#283593">냉매</text>
+
+  <!-- ===== ROW 3: 가공·서비스 레이어 ===== -->
+  <text x="30" y="360" class="label-sm" fill="#888" font-weight="bold">PROCESS</text>
+
+  <!-- 탈형·가공 -->
+  <rect x="80" y="340" width="200" height="100" fill="#fff3e0" stroke="#e65100" stroke-width="2" rx="8"/>
+  <rect x="80" y="340" width="200" height="22" fill="#e65100" rx="8"/>
+  <rect x="80" y="350" width="200" height="12" fill="#e65100"/>
+  <text x="180" y="356" text-anchor="middle" class="box-title">탈형 · 가공 (Zone C)</text>
+  <text x="180" y="378" text-anchor="middle" class="box-text">듀오메이커에서 얼음 탈형</text>
+  <text x="180" y="391" text-anchor="middle" class="box-text">아이스볼 Ø65mm</text>
+  <text x="180" y="404" text-anchor="middle" class="box-text">아이스스틱 (스틱형)</text>
+  <text x="180" y="417" text-anchor="middle" class="box-text">작업대: 스테인리스 H850</text>
+
+  <!-- 각인·포장 -->
+  <rect x="320" y="340" width="200" height="100" fill="#fff9c4" stroke="#f9a825" stroke-width="2" rx="8"/>
+  <rect x="320" y="340" width="200" height="22" fill="#f9a825" rx="8"/>
+  <rect x="320" y="350" width="200" height="12" fill="#f9a825"/>
+  <text x="420" y="356" text-anchor="middle" class="box-title">각인 · 포장 (Zone C)</text>
+  <text x="420" y="378" text-anchor="middle" class="box-text">레이저 각인기 (브랜드 로고)</text>
+  <text x="420" y="391" text-anchor="middle" class="box-text">에코 패키징 (생분해)</text>
+  <text x="420" y="404" text-anchor="middle" class="box-text">QC 품질 검사</text>
+  <text x="420" y="417" text-anchor="middle" class="box-text">완제품 냉장 보관</text>
+
+  <!-- 서비스 -->
+  <rect x="560" y="340" width="220" height="100" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" rx="8"/>
+  <rect x="560" y="340" width="220" height="22" fill="#2e7d32" rx="8"/>
+  <rect x="560" y="350" width="220" height="12" fill="#2e7d32"/>
+  <text x="670" y="356" text-anchor="middle" class="box-title">서비스 · 판매 (Zone D)</text>
+  <text x="670" y="378" text-anchor="middle" class="box-text">로봇 바리스타 (자동 음료 제조)</text>
+  <text x="670" y="391" text-anchor="middle" class="box-text">무인 키오스크 (주문 · 결제)</text>
+  <text x="670" y="404" text-anchor="middle" class="box-text">얼음 디스플레이 쇼케이스</text>
+  <text x="670" y="417" text-anchor="middle" class="box-text">아블러 텀블러 제공 (BYI 순환)</text>
+
+  <!-- BYI 순환 -->
+  <rect x="820" y="340" width="180" height="100" fill="#e8eaf6" stroke="#5c6bc0" stroke-width="2" rx="8"/>
+  <rect x="820" y="340" width="180" height="22" fill="#5c6bc0" rx="8"/>
+  <rect x="820" y="350" width="180" height="12" fill="#5c6bc0"/>
+  <text x="910" y="356" text-anchor="middle" class="box-title">BYI 순환 (Zone E)</text>
+  <text x="910" y="378" text-anchor="middle" class="box-text">아블러 텀블러 보관 (500개)</text>
+  <text x="910" y="391" text-anchor="middle" class="box-text">세척기 (자동 살균)</text>
+  <text x="910" y="404" text-anchor="middle" class="box-text">보증금 + 리워드 시스템</text>
+  <text x="910" y="417" text-anchor="middle" class="box-text">회수율 85% 목표</text>
+
+  <!-- Process flow arrows -->
+  <line x1="530" y1="270" x2="530" y2="338" stroke="#1565c0" stroke-width="2" marker-end="url(#fArrowBlue)"/>
+  <text x="540" y="310" class="label-sm" fill="#1565c0">얼음 인출</text>
+
+  <line x1="280" y1="390" x2="318" y2="390" stroke="#e65100" stroke-width="2" marker-end="url(#fArrowOrange)"/>
+  <line x1="520" y1="390" x2="558" y2="390" stroke="#2e7d32" stroke-width="2" marker-end="url(#fArrowGreen)"/>
+  <line x1="780" y1="390" x2="818" y2="390" stroke="#5c6bc0" stroke-width="2" marker-end="url(#fArrow)"/>
+
+  <!-- ===== ROW 4: AI · IoT 레이어 ===== -->
+  <text x="30" y="510" class="label-sm" fill="#888" font-weight="bold">AI / IoT</text>
+
+  <!-- IoT 센서 -->
+  <rect x="80" y="490" width="200" height="90" fill="#fce4ec" stroke="#c62828" stroke-width="2" rx="8"/>
+  <rect x="80" y="490" width="200" height="22" fill="#c62828" rx="8"/>
+  <rect x="80" y="500" width="200" height="12" fill="#c62828"/>
+  <text x="180" y="506" text-anchor="middle" class="box-title">IoT 센서 네트워크</text>
+  <text x="180" y="528" text-anchor="middle" class="box-text">온도 센서 (냉동고 내부 4점)</text>
+  <text x="180" y="541" text-anchor="middle" class="box-text">습도 센서 · 냉매 압력 센서</text>
+  <text x="180" y="554" text-anchor="middle" class="box-text">전력 미터 · 수질 센서</text>
+  <text x="180" y="567" text-anchor="middle" class="box-text">도어 개폐 센서 · 진동 센서</text>
+
+  <!-- AI 엔진 -->
+  <rect x="330" y="490" width="250" height="90" fill="#ede7f6" stroke="#4527a0" stroke-width="2" rx="8"/>
+  <rect x="330" y="490" width="250" height="22" fill="#4527a0" rx="8"/>
+  <rect x="330" y="500" width="250" height="12" fill="#4527a0"/>
+  <text x="455" y="506" text-anchor="middle" class="box-title">AI 엔진 (클라우드)</text>
+  <text x="455" y="528" text-anchor="middle" class="box-text">수요예측: POS + 기상 + 행사 딥러닝</text>
+  <text x="455" y="541" text-anchor="middle" class="box-text">예지보전: 설비 이상 패턴 감지</text>
+  <text x="455" y="554" text-anchor="middle" class="box-text">에너지 최적화: JIT 생산 스케줄링</text>
+  <text x="455" y="567" text-anchor="middle" class="box-text">ESG 자동 리포팅 (ISO 14064-1)</text>
+
+  <!-- 관제 대시보드 -->
+  <rect x="630" y="490" width="220" height="90" fill="#e0f2f1" stroke="#00695c" stroke-width="2" rx="8"/>
+  <rect x="630" y="490" width="220" height="22" fill="#00695c" rx="8"/>
+  <rect x="630" y="500" width="220" height="12" fill="#00695c"/>
+  <text x="740" y="506" text-anchor="middle" class="box-title">AI 관제 대시보드 (UX/UI)</text>
+  <text x="740" y="528" text-anchor="middle" class="box-text">실시간 모니터링 (전유닛)</text>
+  <text x="740" y="541" text-anchor="middle" class="box-text">수요예측 + 생산 스케줄 뷰</text>
+  <text x="740" y="554" text-anchor="middle" class="box-text">예지보전 알림 + 이력</text>
+  <text x="740" y="567" text-anchor="middle" class="box-text">ESG 탄소 감축 리포트 뷰</text>
+
+  <!-- Flow arrows IoT -->
+  <line x1="280" y1="535" x2="328" y2="535" stroke="#c62828" stroke-width="2" marker-end="url(#fArrow)"/>
+  <text x="304" y="528" text-anchor="middle" class="label-sm" fill="#c62828">DATA</text>
+  <line x1="580" y1="535" x2="628" y2="535" stroke="#4527a0" stroke-width="2" marker-end="url(#fArrow)"/>
+  <text x="604" y="528" text-anchor="middle" class="label-sm" fill="#4527a0">분석</text>
+
+  <!-- ===== ROW 5: 고객·비즈니스 레이어 ===== -->
+  <text x="30" y="650" class="label-sm" fill="#888" font-weight="bold">BUSINESS</text>
+
+  <!-- B2B 납품 -->
+  <rect x="80" y="630" width="200" height="80" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" rx="8"/>
+  <rect x="80" y="630" width="200" height="22" fill="#2e7d32" rx="8"/>
+  <rect x="80" y="640" width="200" height="12" fill="#2e7d32"/>
+  <text x="180" y="646" text-anchor="middle" class="box-title">B2B 구독 납품</text>
+  <text x="180" y="668" text-anchor="middle" class="box-text">카페 · 바 · 레스토랑 · 호텔</text>
+  <text x="180" y="681" text-anchor="middle" class="box-text">주간 정기 BOX 납품</text>
+  <text x="180" y="694" text-anchor="middle" class="box-text">고정 80% + 가변 20%</text>
+
+  <!-- B2C 키오스크 -->
+  <rect x="320" y="630" width="200" height="80" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="8"/>
+  <rect x="320" y="630" width="200" height="22" fill="#1565c0" rx="8"/>
+  <rect x="320" y="640" width="200" height="12" fill="#1565c0"/>
+  <text x="420" y="646" text-anchor="middle" class="box-title">B2C 무인 판매</text>
+  <text x="420" y="668" text-anchor="middle" class="box-text">키오스크 직접 구매</text>
+  <text x="420" y="681" text-anchor="middle" class="box-text">로봇 바리스타 음료</text>
+  <text x="420" y="694" text-anchor="middle" class="box-text">BYI 텀블러 순환</text>
+
+  <!-- ESG -->
+  <rect x="560" y="630" width="200" height="80" fill="#fce4ec" stroke="#c62828" stroke-width="2" rx="8"/>
+  <rect x="560" y="630" width="200" height="22" fill="#c62828" rx="8"/>
+  <rect x="560" y="640" width="200" height="12" fill="#c62828"/>
+  <text x="660" y="646" text-anchor="middle" class="box-title">ESG 데이터 서비스</text>
+  <text x="660" y="668" text-anchor="middle" class="box-text">탄소 감축 리포트 (자동)</text>
+  <text x="660" y="681" text-anchor="middle" class="box-text">수자원 절감 데이터</text>
+  <text x="660" y="694" text-anchor="middle" class="box-text">기업 ESG 인증 지원</text>
+
+  <!-- Global -->
+  <rect x="800" y="630" width="200" height="80" fill="#fff3e0" stroke="#e65100" stroke-width="2" rx="8"/>
+  <rect x="800" y="630" width="200" height="22" fill="#e65100" rx="8"/>
+  <rect x="800" y="640" width="200" height="12" fill="#e65100"/>
+  <text x="900" y="646" text-anchor="middle" class="box-title">글로벌 PaaS 수출</text>
+  <text x="900" y="668" text-anchor="middle" class="box-text">컨테이너 선적 → 현지 즉시가동</text>
+  <text x="900" y="681" text-anchor="middle" class="box-text">Plug &amp; Play 수출 모델</text>
+  <text x="900" y="694" text-anchor="middle" class="box-text">CES 2027 · IFA 출품</text>
+
+  <!-- Vertical connection lines -->
+  <line x1="170" y1="150" x2="170" y2="188" stroke="#e65100" stroke-width="1.5" marker-end="url(#fArrowOrange)"/>
+  <line x1="390" y1="150" x2="390" y2="230" stroke="#1565c0" stroke-width="1.5" marker-end="url(#fArrowBlue)"/>
+  <line x1="830" y1="150" x2="830" y2="188" stroke="#6a1b9a" stroke-width="1.5"/>
+
+  <!-- IoT to equipment connections (dashed) -->
+  <line x1="180" y1="490" x2="180" y2="445" stroke="#c62828" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="180" y1="445" x2="205" y2="300" stroke="#c62828" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Dashboard to service -->
+  <line x1="740" y1="490" x2="740" y2="445" stroke="#00695c" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Business layer connections -->
+  <line x1="670" y1="440" x2="180" y2="628" stroke="#2e7d32" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="670" y1="440" x2="420" y2="628" stroke="#1565c0" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="740" y1="582" x2="660" y2="628" stroke="#c62828" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Legend -->
+  <rect x="1050" y="70" width="300" height="200" fill="#fafafa" stroke="#ddd" rx="8"/>
+  <text x="1200" y="92" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">범례 (Legend)</text>
+  <line x1="1070" y1="110" x2="1100" y2="110" stroke="#e65100" stroke-width="2" marker-end="url(#fArrowOrange)"/>
+  <text x="1110" y="114" class="box-text">전력 흐름</text>
+  <line x1="1070" y1="130" x2="1100" y2="130" stroke="#1565c0" stroke-width="2" marker-end="url(#fArrowBlue)"/>
+  <text x="1110" y="134" class="box-text">급수 · 냉매 흐름</text>
+  <line x1="1070" y1="150" x2="1100" y2="150" stroke="#2e7d32" stroke-width="2" marker-end="url(#fArrowGreen)"/>
+  <text x="1110" y="154" class="box-text">제품(얼음) 흐름</text>
+  <line x1="1070" y1="170" x2="1100" y2="170" stroke="#c62828" stroke-width="2"/>
+  <text x="1110" y="174" class="box-text">IoT 데이터 흐름</text>
+  <line x1="1070" y1="190" x2="1100" y2="190" stroke="#4527a0" stroke-width="2"/>
+  <text x="1110" y="194" class="box-text">AI 분석 결과</text>
+  <line x1="1070" y1="210" x2="1100" y2="210" stroke="#666" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="1110" y="214" class="box-text">연동 (간접)</text>
+
+  <text x="1200" y="245" text-anchor="middle" class="label-sm" fill="#888">MIF-20: Zone A~D</text>
+  <text x="1200" y="258" text-anchor="middle" class="label-sm" fill="#888">MIF-40: Zone A~E (유틸리티 추가)</text>
+
+  <text x="1350" y="790" text-anchor="end" class="label-sm" fill="#999">© 2026 MasterMinding Group — System Architecture v1.0</text>
+</svg>
+
+  </div>
+  <div id="svg_5" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+    <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <defs>
+    <style>
+      text { font-family: 'Malgun Gothic', Arial, sans-serif; }
+    </style>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#87CEEB"/>
+      <stop offset="100%" stop-color="#E0F0FF"/>
+    </linearGradient>
+    <linearGradient id="containerBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2c3e50"/>
+      <stop offset="40%" stop-color="#34495e"/>
+      <stop offset="100%" stop-color="#2c3e50"/>
+    </linearGradient>
+    <linearGradient id="containerSide" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a252f"/>
+      <stop offset="100%" stop-color="#2c3e50"/>
+    </linearGradient>
+    <linearGradient id="containerTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3d566e"/>
+      <stop offset="100%" stop-color="#2c3e50"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(200,230,255,0.8)"/>
+      <stop offset="50%" stop-color="rgba(180,220,250,0.5)"/>
+      <stop offset="100%" stop-color="rgba(200,230,255,0.7)"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#95a5a6"/>
+      <stop offset="100%" stop-color="#7f8c8d"/>
+    </linearGradient>
+    <linearGradient id="led-glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00e5ff"/>
+      <stop offset="100%" stop-color="#0097a7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1200" height="800" fill="url(#sky)"/>
+
+  <!-- Ground -->
+  <rect x="0" y="520" width="1200" height="280" fill="url(#ground)"/>
+  <rect x="0" y="520" width="1200" height="5" fill="#bdc3c7"/>
+
+  <!-- Title -->
+  <text x="600" y="40" text-anchor="middle" font-size="22" font-weight="bold" fill="#2c3e50">MIF-20 마이크로 아이스팩토리 — 외부 조감도</text>
+  <text x="600" y="62" text-anchor="middle" font-size="13" fill="#555">20ft Standard Container | Eco-Futurism Design | ㈜마스터마인딩그룹</text>
+
+  <!-- ===== CONTAINER BODY (3/4 view) ===== -->
+  <!-- Main front face -->
+  <polygon points="150,200 850,200 850,510 150,510" fill="url(#containerBody)" stroke="#1a252f" stroke-width="2"/>
+
+  <!-- Top face (perspective) -->
+  <polygon points="150,200 850,200 950,150 250,150" fill="url(#containerTop)" stroke="#1a252f" stroke-width="2"/>
+
+  <!-- Right side face (perspective) -->
+  <polygon points="850,200 950,150 950,460 850,510" fill="url(#containerSide)" stroke="#1a252f" stroke-width="2"/>
+
+  <!-- Container corrugation lines (front) -->
+  <g stroke="#3d566e" stroke-width="1" opacity="0.5">
+    <line x1="150" y1="230" x2="850" y2="230"/>
+    <line x1="150" y1="260" x2="850" y2="260"/>
+    <line x1="150" y1="290" x2="850" y2="290"/>
+    <line x1="150" y1="320" x2="850" y2="320"/>
+    <line x1="150" y1="350" x2="850" y2="350"/>
+    <line x1="150" y1="380" x2="850" y2="380"/>
+    <line x1="150" y1="410" x2="850" y2="410"/>
+    <line x1="150" y1="440" x2="850" y2="440"/>
+    <line x1="150" y1="470" x2="850" y2="470"/>
+  </g>
+
+  <!-- Container corrugation (side) -->
+  <g stroke="#1a252f" stroke-width="0.8" opacity="0.4">
+    <line x1="860" y1="206" x2="955" y2="157"/>
+    <line x1="870" y1="236" x2="955" y2="190"/>
+    <line x1="870" y1="266" x2="955" y2="220"/>
+    <line x1="870" y1="296" x2="955" y2="250"/>
+    <line x1="870" y1="326" x2="955" y2="280"/>
+    <line x1="870" y1="356" x2="955" y2="310"/>
+    <line x1="870" y1="386" x2="955" y2="340"/>
+    <line x1="870" y1="416" x2="955" y2="370"/>
+    <line x1="870" y1="446" x2="955" y2="400"/>
+    <line x1="870" y1="476" x2="955" y2="430"/>
+  </g>
+
+  <!-- ===== ZONE LABELS ON CONTAINER ===== -->
+  <!-- Zone A: 냉동기실 (left end) -->
+  <rect x="155" y="205" width="100" height="300" fill="#1a252f" opacity="0.3"/>
+  <text x="205" y="360" text-anchor="middle" font-size="11" fill="#e74c3c" font-weight="bold">A</text>
+  <text x="205" y="375" text-anchor="middle" font-size="9" fill="#e74c3c">냉동기실</text>
+  <!-- Vent grille -->
+  <rect x="170" y="220" width="70" height="50" fill="#1a252f" stroke="#555" rx="3"/>
+  <g stroke="#3d566e" stroke-width="2">
+    <line x1="175" y1="230" x2="235" y2="230"/>
+    <line x1="175" y1="240" x2="235" y2="240"/>
+    <line x1="175" y1="250" x2="235" y2="250"/>
+    <line x1="175" y1="260" x2="235" y2="260"/>
+  </g>
+
+  <!-- Zone B: 냉동고 (no windows, solid) -->
+  <rect x="260" y="205" width="250" height="300" fill="rgba(26,37,47,0.2)"/>
+  <text x="385" y="360" text-anchor="middle" font-size="13" fill="#3498db" font-weight="bold">B</text>
+  <text x="385" y="378" text-anchor="middle" font-size="10" fill="#3498db">워크인 냉동고</text>
+  <text x="385" y="393" text-anchor="middle" font-size="9" fill="#3498db">-18℃ | 듀오메이커 462개</text>
+  <!-- Insulation indicator stripe -->
+  <rect x="260" y="490" width="250" height="15" fill="#2980b9" opacity="0.6" rx="2"/>
+  <text x="385" y="501" text-anchor="middle" font-size="8" fill="white">PUR 단열 100mm</text>
+
+  <!-- Zone C: 가공포장실 (small window) -->
+  <rect x="515" y="250" width="120" height="100" fill="url(#glass)" stroke="#bdc3c7" stroke-width="2" rx="3"/>
+  <line x1="575" y1="250" x2="575" y2="350" stroke="#bdc3c7" stroke-width="1"/>
+  <line x1="515" y1="300" x2="635" y2="300" stroke="#bdc3c7" stroke-width="1"/>
+  <text x="575" y="390" text-anchor="middle" font-size="11" fill="#e67e22" font-weight="bold">C</text>
+  <text x="575" y="405" text-anchor="middle" font-size="9" fill="#e67e22">가공·포장실</text>
+
+  <!-- Zone D: 서비스 (large glass folding door) -->
+  <!-- Transparent folding door -->
+  <rect x="650" y="230" width="195" height="230" fill="url(#glass)" stroke="#bdc3c7" stroke-width="2" rx="3"/>
+  <!-- Folding door divisions -->
+  <line x1="715" y1="230" x2="715" y2="460" stroke="#bdc3c7" stroke-width="1.5"/>
+  <line x1="780" y1="230" x2="780" y2="460" stroke="#bdc3c7" stroke-width="1.5"/>
+  <!-- Interior visible through glass -->
+  <rect x="660" y="390" width="60" height="60" fill="rgba(46,204,113,0.3)" rx="30"/>
+  <text x="690" y="425" text-anchor="middle" font-size="8" fill="#27ae60">로봇</text>
+  <rect x="730" y="400" width="50" height="50" fill="rgba(46,204,113,0.2)" rx="3"/>
+  <text x="755" y="430" text-anchor="middle" font-size="7" fill="#27ae60">키오스크</text>
+  <!-- Ice display visible -->
+  <rect x="660" y="300" width="170" height="30" fill="rgba(52,152,219,0.2)" rx="3"/>
+  <text x="745" y="320" text-anchor="middle" font-size="8" fill="#2980b9">얼음 디스플레이</text>
+
+  <text x="745" y="480" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="bold">D — 서비스·판매</text>
+  <text x="745" y="495" text-anchor="middle" font-size="9" fill="#27ae60">투명 폴딩도어</text>
+
+  <!-- ===== LED STRIP ===== -->
+  <rect x="150" y="495" width="700" height="8" fill="url(#led-glow)" opacity="0.8" rx="2"/>
+  <rect x="150" y="200" width="700" height="4" fill="url(#led-glow)" opacity="0.6" rx="1"/>
+
+  <!-- ===== BRANDING ===== -->
+  <!-- Logo area -->
+  <rect x="280" y="420" width="200" height="60" fill="rgba(0,0,0,0.3)" rx="5"/>
+  <text x="380" y="448" text-anchor="middle" font-size="18" font-weight="bold" fill="white" letter-spacing="3">JEWEL ICE</text>
+  <text x="380" y="468" text-anchor="middle" font-size="10" fill="#00e5ff">MICRO ICE FACTORY</text>
+
+  <!-- ===== SERVICE WINDOW (side) ===== -->
+  <rect x="920" y="300" width="25" height="100" fill="url(#glass)" stroke="#bdc3c7" stroke-width="1.5" rx="2"/>
+  <text x="970" y="355" font-size="9" fill="#27ae60" font-weight="bold">서비스창</text>
+
+  <!-- ===== ROOF DETAILS ===== -->
+  <!-- Condenser unit on top -->
+  <rect x="200" y="145" width="80" height="30" fill="#7f8c8d" stroke="#5d6d7e" stroke-width="1.5" rx="3"/>
+  <text x="240" y="164" text-anchor="middle" font-size="8" fill="white">콘덴서</text>
+  <!-- Solar panel (add-on) -->
+  <rect x="400" y="130" width="200" height="35" fill="#2c3e50" stroke="#1a252f" stroke-width="1" rx="2"/>
+  <g stroke="#3498db" stroke-width="0.5" opacity="0.6">
+    <line x1="420" y1="135" x2="420" y2="160"/><line x1="440" y1="135" x2="440" y2="160"/>
+    <line x1="460" y1="135" x2="460" y2="160"/><line x1="480" y1="135" x2="480" y2="160"/>
+    <line x1="500" y1="135" x2="500" y2="160"/><line x1="520" y1="135" x2="520" y2="160"/>
+    <line x1="540" y1="135" x2="540" y2="160"/><line x1="560" y1="135" x2="560" y2="160"/>
+    <line x1="580" y1="135" x2="580" y2="160"/>
+    <line x1="405" y1="145" x2="595" y2="145"/>
+    <line x1="405" y1="155" x2="595" y2="155"/>
+  </g>
+  <text x="500" y="126" text-anchor="middle" font-size="8" fill="#3498db">태양광 패널 (Add-on)</text>
+
+  <!-- ===== GROUND DETAILS ===== -->
+  <!-- Shadow -->
+  <ellipse cx="550" cy="530" rx="450" ry="20" fill="rgba(0,0,0,0.15)"/>
+
+  <!-- Foundation blocks -->
+  <rect x="170" y="510" width="80" height="25" fill="#7f8c8d" stroke="#5d6d7e" rx="2"/>
+  <rect x="400" y="510" width="80" height="25" fill="#7f8c8d" stroke="#5d6d7e" rx="2"/>
+  <rect x="630" y="510" width="80" height="25" fill="#7f8c8d" stroke="#5d6d7e" rx="2"/>
+  <rect x="830" y="508" width="60" height="20" fill="#7f8c8d" stroke="#5d6d7e" rx="2"/>
+
+  <!-- ===== PEOPLE FOR SCALE ===== -->
+  <!-- Person 1 near service window -->
+  <g transform="translate(1000,340)">
+    <circle cx="0" cy="0" r="12" fill="#ecf0f1" stroke="#bdc3c7"/>
+    <rect x="-8" y="14" width="16" height="35" fill="#3498db" rx="3"/>
+    <line x1="-3" y1="50" x2="-8" y2="85" stroke="#2c3e50" stroke-width="3"/>
+    <line x1="3" y1="50" x2="8" y2="85" stroke="#2c3e50" stroke-width="3"/>
+    <!-- Tumbler in hand -->
+    <rect x="10" y="25" width="8" height="14" fill="#ecf0f1" stroke="#bdc3c7" rx="2"/>
+  </g>
+  <text x="1000" y="440" text-anchor="middle" font-size="8" fill="#555">아블러 텀블러</text>
+
+  <!-- Person 2 walking -->
+  <g transform="translate(1080,350)">
+    <circle cx="0" cy="0" r="10" fill="#ecf0f1" stroke="#bdc3c7"/>
+    <rect x="-7" y="12" width="14" height="30" fill="#e74c3c" rx="3"/>
+    <line x1="-2" y1="43" x2="-10" y2="73" stroke="#2c3e50" stroke-width="2.5"/>
+    <line x1="2" y1="43" x2="10" y2="73" stroke="#2c3e50" stroke-width="2.5"/>
+  </g>
+
+  <!-- ===== INFO LABELS ===== -->
+  <!-- Dimension lines -->
+  <line x1="150" y1="560" x2="850" y2="560" stroke="#e74c3c" stroke-width="1.5" marker-start="url(#arrowL)" marker-end="url(#arrowR)"/>
+  <text x="500" y="578" text-anchor="middle" font-size="11" fill="#e74c3c" font-weight="bold">6,058 mm (20ft)</text>
+
+  <line x1="850" y1="560" x2="950" y2="510" stroke="#e74c3c" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="920" y="545" font-size="9" fill="#e74c3c">2,438mm (폭)</text>
+
+  <line x1="100" y1="200" x2="100" y2="510" stroke="#e74c3c" stroke-width="1"/>
+  <text x="85" y="360" text-anchor="middle" font-size="9" fill="#e74c3c" transform="rotate(-90,85,360)">2,591mm (높이)</text>
+
+  <!-- Feature callouts -->
+  <g font-size="9" fill="#2c3e50">
+    <!-- Callout 1 -->
+    <line x1="205" y1="245" x2="80" y2="120" stroke="#e74c3c" stroke-width="0.8"/>
+    <rect x="10" y="105" width="130" height="22" fill="white" stroke="#e74c3c" rx="3"/>
+    <text x="75" y="120" text-anchor="middle" fill="#e74c3c" font-weight="bold">환기구 (콘덴서 배열)</text>
+
+    <!-- Callout 2 -->
+    <line x1="385" y1="500" x2="385" y2="620" stroke="#2980b9" stroke-width="0.8"/>
+    <rect x="310" y="622" width="150" height="22" fill="white" stroke="#2980b9" rx="3"/>
+    <text x="385" y="637" text-anchor="middle" fill="#2980b9" font-weight="bold">PUR 100mm 단열 (전면)</text>
+
+    <!-- Callout 3 -->
+    <line x1="745" y1="230" x2="745" y2="100" stroke="#27ae60" stroke-width="0.8"/>
+    <rect x="670" y="85" width="150" height="22" fill="white" stroke="#27ae60" rx="3"/>
+    <text x="745" y="100" text-anchor="middle" fill="#27ae60" font-weight="bold">투명 폴딩도어 (에코 디자인)</text>
+
+    <!-- Callout 4 -->
+    <line x1="500" y1="145" x2="500" y2="90" stroke="#3498db" stroke-width="0.8"/>
+    <rect x="650" y="75" width="10" height="1" fill="none"/>
+  </g>
+
+  <!-- LED accent label -->
+  <line x1="150" y1="498" x2="100" y2="620" stroke="#00e5ff" stroke-width="0.8"/>
+  <rect x="30" y="615" width="140" height="22" fill="white" stroke="#00e5ff" rx="3"/>
+  <text x="100" y="630" text-anchor="middle" font-size="9" fill="#0097a7" font-weight="bold">LED 상태표시 (ESG 지표)</text>
+
+  <!-- Copyright -->
+  <text x="1150" y="785" text-anchor="end" font-size="9" fill="#999">© 2026 MasterMinding Group — MIF-20 Exterior v1.0</text>
+</svg>
+
+  </div>
+  <div id="svg_6" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+    <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <defs>
+    <linearGradient id="floorG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ddd"/>
+      <stop offset="100%" stop-color="#bbb"/>
+    </linearGradient>
+    <linearGradient id="wallG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0f0f0"/>
+      <stop offset="100%" stop-color="#ddd"/>
+    </linearGradient>
+    <linearGradient id="freezerWall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4e6f9"/>
+      <stop offset="100%" stop-color="#a8cce8"/>
+    </linearGradient>
+    <linearGradient id="stainless" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0e0e0"/>
+      <stop offset="30%" stop-color="#ccc"/>
+      <stop offset="60%" stop-color="#ddd"/>
+      <stop offset="100%" stop-color="#bbb"/>
+    </linearGradient>
+    <linearGradient id="iceGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(200,230,255,0.9)"/>
+      <stop offset="100%" stop-color="rgba(150,210,250,0.6)"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#1a1a2e"/>
+
+  <!-- Title -->
+  <text x="600" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#e94560" font-family="Malgun Gothic, Arial">MIF-20 마이크로 아이스팩토리 — 내부 투시도</text>
+  <text x="600" y="55" text-anchor="middle" font-size="12" fill="#888" font-family="Malgun Gothic, Arial">20ft Container Interior View | Zone A~D 전체 구조</text>
+
+  <!-- ===== PERSPECTIVE ROOM (1-point perspective) ===== -->
+  <!-- Floor -->
+  <polygon points="50,700 1150,700 950,400 250,400" fill="url(#floorG)" stroke="#999" stroke-width="1"/>
+  <!-- Floor grid -->
+  <g stroke="#ccc" stroke-width="0.5" opacity="0.5">
+    <line x1="150" y1="650" x2="350" y2="400"/><line x1="250" y1="700" x2="400" y2="400"/>
+    <line x1="450" y1="700" x2="500" y2="400"/><line x1="650" y1="700" x2="600" y2="400"/>
+    <line x1="850" y1="700" x2="700" y2="400"/><line x1="1050" y1="700" x2="800" y2="400"/>
+    <line x1="50" y1="600" x2="1150" y2="600"/>
+    <line x1="100" y1="500" x2="1100" y2="500"/>
+  </g>
+
+  <!-- Back wall -->
+  <rect x="250" y="100" width="700" height="300" fill="url(#wallG)" stroke="#aaa" stroke-width="1"/>
+
+  <!-- Left wall -->
+  <polygon points="50,80 250,100 250,400 50,700" fill="#e8e8e8" stroke="#aaa" stroke-width="1"/>
+
+  <!-- Right wall -->
+  <polygon points="1150,80 950,100 950,400 1150,700" fill="#e0e0e0" stroke="#aaa" stroke-width="1"/>
+
+  <!-- Ceiling -->
+  <polygon points="50,80 1150,80 950,100 250,100" fill="#f5f5f5" stroke="#aaa" stroke-width="1"/>
+
+  <!-- ===== ZONE A: 냉동기실 (far left) ===== -->
+  <!-- Partition wall -->
+  <polygon points="250,100 350,100 200,700 50,700" fill="rgba(200,200,200,0.5)" stroke="#999"/>
+
+  <!-- Compressor (visible through cutaway) -->
+  <rect x="80" y="400" width="100" height="120" fill="#e74c3c" opacity="0.7" rx="5"/>
+  <text x="130" y="455" text-anchor="middle" font-size="11" fill="white" font-weight="bold" font-family="Malgun Gothic">컴프레서</text>
+  <text x="130" y="472" text-anchor="middle" font-size="9" fill="white" font-family="Malgun Gothic">1HP</text>
+
+  <!-- Electric panel -->
+  <rect x="80" y="540" width="100" height="80" fill="#f39c12" opacity="0.7" rx="5"/>
+  <text x="130" y="583" text-anchor="middle" font-size="10" fill="white" font-weight="bold" font-family="Malgun Gothic">전기패널</text>
+
+  <text x="130" y="370" text-anchor="middle" font-size="13" fill="#e74c3c" font-weight="bold" font-family="Malgun Gothic">Zone A</text>
+
+  <!-- ===== ZONE B: 워크인 냉동고 ===== -->
+  <!-- Freezer walls (blue tint) -->
+  <polygon points="200,100 500,100 420,680 120,680" fill="url(#freezerWall)" opacity="0.4" stroke="#2980b9" stroke-width="1"/>
+
+  <!-- Freezer back wall -->
+  <rect x="280" y="105" width="200" height="290" fill="url(#freezerWall)" opacity="0.5"/>
+
+  <!-- Shelves (left side - perspective) -->
+  <g opacity="0.9">
+    <!-- 7 shelf tiers on left wall -->
+    <polygon points="210,380 440,320 440,330 210,395" fill="url(#stainless)" stroke="#999"/>
+    <polygon points="210,340 440,285 440,295 210,355" fill="url(#stainless)" stroke="#999"/>
+    <polygon points="210,300 440,250 440,260 210,315" fill="url(#stainless)" stroke="#999"/>
+    <polygon points="210,260 440,215 440,225 210,275" fill="url(#stainless)" stroke="#999"/>
+    <polygon points="210,220 440,180 440,190 210,235" fill="url(#stainless)" stroke="#999"/>
+    <polygon points="210,185 440,150 440,158 210,198" fill="url(#stainless)" stroke="#999"/>
+    <polygon points="210,155" fill="none"/>
+  </g>
+
+  <!-- Duo Makers on shelves (blue rectangles) -->
+  <g fill="#bbdefb" stroke="#1565c0" stroke-width="0.8" opacity="0.8">
+    <!-- Row of duo makers on shelf -->
+    <rect x="230" y="345" width="12" height="18" rx="1"/><rect x="245" y="343" width="12" height="18" rx="1"/>
+    <rect x="260" y="341" width="12" height="18" rx="1"/><rect x="275" y="339" width="12" height="18" rx="1"/>
+    <rect x="290" y="337" width="12" height="18" rx="1"/><rect x="305" y="335" width="12" height="18" rx="1"/>
+    <rect x="320" y="333" width="12" height="18" rx="1"/><rect x="335" y="331" width="12" height="18" rx="1"/>
+    <rect x="350" y="329" width="12" height="18" rx="1"/><rect x="365" y="327" width="12" height="18" rx="1"/>
+    <rect x="380" y="325" width="12" height="18" rx="1"/>
+    <!-- Second tier -->
+    <rect x="230" y="305" width="12" height="18" rx="1"/><rect x="245" y="303" width="12" height="18" rx="1"/>
+    <rect x="260" y="301" width="12" height="18" rx="1"/><rect x="275" y="299" width="12" height="18" rx="1"/>
+    <rect x="290" y="297" width="12" height="18" rx="1"/><rect x="305" y="295" width="12" height="18" rx="1"/>
+    <rect x="320" y="293" width="12" height="18" rx="1"/><rect x="335" y="291" width="12" height="18" rx="1"/>
+    <rect x="350" y="289" width="12" height="18" rx="1"/><rect x="365" y="287" width="12" height="18" rx="1"/>
+    <rect x="380" y="285" width="12" height="18" rx="1"/>
+    <!-- Third tier -->
+    <rect x="230" y="265" width="12" height="18" rx="1"/><rect x="245" y="263" width="12" height="18" rx="1"/>
+    <rect x="260" y="261" width="12" height="18" rx="1"/><rect x="275" y="259" width="12" height="18" rx="1"/>
+    <rect x="290" y="257" width="12" height="18" rx="1"/><rect x="305" y="255" width="12" height="18" rx="1"/>
+    <rect x="320" y="253" width="12" height="18" rx="1"/>
+  </g>
+
+  <!-- Freezer cold air effect -->
+  <g opacity="0.3" fill="none" stroke="#64b5f6" stroke-width="1">
+    <path d="M320,130 Q330,200 310,280" stroke-dasharray="3,3"/>
+    <path d="M380,130 Q370,200 390,280" stroke-dasharray="3,3"/>
+    <path d="M340,130 Q350,180 340,250" stroke-dasharray="3,3"/>
+  </g>
+
+  <!-- Unit cooler (ceiling) -->
+  <rect x="290" y="108" width="130" height="20" fill="#64b5f6" stroke="#1565c0" rx="5" opacity="0.8"/>
+  <text x="355" y="122" text-anchor="middle" font-size="8" fill="white" font-family="Malgun Gothic">유닛쿨러</text>
+
+  <!-- Freezer label -->
+  <text x="340" y="425" text-anchor="middle" font-size="14" fill="#2980b9" font-weight="bold" font-family="Malgun Gothic">Zone B 냉동고</text>
+  <text x="340" y="443" text-anchor="middle" font-size="10" fill="#2980b9" font-family="Malgun Gothic">-18℃ | 462 듀오메이커</text>
+
+  <!-- Freezer door -->
+  <rect x="430" y="200" width="20" height="160" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="3" opacity="0.8"/>
+
+  <!-- ===== ZONE C: 가공·포장실 ===== -->
+  <!-- Work table (stainless steel) -->
+  <polygon points="480,520 700,440 700,420 480,490" fill="url(#stainless)" stroke="#999" stroke-width="1.5"/>
+  <!-- Table legs -->
+  <line x1="500" y1="520" x2="500" y2="620" stroke="#999" stroke-width="3"/>
+  <line x1="680" y1="445" x2="680" y2="560" stroke="#999" stroke-width="3"/>
+
+  <!-- Ice balls on table -->
+  <g opacity="0.9">
+    <circle cx="520" cy="500" r="10" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <circle cx="545" cy="495" r="10" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <circle cx="570" cy="490" r="10" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <circle cx="595" cy="485" r="10" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <circle cx="620" cy="478" r="10" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <circle cx="645" cy="472" r="10" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <circle cx="670" cy="466" r="10" fill="url(#iceGlow)" stroke="#90caf9"/>
+  </g>
+  <text x="590" y="460" text-anchor="middle" font-size="9" fill="#2980b9" font-family="Malgun Gothic">투명 아이스볼 Ø65mm</text>
+
+  <!-- Laser engraver -->
+  <rect x="500" y="290" width="60" height="70" fill="#2c3e50" stroke="#1a252f" rx="3"/>
+  <rect x="505" y="295" width="50" height="40" fill="#333" rx="2"/>
+  <text x="530" y="320" text-anchor="middle" font-size="7" fill="#e74c3c" font-family="Malgun Gothic">LASER</text>
+  <text x="530" y="370" text-anchor="middle" font-size="9" fill="#e67e22" font-family="Malgun Gothic">레이저 각인기</text>
+
+  <!-- Fridge -->
+  <rect x="600" y="200" width="80" height="180" fill="#ddd" stroke="#aaa" stroke-width="1.5" rx="3"/>
+  <rect x="605" y="205" width="70" height="85" fill="#e8eaf6" stroke="#bbb" rx="2"/>
+  <rect x="605" y="295" width="70" height="80" fill="#e8eaf6" stroke="#bbb" rx="2"/>
+  <text x="640" y="250" text-anchor="middle" font-size="8" fill="#555" font-family="Malgun Gothic">보관</text>
+  <text x="640" y="340" text-anchor="middle" font-size="8" fill="#555" font-family="Malgun Gothic">냉장고</text>
+
+  <text x="580" y="650" text-anchor="middle" font-size="13" fill="#e67e22" font-weight="bold" font-family="Malgun Gothic">Zone C 가공·포장</text>
+
+  <!-- ===== ZONE D: 서비스·판매 ===== -->
+  <!-- Robot barista -->
+  <g transform="translate(800,350)">
+    <rect x="-30" y="0" width="60" height="90" fill="#c8e6c9" stroke="#388e3c" stroke-width="2" rx="8"/>
+    <rect x="-25" y="5" width="50" height="30" fill="#a5d6a7" rx="5"/>
+    <circle cx="0" cy="20" r="8" fill="#66bb6a"/>
+    <text x="0" y="24" text-anchor="middle" font-size="6" fill="white">AI</text>
+    <!-- Robot arm -->
+    <line x1="30" y1="40" x2="55" y2="25" stroke="#388e3c" stroke-width="4" stroke-linecap="round"/>
+    <line x1="55" y1="25" x2="70" y2="45" stroke="#388e3c" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="70" cy="45" r="5" fill="#388e3c"/>
+    <text x="0" y="108" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold" font-family="Malgun Gothic">로봇 바리스타</text>
+  </g>
+
+  <!-- Kiosk -->
+  <rect x="900" y="250" width="50" height="130" fill="#2c3e50" stroke="#1a252f" stroke-width="2" rx="3"/>
+  <rect x="907" y="260" width="36" height="60" fill="#333" rx="2"/>
+  <!-- Screen glow -->
+  <rect x="910" y="263" width="30" height="54" fill="#27ae60" opacity="0.3" rx="2"/>
+  <text x="925" y="290" text-anchor="middle" font-size="7" fill="#27ae60" font-family="Malgun Gothic">ORDER</text>
+  <text x="925" y="400" text-anchor="middle" font-size="9" fill="#27ae60" font-family="Malgun Gothic">무인 키오스크</text>
+
+  <!-- Tumbler display -->
+  <g transform="translate(950,500)">
+    <rect x="0" y="0" width="100" height="60" fill="#e8eaf6" stroke="#5c6bc0" rx="3" opacity="0.8"/>
+    <!-- Tumblers -->
+    <rect x="10" y="10" width="12" height="22" fill="#f5f5f5" stroke="#bbb" rx="3"/>
+    <rect x="28" y="10" width="12" height="22" fill="#f5f5f5" stroke="#bbb" rx="3"/>
+    <rect x="46" y="10" width="12" height="22" fill="#f5f5f5" stroke="#bbb" rx="3"/>
+    <rect x="64" y="10" width="12" height="22" fill="#f5f5f5" stroke="#bbb" rx="3"/>
+    <rect x="82" y="10" width="12" height="22" fill="#f5f5f5" stroke="#bbb" rx="3"/>
+    <text x="50" y="50" text-anchor="middle" font-size="8" fill="#5c6bc0" font-family="Malgun Gothic">아블러 텀블러</text>
+  </g>
+
+  <!-- Ice display showcase -->
+  <rect x="720" y="500" width="180" height="50" fill="rgba(200,230,255,0.3)" stroke="#64b5f6" stroke-width="1.5" rx="5"/>
+  <g opacity="0.7">
+    <circle cx="750" cy="520" r="8" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <circle cx="775" cy="518" r="8" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <circle cx="800" cy="516" r="8" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <circle cx="825" cy="514" r="8" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <circle cx="850" cy="512" r="8" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <circle cx="875" cy="510" r="8" fill="url(#iceGlow)" stroke="#90caf9"/>
+  </g>
+  <text x="810" y="560" text-anchor="middle" font-size="9" fill="#2980b9" font-family="Malgun Gothic">얼음 디스플레이 쇼케이스</text>
+
+  <text x="870" y="650" text-anchor="middle" font-size="13" fill="#27ae60" font-weight="bold" font-family="Malgun Gothic">Zone D 서비스·판매</text>
+
+  <!-- ===== LED LIGHTING ===== -->
+  <rect x="250" y="97" width="700" height="4" fill="#00e5ff" opacity="0.4" rx="1"/>
+
+  <!-- ===== ZONE DIVIDER LINES ===== -->
+  <line x1="200" y1="700" x2="350" y2="100" stroke="#e74c3c" stroke-width="1" stroke-dasharray="6,4" opacity="0.5"/>
+  <line x1="450" y1="680" x2="500" y2="100" stroke="#2980b9" stroke-width="1" stroke-dasharray="6,4" opacity="0.5"/>
+  <line x1="700" y1="650" x2="680" y2="100" stroke="#e67e22" stroke-width="1" stroke-dasharray="6,4" opacity="0.5"/>
+
+  <!-- ===== LEGEND ===== -->
+  <rect x="30" y="720" width="1140" height="60" fill="rgba(0,0,0,0.3)" rx="8"/>
+  <g font-size="10" font-family="Malgun Gothic">
+    <rect x="50" y="738" width="14" height="14" fill="#e74c3c" rx="2"/>
+    <text x="70" y="750" fill="#eee">A 냉동기실</text>
+    <rect x="180" y="738" width="14" height="14" fill="#2980b9" rx="2"/>
+    <text x="200" y="750" fill="#eee">B 냉동고 (462 듀오메이커)</text>
+    <rect x="400" y="738" width="14" height="14" fill="#e67e22" rx="2"/>
+    <text x="420" y="750" fill="#eee">C 가공·포장 (각인·QC)</text>
+    <rect x="600" y="738" width="14" height="14" fill="#27ae60" rx="2"/>
+    <text x="620" y="750" fill="#eee">D 서비스 (로봇·키오스크)</text>
+    <circle cx="820" cy="745" r="7" fill="url(#iceGlow)" stroke="#90caf9"/>
+    <text x="835" y="750" fill="#eee">투명 아이스볼</text>
+    <rect x="940" y="738" width="14" height="14" fill="#f5f5f5" stroke="#bbb" rx="3"/>
+    <text x="960" y="750" fill="#eee">아블러 텀블러</text>
+  </g>
+
+  <text x="1150" y="790" text-anchor="end" font-size="9" fill="#555">© 2026 MasterMinding Group — MIF-20 Interior v1.0</text>
+</svg>
+
+  </div>
+
+  <script>
+  function showSVG() {
+    document.querySelectorAll('.svg-embed').forEach(function(d){d.style.display='none'});
+    document.getElementById(document.getElementById('svgSelect').value).style.display='block';
+  }
+  </script>
+</div>
+
+<div class="footer">
+  <p><strong>"유통을 없애고, 지구를 식힌다"</strong> — Eliminate Distribution. Cool the Planet.</p>
+  <p>© 2026 ㈜마스터마인딩그룹 × 디블러 | Micro Ice Factory</p>
+  <p style="margin-top:10px">
+    <a target="_blank" href="MIF_설계도면/도면_뷰어.html" style="color:var(--cyan)">도면 뷰어</a> ·
+    <a target="_blank" href="MIF_설계도면/MIF_전체도면_통합.pdf" style="color:var(--cyan)">도면 PDF</a> ·
+    <a target="_blank" href="MIF_설계도면/06_생산량_계산서.pdf" style="color:var(--cyan)">생산량 PDF</a>
+  </p>
+</div>
+
+<script>
+function show(i) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  var sid = (i === 10) ? 's_drawings' : 's'+i;
+  document.getElementById(sid).classList.add('active');
+  document.querySelectorAll('.nav button')[i].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
