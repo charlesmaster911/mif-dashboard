@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 850" width="1600" height="850">
   <defs>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap");
@@ -7,7 +7,7 @@
       .title { font-size: 18px; font-weight: bold; fill: #1a1a1a; }
       .subtitle { font-size: 11px; fill: #444; }
       .box-title { font-size: 11px; font-weight: bold; fill: white; }
-      .box-text { font-size: 9px; fill: #333; }
+      .box-text { font-size: 8px; fill: #333; }
       .flow-line { fill: none; stroke-width: 2; }
       .label-sm { font-size: 9px; fill: #555; }
     </style>
@@ -25,8 +25,8 @@
     </marker>
   </defs>
 
-  <text x="700" y="30" text-anchor="middle" class="title">마이크로 아이스팩토리 — 통합 시스템 구성도</text>
-  <text x="700" y="50" text-anchor="middle" class="subtitle">전력 · 급수 · 냉동 · 제빙 · AI · 서비스 연동 다이어그램</text>
+  <text x="800" y="30" text-anchor="middle" class="title">마이크로 아이스팩토리 — 통합 시스템 구성도</text>
+  <text x="800" y="50" text-anchor="middle" class="subtitle">전력 · 급수 · 냉동 · 제빙 · AI · 서비스 연동 다이어그램</text>
 
   <!-- ===== ROW 1: 인프라 레이어 ===== -->
   <text x="30" y="90" class="label-sm" fill="#888" font-weight="bold">INFRA</text>
@@ -59,13 +59,13 @@
   <text x="610" y="134" text-anchor="middle" class="box-text">폐수 0% (100% 활용)</text>
 
   <!-- 통신 -->
-  <rect x="740" y="70" width="180" height="80" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2" rx="8"/>
-  <rect x="740" y="70" width="180" height="22" fill="#6a1b9a" rx="8"/>
-  <rect x="740" y="80" width="180" height="12" fill="#6a1b9a"/>
-  <text x="830" y="86" text-anchor="middle" class="box-title">통신 시스템</text>
-  <text x="830" y="108" text-anchor="middle" class="box-text">5G / WiFi 듀얼</text>
-  <text x="830" y="121" text-anchor="middle" class="box-text">IoT 센서 게이트웨이</text>
-  <text x="830" y="134" text-anchor="middle" class="box-text">클라우드 연동 (AWS/GCP)</text>
+  <rect x="770" y="70" width="200" height="80" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2" rx="8"/>
+  <rect x="770" y="70" width="200" height="22" fill="#6a1b9a" rx="8"/>
+  <rect x="770" y="80" width="200" height="12" fill="#6a1b9a"/>
+  <text x="870" y="86" text-anchor="middle" class="box-title">통신 시스템</text>
+  <text x="870" y="108" text-anchor="middle" class="box-text">5G / WiFi 듀얼</text>
+  <text x="870" y="121" text-anchor="middle" class="box-text">IoT 센서 게이트웨이</text>
+  <text x="870" y="134" text-anchor="middle" class="box-text">클라우드 연동 (AWS/GCP)</text>
 
   <!-- ===== ROW 2: 냉동·제빙 레이어 ===== -->
   <text x="30" y="210" class="label-sm" fill="#888" font-weight="bold">COOLING</text>
@@ -82,15 +82,15 @@
   <text x="205" y="280" text-anchor="middle" class="box-text">제상: 전기 히터 자동 제상 (6h 주기)</text>
 
   <!-- 워크인 냉동고 -->
-  <rect x="380" y="190" width="300" height="110" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="8"/>
-  <rect x="380" y="190" width="300" height="22" fill="#1565c0" rx="8"/>
-  <rect x="380" y="200" width="300" height="12" fill="#1565c0"/>
-  <text x="530" y="206" text-anchor="middle" class="box-title">워크인 냉동고 (Zone B)</text>
-  <text x="530" y="228" text-anchor="middle" class="box-text">단열: PUR 폼 100mm (벽·천장·바닥)</text>
-  <text x="530" y="241" text-anchor="middle" class="box-text">도어: 슬라이딩 단열도어 W900×H1900</text>
-  <text x="530" y="254" text-anchor="middle" class="box-text">선반: 스테인리스 7단 × 양벽 (450mm 깊이)</text>
-  <text x="530" y="267" text-anchor="middle" class="box-text">듀오메이커: 96개 (MIF-20) / 144개 (MIF-40)</text>
-  <text x="530" y="280" text-anchor="middle" class="box-text">제빙시간: 12~18시간 (디렉셔널 프리징)</text>
+  <rect x="380" y="190" width="340" height="110" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="8"/>
+  <rect x="380" y="190" width="340" height="22" fill="#1565c0" rx="8"/>
+  <rect x="380" y="200" width="340" height="12" fill="#1565c0"/>
+  <text x="550" y="206" text-anchor="middle" class="box-title">워크인 냉동고 (Zone B)</text>
+  <text x="550" y="228" text-anchor="middle" class="box-text">단열: PUR 폼 100mm (벽·천장·바닥)</text>
+  <text x="550" y="241" text-anchor="middle" class="box-text">도어: 슬라이딩 단열도어 W900×H1900</text>
+  <text x="550" y="254" text-anchor="middle" class="box-text">선반: 스테인리스 7단 × 양벽 (450mm 깊이)</text>
+  <text x="550" y="267" text-anchor="middle" class="box-text">듀오메이커: 96개 (MIF-20) / 144개 (MIF-40)</text>
+  <text x="550" y="280" text-anchor="middle" class="box-text">제빙시간: 12~18시간 (디렉셔널 프리징)</text>
 
   <!-- Flow: 냉동 → 냉동고 -->
   <line x1="330" y1="245" x2="378" y2="245" stroke="#283593" stroke-width="2" marker-end="url(#fArrowBlue)"/>
@@ -243,8 +243,8 @@
   <line x1="740" y1="582" x2="660" y2="628" stroke="#c62828" stroke-width="1" stroke-dasharray="4,3"/>
 
   <!-- Legend -->
-  <rect x="1050" y="70" width="300" height="200" fill="#fafafa" stroke="#ddd" rx="8"/>
-  <text x="1200" y="92" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">범례 (Legend)</text>
+  <rect x="1100" y="70" width="300" height="200" fill="#fafafa" stroke="#ddd" rx="8"/>
+  <text x="1250" y="92" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">범례 (Legend)</text>
   <line x1="1070" y1="110" x2="1100" y2="110" stroke="#e65100" stroke-width="2" marker-end="url(#fArrowOrange)"/>
   <text x="1110" y="114" class="box-text">전력 흐름</text>
   <line x1="1070" y1="130" x2="1100" y2="130" stroke="#1565c0" stroke-width="2" marker-end="url(#fArrowBlue)"/>
@@ -261,5 +261,5 @@
   <text x="1200" y="245" text-anchor="middle" class="label-sm" fill="#888">MIF-20: Zone A~D</text>
   <text x="1200" y="258" text-anchor="middle" class="label-sm" fill="#888">MIF-40: Zone A~E (유틸리티 추가)</text>
 
-  <text x="1350" y="790" text-anchor="end" class="label-sm" fill="#999">© 2026 MasterMinding Group — System Architecture v1.0</text>
+  <text x="1550" y="840" text-anchor="end" class="label-sm" fill="#999">© 2026 MasterMinding Group — System Architecture v1.0</text>
 </svg>
