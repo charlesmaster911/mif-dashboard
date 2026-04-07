@@ -29,8 +29,8 @@
   <rect width="1200" height="800" fill="#1a1a2e"/>
 
   <!-- Title -->
-  <text x="600" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#e94560" font-family="Malgun Gothic, Arial">MIF-20 마이크로 아이스팩토리 — 내부 투시도</text>
-  <text x="600" y="55" text-anchor="middle" font-size="12" fill="#888" font-family="Malgun Gothic, Arial">20ft Container Interior View | Zone A~D 전체 구조</text>
+  <text x="600" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#e94560" font-family="Noto Sans KR, Arial">MIF-20 마이크로 아이스팩토리 — 내부 투시도</text>
+  <text x="600" y="55" text-anchor="middle" font-size="12" fill="#888" font-family="Noto Sans KR, Arial">20ft Container Interior View | Zone A~D 전체 구조</text>
 
   <!-- ===== PERSPECTIVE ROOM (1-point perspective) ===== -->
   <!-- Floor -->
@@ -62,14 +62,14 @@
 
   <!-- Compressor (visible through cutaway) -->
   <rect x="80" y="400" width="100" height="120" fill="#e74c3c" opacity="0.7" rx="5"/>
-  <text x="130" y="455" text-anchor="middle" font-size="11" fill="white" font-weight="bold" font-family="Malgun Gothic">컴프레서</text>
-  <text x="130" y="472" text-anchor="middle" font-size="9" fill="white" font-family="Malgun Gothic">1HP</text>
+  <text x="130" y="455" text-anchor="middle" font-size="11" fill="white" font-weight="bold" font-family="Noto Sans KR">컴프레서</text>
+  <text x="130" y="472" text-anchor="middle" font-size="9" fill="white" font-family="Noto Sans KR">1HP</text>
 
   <!-- Electric panel -->
   <rect x="80" y="540" width="100" height="80" fill="#f39c12" opacity="0.7" rx="5"/>
-  <text x="130" y="583" text-anchor="middle" font-size="10" fill="white" font-weight="bold" font-family="Malgun Gothic">전기패널</text>
+  <text x="130" y="583" text-anchor="middle" font-size="10" fill="white" font-weight="bold" font-family="Noto Sans KR">전기패널</text>
 
-  <text x="130" y="370" text-anchor="middle" font-size="13" fill="#e74c3c" font-weight="bold" font-family="Malgun Gothic">Zone A</text>
+  <text x="130" y="370" text-anchor="middle" font-size="13" fill="#e74c3c" font-weight="bold" font-family="Noto Sans KR">Zone A</text>
 
   <!-- ===== ZONE B: 워크인 냉동고 ===== -->
   <!-- Freezer walls (blue tint) -->
@@ -122,11 +122,11 @@
 
   <!-- Unit cooler (ceiling) -->
   <rect x="290" y="108" width="130" height="20" fill="#64b5f6" stroke="#1565c0" rx="5" opacity="0.8"/>
-  <text x="355" y="122" text-anchor="middle" font-size="8" fill="white" font-family="Malgun Gothic">유닛쿨러</text>
+  <text x="355" y="122" text-anchor="middle" font-size="8" fill="white" font-family="Noto Sans KR">유닛쿨러</text>
 
   <!-- Freezer label -->
-  <text x="340" y="425" text-anchor="middle" font-size="14" fill="#2980b9" font-weight="bold" font-family="Malgun Gothic">Zone B 냉동고</text>
-  <text x="340" y="443" text-anchor="middle" font-size="10" fill="#2980b9" font-family="Malgun Gothic">-18℃ | 462 듀오메이커</text>
+  <text x="340" y="425" text-anchor="middle" font-size="14" fill="#2980b9" font-weight="bold" font-family="Noto Sans KR">Zone B 냉동고</text>
+  <text x="340" y="443" text-anchor="middle" font-size="10" fill="#2980b9" font-family="Noto Sans KR">-18℃ | 462 듀오메이커</text>
 
   <!-- Freezer door -->
   <rect x="430" y="200" width="20" height="160" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="3" opacity="0.8"/>
@@ -148,22 +148,22 @@
     <circle cx="645" cy="472" r="10" fill="url(#iceGlow)" stroke="#90caf9"/>
     <circle cx="670" cy="466" r="10" fill="url(#iceGlow)" stroke="#90caf9"/>
   </g>
-  <text x="590" y="460" text-anchor="middle" font-size="9" fill="#2980b9" font-family="Malgun Gothic">투명 아이스볼 Ø65mm</text>
+  <text x="590" y="460" text-anchor="middle" font-size="9" fill="#2980b9" font-family="Noto Sans KR">투명 아이스볼 Ø65mm</text>
 
   <!-- Laser engraver -->
   <rect x="500" y="290" width="60" height="70" fill="#2c3e50" stroke="#1a252f" rx="3"/>
   <rect x="505" y="295" width="50" height="40" fill="#333" rx="2"/>
-  <text x="530" y="320" text-anchor="middle" font-size="7" fill="#e74c3c" font-family="Malgun Gothic">LASER</text>
-  <text x="530" y="370" text-anchor="middle" font-size="9" fill="#e67e22" font-family="Malgun Gothic">레이저 각인기</text>
+  <text x="530" y="320" text-anchor="middle" font-size="7" fill="#e74c3c" font-family="Noto Sans KR">LASER</text>
+  <text x="530" y="370" text-anchor="middle" font-size="9" fill="#e67e22" font-family="Noto Sans KR">레이저 각인기</text>
 
   <!-- Fridge -->
   <rect x="600" y="200" width="80" height="180" fill="#ddd" stroke="#aaa" stroke-width="1.5" rx="3"/>
   <rect x="605" y="205" width="70" height="85" fill="#e8eaf6" stroke="#bbb" rx="2"/>
   <rect x="605" y="295" width="70" height="80" fill="#e8eaf6" stroke="#bbb" rx="2"/>
-  <text x="640" y="250" text-anchor="middle" font-size="8" fill="#555" font-family="Malgun Gothic">보관</text>
-  <text x="640" y="340" text-anchor="middle" font-size="8" fill="#555" font-family="Malgun Gothic">냉장고</text>
+  <text x="640" y="250" text-anchor="middle" font-size="8" fill="#555" font-family="Noto Sans KR">보관</text>
+  <text x="640" y="340" text-anchor="middle" font-size="8" fill="#555" font-family="Noto Sans KR">냉장고</text>
 
-  <text x="580" y="650" text-anchor="middle" font-size="13" fill="#e67e22" font-weight="bold" font-family="Malgun Gothic">Zone C 가공·포장</text>
+  <text x="580" y="650" text-anchor="middle" font-size="13" fill="#e67e22" font-weight="bold" font-family="Noto Sans KR">Zone C 가공·포장</text>
 
   <!-- ===== ZONE D: 서비스·판매 ===== -->
   <!-- Robot barista -->
@@ -176,7 +176,7 @@
     <line x1="30" y1="40" x2="55" y2="25" stroke="#388e3c" stroke-width="4" stroke-linecap="round"/>
     <line x1="55" y1="25" x2="70" y2="45" stroke="#388e3c" stroke-width="3" stroke-linecap="round"/>
     <circle cx="70" cy="45" r="5" fill="#388e3c"/>
-    <text x="0" y="108" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold" font-family="Malgun Gothic">로봇 바리스타</text>
+    <text x="0" y="108" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold" font-family="Noto Sans KR">로봇 바리스타</text>
   </g>
 
   <!-- Kiosk -->
@@ -184,8 +184,8 @@
   <rect x="907" y="260" width="36" height="60" fill="#333" rx="2"/>
   <!-- Screen glow -->
   <rect x="910" y="263" width="30" height="54" fill="#27ae60" opacity="0.3" rx="2"/>
-  <text x="925" y="290" text-anchor="middle" font-size="7" fill="#27ae60" font-family="Malgun Gothic">ORDER</text>
-  <text x="925" y="400" text-anchor="middle" font-size="9" fill="#27ae60" font-family="Malgun Gothic">무인 키오스크</text>
+  <text x="925" y="290" text-anchor="middle" font-size="7" fill="#27ae60" font-family="Noto Sans KR">ORDER</text>
+  <text x="925" y="400" text-anchor="middle" font-size="9" fill="#27ae60" font-family="Noto Sans KR">무인 키오스크</text>
 
   <!-- Tumbler display -->
   <g transform="translate(950,500)">
@@ -196,7 +196,7 @@
     <rect x="46" y="10" width="12" height="22" fill="#f5f5f5" stroke="#bbb" rx="3"/>
     <rect x="64" y="10" width="12" height="22" fill="#f5f5f5" stroke="#bbb" rx="3"/>
     <rect x="82" y="10" width="12" height="22" fill="#f5f5f5" stroke="#bbb" rx="3"/>
-    <text x="50" y="50" text-anchor="middle" font-size="8" fill="#5c6bc0" font-family="Malgun Gothic">아블러 텀블러</text>
+    <text x="50" y="50" text-anchor="middle" font-size="8" fill="#5c6bc0" font-family="Noto Sans KR">아블러 텀블러</text>
   </g>
 
   <!-- Ice display showcase -->
@@ -209,9 +209,9 @@
     <circle cx="850" cy="512" r="8" fill="url(#iceGlow)" stroke="#90caf9"/>
     <circle cx="875" cy="510" r="8" fill="url(#iceGlow)" stroke="#90caf9"/>
   </g>
-  <text x="810" y="560" text-anchor="middle" font-size="9" fill="#2980b9" font-family="Malgun Gothic">얼음 디스플레이 쇼케이스</text>
+  <text x="810" y="560" text-anchor="middle" font-size="9" fill="#2980b9" font-family="Noto Sans KR">얼음 디스플레이 쇼케이스</text>
 
-  <text x="870" y="650" text-anchor="middle" font-size="13" fill="#27ae60" font-weight="bold" font-family="Malgun Gothic">Zone D 서비스·판매</text>
+  <text x="870" y="650" text-anchor="middle" font-size="13" fill="#27ae60" font-weight="bold" font-family="Noto Sans KR">Zone D 서비스·판매</text>
 
   <!-- ===== LED LIGHTING ===== -->
   <rect x="250" y="97" width="700" height="4" fill="#00e5ff" opacity="0.4" rx="1"/>
@@ -223,7 +223,7 @@
 
   <!-- ===== LEGEND ===== -->
   <rect x="30" y="720" width="1140" height="60" fill="rgba(0,0,0,0.3)" rx="8"/>
-  <g font-size="10" font-family="Malgun Gothic">
+  <g font-size="10" font-family="Noto Sans KR">
     <rect x="50" y="738" width="14" height="14" fill="#e74c3c" rx="2"/>
     <text x="70" y="750" fill="#eee">A 냉동기실</text>
     <rect x="180" y="738" width="14" height="14" fill="#2980b9" rx="2"/>
