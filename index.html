@@ -3,98 +3,150 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIF 마이크로 아이스팩토리 — 전체 사업 대시보드</title>
+<title>MIF 마이크로 아이스팩토리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0f1a; --card: #1a1a2e; --card2: #16213e;
-    --accent: #e94560; --blue: #0f3460; --cyan: #00e5ff;
-    --green: #00c853; --orange: #ff9100; --purple: #7c4dff;
-    --text: #e0e0e0; --dim: #888; --border: #2a2a4a;
+    --bg: #f5f5f7; --card: rgba(255,255,255,0.72); --card2: rgba(255,255,255,0.55);
+    --accent: #0071e3; --blue: #0077ed; --cyan: #32ade6;
+    --green: #34c759; --orange: #ff9500; --purple: #af52de;
+    --text: #1d1d1f; --text2: #86868b; --dim: #6e6e73;
+    --border: rgba(0,0,0,0.06); --glass: rgba(255,255,255,0.72);
+    --shadow: 0 2px 12px rgba(0,0,0,0.08); --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+    --radius: 16px; --radius-sm: 12px;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Malgun Gothic','Segoe UI',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+  body {
+    font-family:'Inter','SF Pro Display','SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.5;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  }
 
-  /* HEADER */
-  .header { background:linear-gradient(135deg,#0f3460,#1a1a2e); padding:30px 40px; border-bottom:3px solid var(--accent); position:sticky; top:0; z-index:100; }
-  .header h1 { font-size:26px; color:white; }
+  /* HEADER — frosted glass */
+  .header {
+    background:rgba(245,245,247,0.8); backdrop-filter:saturate(180%) blur(20px); -webkit-backdrop-filter:saturate(180%) blur(20px);
+    padding:20px 40px; border-bottom:0.5px solid rgba(0,0,0,0.1);
+    position:sticky; top:0; z-index:100;
+  }
+  .header h1 { font-size:21px; font-weight:600; color:var(--text); letter-spacing:-0.3px; }
   .header h1 span { color:var(--accent); }
-  .header .sub { color:var(--dim); font-size:13px; margin-top:4px; }
+  .header .sub { color:var(--dim); font-size:12px; margin-top:2px; font-weight:400; letter-spacing:-0.1px; }
 
-  /* NAV */
-  .nav { background:var(--blue); padding:12px 40px; display:flex; gap:6px; flex-wrap:wrap; position:sticky; top:85px; z-index:99; border-bottom:1px solid var(--border); }
-  .nav button { background:var(--card); color:var(--text); border:1px solid var(--border); padding:8px 16px; border-radius:20px; cursor:pointer; font-size:12px; transition:all .2s; white-space:nowrap; }
-  .nav button:hover, .nav button.active { background:var(--accent); border-color:var(--accent); color:white; transform:scale(1.05); }
+  /* NAV — pill tabs */
+  .nav {
+    background:rgba(245,245,247,0.8); backdrop-filter:saturate(180%) blur(20px); -webkit-backdrop-filter:saturate(180%) blur(20px);
+    padding:10px 40px; display:flex; gap:6px; flex-wrap:wrap;
+    position:sticky; top:63px; z-index:99; border-bottom:0.5px solid rgba(0,0,0,0.08);
+  }
+  .nav button {
+    background:transparent; color:var(--dim); border:none; padding:7px 14px;
+    border-radius:980px; cursor:pointer; font-size:13px; font-weight:500;
+    transition:all .25s ease; white-space:nowrap; letter-spacing:-0.1px;
+  }
+  .nav button:hover { background:rgba(0,0,0,0.04); color:var(--text); }
+  .nav button.active { background:var(--accent); color:white; }
 
   /* SECTION */
-  .section { display:none; padding:30px 40px; max-width:1400px; margin:0 auto; }
-  .section.active { display:block; }
-  .section h2 { font-size:22px; color:var(--accent); margin-bottom:20px; border-left:4px solid var(--accent); padding-left:12px; }
-  .section h3 { font-size:16px; color:var(--cyan); margin:20px 0 10px; }
+  .section { display:none; padding:32px 40px; max-width:1200px; margin:0 auto; }
+  .section.active { display:block; animation:fadeIn .4s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .section h2 {
+    font-size:28px; font-weight:700; color:var(--text); margin-bottom:24px;
+    letter-spacing:-0.5px; border:none; padding:0;
+  }
+  .section h3 { font-size:17px; font-weight:600; color:var(--text); margin:28px 0 12px; letter-spacing:-0.2px; }
 
-  /* CARDS */
-  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin:16px 0; }
-  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; transition:transform .2s, box-shadow .2s; }
-  .card:hover { transform:translateY(-4px); box-shadow:0 8px 30px rgba(233,69,96,.15); }
-  .card .card-icon { font-size:32px; margin-bottom:10px; }
-  .card .card-title { font-size:14px; color:var(--accent); font-weight:bold; margin-bottom:6px; }
-  .card .card-value { font-size:28px; font-weight:bold; color:white; }
-  .card .card-sub { font-size:11px; color:var(--dim); margin-top:4px; }
+  /* CARDS — glass morphism */
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; margin:16px 0; }
+  .card {
+    background:var(--card); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    border:0.5px solid rgba(0,0,0,0.06); border-radius:var(--radius);
+    padding:22px; transition:all .3s ease; box-shadow:var(--shadow);
+  }
+  .card:hover { transform:translateY(-2px); box-shadow:var(--shadow-lg); }
+  .card .card-icon { font-size:28px; margin-bottom:8px; }
+  .card .card-title { font-size:12px; color:var(--dim); font-weight:500; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px; }
+  .card .card-value { font-size:30px; font-weight:700; color:var(--text); letter-spacing:-1px; }
+  .card .card-sub { font-size:12px; color:var(--dim); margin-top:4px; font-weight:400; }
 
   /* WIDE CARDS */
-  .wide-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(420px,1fr)); gap:16px; margin:16px 0; }
-  .wide-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; }
-  .wide-card h4 { color:var(--cyan); margin-bottom:12px; font-size:15px; }
+  .wide-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(400px,1fr)); gap:14px; margin:16px 0; }
+  .wide-card {
+    background:var(--card); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    border:0.5px solid rgba(0,0,0,0.06); border-radius:var(--radius);
+    padding:24px; box-shadow:var(--shadow);
+  }
+  .wide-card h4 { color:var(--accent); margin-bottom:14px; font-size:15px; font-weight:600; letter-spacing:-0.2px; }
 
   /* TABLE */
-  table { width:100%; border-collapse:collapse; margin:12px 0; font-size:13px; }
-  th { background:var(--blue); color:white; padding:10px 12px; text-align:left; font-weight:600; }
-  td { padding:9px 12px; border-bottom:1px solid var(--border); }
-  tr:hover td { background:rgba(233,69,96,.05); }
-  .highlight { color:var(--accent); font-weight:bold; }
-  .green { color:var(--green); font-weight:bold; }
-  .cyan { color:var(--cyan); font-weight:bold; }
-  .orange { color:var(--orange); font-weight:bold; }
-  .purple { color:var(--purple); font-weight:bold; }
+  table { width:100%; border-collapse:separate; border-spacing:0; margin:12px 0; font-size:13px; border-radius:var(--radius-sm); overflow:hidden; box-shadow:var(--shadow); }
+  th { background:rgba(0,0,0,0.03); color:var(--dim); padding:10px 14px; text-align:left; font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:0.5px solid var(--border); }
+  td { padding:10px 14px; border-bottom:0.5px solid var(--border); background:white; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:#f0f5ff; }
+  .highlight { color:var(--accent); font-weight:600; }
+  .green { color:var(--green); font-weight:600; }
+  .cyan { color:var(--cyan); font-weight:600; }
+  .orange { color:var(--orange); font-weight:600; }
+  .purple { color:var(--purple); font-weight:600; }
 
   /* TIMELINE */
   .timeline { position:relative; padding:20px 0; }
-  .timeline::before { content:''; position:absolute; left:20px; top:0; bottom:0; width:3px; background:var(--accent); border-radius:2px; }
-  .tl-item { position:relative; padding-left:50px; margin-bottom:24px; }
-  .tl-dot { position:absolute; left:12px; top:4px; width:18px; height:18px; border-radius:50%; border:3px solid var(--accent); background:var(--bg); }
+  .timeline::before { content:''; position:absolute; left:20px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--accent),var(--purple)); border-radius:2px; }
+  .tl-item { position:relative; padding-left:50px; margin-bottom:28px; }
+  .tl-dot { position:absolute; left:13px; top:4px; width:16px; height:16px; border-radius:50%; border:2.5px solid var(--accent); background:white; }
   .tl-dot.done { background:var(--accent); }
-  .tl-dot.current { background:var(--cyan); border-color:var(--cyan); box-shadow:0 0 10px var(--cyan); }
-  .tl-date { font-size:12px; color:var(--accent); font-weight:bold; }
-  .tl-title { font-size:14px; color:white; font-weight:bold; margin:2px 0; }
-  .tl-desc { font-size:12px; color:var(--dim); }
+  .tl-dot.current { background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 4px rgba(0,113,227,.2); }
+  .tl-date { font-size:12px; color:var(--accent); font-weight:600; letter-spacing:-0.1px; }
+  .tl-title { font-size:15px; color:var(--text); font-weight:600; margin:3px 0; letter-spacing:-0.2px; }
+  .tl-desc { font-size:13px; color:var(--dim); font-weight:400; }
 
   /* PROGRESS BAR */
-  .progress-wrap { margin:8px 0; }
-  .progress-label { display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; }
-  .progress-bar { height:8px; background:var(--border); border-radius:4px; overflow:hidden; }
-  .progress-fill { height:100%; border-radius:4px; transition:width .5s; }
+  .progress-wrap { margin:10px 0; }
+  .progress-label { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; font-weight:500; }
+  .progress-bar { height:6px; background:rgba(0,0,0,0.06); border-radius:3px; overflow:hidden; }
+  .progress-fill { height:100%; border-radius:3px; transition:width .6s ease; }
 
   /* ZONE MAP */
-  .zone-map { display:flex; gap:4px; margin:16px 0; border-radius:8px; overflow:hidden; height:80px; }
-  .zone { display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:bold; color:white; text-align:center; line-height:1.3; }
+  .zone-map { display:flex; gap:3px; margin:16px 0; border-radius:var(--radius-sm); overflow:hidden; height:72px; }
+  .zone { display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:white; text-align:center; line-height:1.3; }
 
   /* TIER */
-  .tier-row { display:flex; gap:8px; margin:8px 0; }
-  .tier-badge { padding:8px 16px; border-radius:20px; font-size:12px; font-weight:bold; color:white; text-align:center; flex:1; }
+  .tier-row { display:flex; gap:8px; margin:10px 0; }
+  .tier-badge { padding:10px 16px; border-radius:980px; font-size:12px; font-weight:600; color:white; text-align:center; flex:1; }
 
   /* FOOTER */
-  .footer { text-align:center; padding:30px; color:var(--dim); font-size:12px; border-top:1px solid var(--border); margin-top:40px; }
+  .footer { text-align:center; padding:40px; color:var(--dim); font-size:12px; margin-top:40px; font-weight:400; }
+  .footer strong { color:var(--text); font-weight:600; }
+  .footer a { color:var(--accent); text-decoration:none; }
+  .footer a:hover { text-decoration:underline; }
 
   /* FLOW */
-  .flow { display:flex; align-items:center; gap:8px; margin:12px 0; flex-wrap:wrap; }
-  .flow-box { background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:10px 16px; text-align:center; font-size:12px; min-width:100px; }
-  .flow-arrow { color:var(--accent); font-size:20px; font-weight:bold; }
+  .flow { display:flex; align-items:center; gap:8px; margin:14px 0; flex-wrap:wrap; }
+  .flow-box { background:white; border:0.5px solid var(--border); border-radius:var(--radius-sm); padding:12px 18px; text-align:center; font-size:12px; font-weight:500; min-width:100px; box-shadow:var(--shadow); }
+  .flow-arrow { color:var(--accent); font-size:18px; font-weight:600; }
+
+  /* SVG VIEWER */
+  .svg-embed { background:white; border-radius:var(--radius); padding:20px; overflow-x:auto; box-shadow:var(--shadow-lg); border:0.5px solid var(--border); }
+  #svgSelect { padding:10px 20px; background:white; color:var(--text); border:0.5px solid rgba(0,0,0,0.12); border-radius:980px; font-size:14px; font-weight:500; cursor:pointer; font-family:inherit; appearance:none; -webkit-appearance:none; padding-right:36px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' fill='none' stroke='%2386868b' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; }
 
   /* RESPONSIVE */
   @media (max-width:768px) {
-    .header, .nav, .section { padding-left:16px; padding-right:16px; }
-    .cards { grid-template-columns:1fr; }
+    .header, .nav, .section { padding-left:20px; padding-right:20px; }
+    .cards { grid-template-columns:1fr 1fr; }
     .wide-cards { grid-template-columns:1fr; }
-    .header h1 { font-size:20px; }
+    .header h1 { font-size:18px; }
+    .section h2 { font-size:22px; }
+    .card .card-value { font-size:24px; }
+    .nav { gap:4px; padding:8px 20px; }
+    .nav button { font-size:11px; padding:6px 10px; }
+  }
+  @media (max-width:480px) {
+    .cards { grid-template-columns:1fr; }
+    .tier-row { flex-direction:column; }
+    .flow { flex-direction:column; }
+    .flow-arrow { transform:rotate(90deg); }
   }
 </style>
 </head>
@@ -689,9 +741,9 @@
 <!-- EMBEDDED SVG DRAWINGS -->
 <div class="section" id="s_drawings" style="display:none">
   <h2>설계 도면 뷰어 (내장)</h2>
-  <p style="font-size:12px;color:#888;margin-bottom:12px">아래 드롭다운에서 도면을 선택하세요. 확대하려면 Ctrl+마우스휠을 사용하세요.</p>
+  <p style="font-size:13px;color:var(--dim);margin-bottom:14px;font-weight:400">아래 드롭다운에서 도면을 선택하세요.</p>
   <div style="margin-bottom:12px">
-    <select id="svgSelect" onchange="showSVG()" style="padding:10px 20px;background:#1a1a2e;color:#e0e0e0;border:1px solid #2a2a4a;border-radius:8px;font-size:14px;cursor:pointer">
+    <select id="svgSelect" onchange="showSVG()" id="svgSelect" onchange="showSVG()">
       <option value="svg_0">01 MIF-20 평면도</option>
       <option value="svg_1">02 MIF-40 평면도</option>
       <option value="svg_2">03 냉동고 단면도 선반배치</option>
@@ -701,7 +753,7 @@
       <option value="svg_6">08 MIF-20 내부 투시도</option>
     </select>
   </div>
-  <div id="svg_0" class="svg-embed" style="display:block;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+  <div id="svg_0" class="svg-embed" class="svg-embed" style="display:block">
     <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
   <defs>
@@ -938,7 +990,7 @@
 </svg>
 
   </div>
-  <div id="svg_1" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+  <div id="svg_1" class="svg-embed" class="svg-embed" style="display:none">
     <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 600" width="1800" height="600">
   <defs>
@@ -1179,7 +1231,7 @@
 </svg>
 
   </div>
-  <div id="svg_2" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+  <div id="svg_2" class="svg-embed" class="svg-embed" style="display:none">
     <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 750" width="1400" height="750">
   <defs>
@@ -1499,7 +1551,7 @@
 </svg>
 
   </div>
-  <div id="svg_3" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+  <div id="svg_3" class="svg-embed" class="svg-embed" style="display:none">
     <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 550" width="1200" height="550">
   <defs>
@@ -1692,7 +1744,7 @@
 </svg>
 
   </div>
-  <div id="svg_4" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+  <div id="svg_4" class="svg-embed" class="svg-embed" style="display:none">
     <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800">
   <defs>
@@ -1959,7 +2011,7 @@
 </svg>
 
   </div>
-  <div id="svg_5" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+  <div id="svg_5" class="svg-embed" class="svg-embed" style="display:none">
     <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
   <defs>
@@ -2198,7 +2250,7 @@
 </svg>
 
   </div>
-  <div id="svg_6" class="svg-embed" style="display:none;background:white;border-radius:12px;padding:20px;overflow-x:auto;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
+  <div id="svg_6" class="svg-embed" class="svg-embed" style="display:none">
     <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
   <defs>
