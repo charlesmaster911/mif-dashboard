@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JewelIce 주간 회의록 아카이브</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Noto Sans KR',sans-serif;background:#f4f5f7;color:#1a1a1a;line-height:1.6}
+
+  .header{background:linear-gradient(135deg,#0ABAB5,#089490);color:#fff;padding:32px 40px}
+  .header h1{font-size:28px;font-weight:900}
+  .header .subtitle{font-size:14px;opacity:.7;font-weight:300;margin-top:4px}
+  .header .stats{margin-top:16px;display:flex;gap:24px;flex-wrap:wrap}
+  .header .stat{background:rgba(255,255,255,.12);padding:8px 16px;border-radius:8px;font-size:13px}
+  .header .stat strong{font-size:20px;font-weight:900;margin-right:4px}
+
+  .nav{background:#fff;padding:12px 40px;border-bottom:1px solid #e8e8e8;display:flex;gap:12px;flex-wrap:wrap}
+  .nav a{font-size:13px;font-weight:600;color:#0ABAB5;text-decoration:none;padding:6px 14px;border-radius:20px;border:1px solid #e0e0e0;transition:all .2s}
+  .nav a:hover,.nav a.active{background:#0ABAB5;color:#fff;border-color:#0ABAB5}
+
+  .content{padding:32px 40px;max-width:1200px;margin:0 auto}
+
+  .month-section{margin-bottom:40px}
+  .month-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .month-header h2{font-size:20px;font-weight:900}
+  .month-header .badge{font-size:11px;font-weight:700;background:#E0F2FE;color:#0284C7;padding:3px 10px;border-radius:10px}
+  .month-header::before{content:'';width:4px;height:24px;border-radius:2px;background:#0ABAB5}
+
+  .week-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+
+  .week-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:all .25s;cursor:pointer;text-decoration:none;color:inherit;display:block}
+  .week-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+  .week-card-header{padding:20px 24px 12px;border-left:4px solid #0ABAB5}
+  .week-card-header .week-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#0ABAB5}
+  .week-card-header h3{font-size:17px;font-weight:800;margin-top:4px}
+  .week-card-header .date-range{font-size:12px;color:#999;margin-top:2px}
+  .week-card-body{padding:0 24px 20px}
+  .week-card-body .focus{font-size:13px;color:#555;margin-bottom:12px;padding:10px;background:#f8f9fa;border-radius:6px}
+  .week-card-body .tag-row{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
+  .tag.total{background:#E0F2FE;color:#0284C7}
+  .tag.urgent{background:#FEE2E2;color:#DC2626}
+  .tag.done{background:#D1FAE5;color:#059669}
+
+  .week-card.latest .week-card-header{border-left-color:#DC2626}
+  .week-card.latest .week-label{color:#DC2626}
+
+  .empty-state{text-align:center;padding:60px 20px;color:#bbb}
+  .empty-state h3{font-size:18px;margin-bottom:8px;color:#999}
+
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#0ABAB5;text-decoration:none;font-weight:600;margin-bottom:20px}
+  .back-link:hover{text-decoration:underline}
+
+  .footer{padding:24px 40px;text-align:center;font-size:11px;color:#bbb;border-top:1px solid #f0f0f0;margin-top:40px}
+
+  @media(max-width:768px){.header,.nav,.content{padding-left:20px;padding-right:20px}.week-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>JewelIce 주간 회의록 아카이브</h1>
+  <p class="subtitle">팀 실행계획 주간/월별 누적 기록</p>
+  <div class="stats" id="stats">
+    <!-- JS로 채움 -->
+  </div>
+</div>
+
+<nav class="nav" id="monthNav">
+  <!-- JS로 월 탭 생성 -->
+</nav>
+
+<div class="content">
+  <a href="../index.html" class="back-link">&larr; 메인 대시보드로 돌아가기</a>
+  <div id="archive">
+    <!-- JS로 채움 -->
+  </div>
+</div>
+
+<div class="footer">
+  JewelIce Weekly Archive &copy; 2026 MasterMinding Group | Claude Code 자동 생성
+</div>
+
+<script>
+// ━━━ 주간 회의록 데이터 (빌드 스크립트가 여기를 업데이트) ━━━
+const WEEKLY_DATA = [
+  {
+    "file": "2026-W15_0410.html",
+    "year": 2026,
+    "month": 4,
+    "week": 15,
+    "date": "2026-04-10",
+    "dateRange": "4/10 ~ 4/16",
+    "title": "2026.04.10",
+    "focus": "물류 잡고, 가격 확정하고, 제안서 만들어라",
+    "totalTasks": 17,
+    "urgentTasks": 7,
+    "completedTasks": 0
+  }
+];
+// ━━━ 데이터 끝 ━━━
+
+function render() {
+  const data = [...WEEKLY_DATA].sort((a, b) => b.date.localeCompare(a.date));
+  const months = {};
+
+  data.forEach(w => {
+    const key = `${w.year}-${String(w.month).padStart(2,'0')}`;
+    if (!months[key]) months[key] = [];
+    months[key].push(w);
+  });
+
+  // 통계
+  const totalWeeks = data.length;
+  const totalTasks = data.reduce((s, w) => s + w.totalTasks, 0);
+  const totalCompleted = data.reduce((s, w) => s + w.completedTasks, 0);
+  const monthCount = Object.keys(months).length;
+
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><strong>${totalWeeks}</strong>주차 기록</div>
+    <div class="stat"><strong>${totalTasks}</strong>누적 과제</div>
+    <div class="stat"><strong>${totalCompleted}</strong>완료</div>
+    <div class="stat"><strong>${monthCount}</strong>개월</div>
+  `;
+
+  // 월 탭
+  const sortedMonths = Object.keys(months).sort().reverse();
+  const navEl = document.getElementById('monthNav');
+  navEl.innerHTML = '<a href="#" class="active" onclick="filterMonth(null,this);return false">전체</a>' +
+    sortedMonths.map(m => {
+      const [y, mo] = m.split('-');
+      return `<a href="#" onclick="filterMonth('${m}',this);return false">${y}년 ${parseInt(mo)}월</a>`;
+    }).join('');
+
+  // 카드
+  renderCards(months, sortedMonths);
+}
+
+function renderCards(months, sortedMonths, filterKey) {
+  const archiveEl = document.getElementById('archive');
+  const keys = filterKey ? [filterKey] : sortedMonths;
+  const latestDate = WEEKLY_DATA.length ? [...WEEKLY_DATA].sort((a,b) => b.date.localeCompare(a.date))[0].date : null;
+
+  let html = '';
+  keys.forEach(key => {
+    if (!months[key]) return;
+    const [y, mo] = key.split('-');
+    const weeks = months[key];
+    html += `<div class="month-section">
+      <div class="month-header">
+        <h2>${y}년 ${parseInt(mo)}월</h2>
+        <span class="badge">${weeks.length}주차</span>
+      </div>
+      <div class="week-grid">`;
+
+    weeks.forEach(w => {
+      const isLatest = w.date === latestDate;
+      html += `<a href="${w.file}" class="week-card${isLatest ? ' latest' : ''}">
+        <div class="week-card-header">
+          <div class="week-label">${isLatest ? 'LATEST &mdash; ' : ''}W${w.week}</div>
+          <h3>${w.title}</h3>
+          <div class="date-range">${w.dateRange}</div>
+        </div>
+        <div class="week-card-body">
+          <div class="focus">${w.focus}</div>
+          <div class="tag-row">
+            <span class="tag total">과제 ${w.totalTasks}</span>
+            <span class="tag urgent">긴급 ${w.urgentTasks}</span>
+            <span class="tag done">완료 ${w.completedTasks}</span>
+          </div>
+        </div>
+      </a>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  if (!html) html = '<div class="empty-state"><h3>아직 회의록이 없습니다</h3><p>주간 실행계획을 추가하면 여기에 표시됩니다</p></div>';
+  archiveEl.innerHTML = html;
+}
+
+let _months = {}, _sortedMonths = [];
+
+function filterMonth(key, el) {
+  document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+  // re-compute months
+  const data = [...WEEKLY_DATA].sort((a, b) => b.date.localeCompare(a.date));
+  const months = {};
+  data.forEach(w => {
+    const k = `${w.year}-${String(w.month).padStart(2,'0')}`;
+    if (!months[k]) months[k] = [];
+    months[k].push(w);
+  });
+  const sortedMonths = Object.keys(months).sort().reverse();
+  renderCards(months, sortedMonths, key);
+}
+
+render();
+</script>
+</body>
+</html>
