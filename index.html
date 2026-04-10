@@ -2593,138 +2593,45 @@ td{padding:9px 12px;background:#fff;border-top:.5px solid var(--bl)}tr:first-chi
 <div class="section" id="s12">
   <h2>업무공유 · 회의록</h2>
 
-  <!-- 상단 요약 카드 -->
+  <!-- 상단 바로가기 -->
   <div class="cards">
     <div class="card" style="border-top:3px solid var(--accent)">
-      <div class="card-icon">📋</div>
-      <div class="card-title">Google Sheet</div>
-      <div class="card-value" style="font-size:16px">업무 공유 + 회의록</div>
-      <div class="card-sub"><a href="https://docs.google.com/spreadsheets/d/13yy1MtUhXNg4MEG6qL9lJogIDNdouXqQzv8mkUp2Kkk/edit?gid=217054422#gid=217054422" target="_blank">시트 열기 &rarr;</a></div>
+      <div class="card-icon">📊</div>
+      <div class="card-title">대시보드</div>
+      <div class="card-value" style="font-size:16px">현황 요약</div>
+      <div class="card-sub"><a href="https://docs.google.com/spreadsheets/d/13yy1MtUhXNg4MEG6qL9lJogIDNdouXqQzv8mkUp2Kkk/edit#gid=639158373" target="_blank">시트 열기 &rarr;</a></div>
     </div>
     <div class="card" style="border-top:3px solid var(--green)">
-      <div class="card-icon">📅</div>
-      <div class="card-title">자동 체크</div>
-      <div class="card-value" style="font-size:16px">월/금 12:00</div>
-      <div class="card-sub">매주 월·금 시트 확인 &rarr; 회의록 업데이트</div>
+      <div class="card-icon">📋</div>
+      <div class="card-title">주간업무</div>
+      <div class="card-value" style="font-size:16px">팀원별 업무</div>
+      <div class="card-sub"><a href="https://docs.google.com/spreadsheets/d/13yy1MtUhXNg4MEG6qL9lJogIDNdouXqQzv8mkUp2Kkk/edit#gid=1529873629" target="_blank">시트 열기 &rarr;</a></div>
     </div>
     <div class="card" style="border-top:3px solid var(--orange)">
+      <div class="card-icon">📝</div>
+      <div class="card-title">회의록</div>
+      <div class="card-value" style="font-size:16px">결정/업무지시</div>
+      <div class="card-sub"><a href="https://docs.google.com/spreadsheets/d/13yy1MtUhXNg4MEG6qL9lJogIDNdouXqQzv8mkUp2Kkk/edit#gid=1390360254" target="_blank">시트 열기 &rarr;</a></div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--purple)">
       <div class="card-icon">📁</div>
       <div class="card-title">주간 아카이브</div>
       <div class="card-value" style="font-size:16px"><a href="weekly/index.html">전체 보기</a></div>
-      <div class="card-sub">주차별 누적 회의록</div>
-    </div>
-    <div class="card" style="border-top:3px solid var(--purple)">
-      <div class="card-icon">🔄</div>
-      <div class="card-title" id="lastUpdate">마지막 업데이트</div>
-      <div class="card-value" style="font-size:16px" id="updateDate">2026.04.10</div>
-      <div class="card-sub">W15 · 4월 2주차</div>
+      <div class="card-sub">주차별 실행계획 누적</div>
     </div>
   </div>
 
-  <!-- 구글 시트 라이브 임베드 -->
-  <h3>실시간 업무 공유 시트</h3>
-  <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:2px 4px 14px rgba(0,0,0,.06);margin:16px 0">
-    <iframe src="https://docs.google.com/spreadsheets/d/13yy1MtUhXNg4MEG6qL9lJogIDNdouXqQzv8mkUp2Kkk/htmlembed?gid=217054422" style="width:100%;height:520px;border:none;border-radius:18px" loading="lazy"></iframe>
+  <!-- 탭 전환 -->
+  <div style="display:flex;gap:8px;margin:24px 0 12px;flex-wrap:wrap">
+    <button onclick="switchEmbed('dash')" id="btn-dash" style="padding:8px 18px;border-radius:980px;border:1px solid rgba(0,0,0,.12);background:var(--accent);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">대시보드</button>
+    <button onclick="switchEmbed('weekly')" id="btn-weekly" style="padding:8px 18px;border-radius:980px;border:1px solid rgba(0,0,0,.12);background:#fff;color:var(--t1);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">주간업무</button>
+    <button onclick="switchEmbed('meeting')" id="btn-meeting" style="padding:8px 18px;border-radius:980px;border:1px solid rgba(0,0,0,.12);background:#fff;color:var(--t1);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">회의록</button>
+    <button onclick="switchEmbed('old')" id="btn-old" style="padding:8px 18px;border-radius:980px;border:1px solid rgba(0,0,0,.12);background:#fff;color:var(--t2);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit">기존 업무공유</button>
   </div>
 
-  <!-- 팀원별 업무 현황 -->
-  <h3>팀원별 업무 현황 (이번 주)</h3>
-  <div class="wide-cards" id="teamStatus">
-
-    <!-- 박지현 팀장 -->
-    <div class="wide-card" style="border-left:4px solid var(--purple)">
-      <h4>👩‍💼 박지현 팀장 — 전략기획 / B2B / 광고</h4>
-      <table>
-        <tr><th>업무</th><th>상태</th><th>마감</th></tr>
-        <tr><td>가격대 + 세트 구성안 최종 확정</td><td class="orange">진행중</td><td>4/16</td></tr>
-        <tr><td>B2B 선물세트 제안서 초안 착수</td><td class="orange">진행중</td><td>4/20→4/25</td></tr>
-        <tr><td>선물세트/B2B 일정 앞당긴 버전 수정</td><td>⬜ 대기</td><td>4/14</td></tr>
-        <tr><td>패키지 업체 미팅 + 샘플/견적 수집</td><td>⬜ 대기</td><td>4/22</td></tr>
-        <tr><td>광고 투트랙 전략 구체화</td><td>⬜ 대기</td><td>4/30</td></tr>
-      </table>
-    </div>
-
-    <!-- 권나경 과장 -->
-    <div class="wide-card" style="border-left:4px solid var(--green)">
-      <h4>👩‍💻 권나경 과장 — 채널운영 / 사방넷 / 소싱</h4>
-      <table>
-        <tr><th>업무</th><th>상태</th><th>마감</th></tr>
-        <tr><td>사방넷 기준 SKU/채널 매칭 테이블 작성</td><td class="orange">진행중</td><td>4/14</td></tr>
-        <tr><td>기존 플랫폼 정리 + 사방넷 연동</td><td class="orange">진행중</td><td>4/16</td></tr>
-        <tr><td>티딜 / 현대숍 승인 후 채널 확대</td><td>⬜ 대기</td><td>4/25</td></tr>
-        <tr><td>브랜드 커넥트 상시 운영 체계화</td><td>⬜ 상시</td><td>—</td></tr>
-        <tr><td>글라스잔 발주 수량 재산정</td><td>⬜ 대기</td><td>가격확정후</td></tr>
-        <tr><td>수수료 35% 밴더사 실적 데이터 확인</td><td>⬜ 대기</td><td>4/18</td></tr>
-      </table>
-    </div>
-
-    <!-- 권수지 대리 -->
-    <div class="wide-card" style="border-left:4px solid var(--orange)">
-      <h4>👩‍🎨 권수지 대리 — 재고 / 물류 / CS</h4>
-      <table>
-        <tr><th>업무</th><th>상태</th><th>마감</th></tr>
-        <tr><td>물류사 방문 + 실재고 전수 파악</td><td class="highlight">긴급</td><td>4/11</td></tr>
-        <tr><td>사방넷 실재고 반영 + 안전재고 알림</td><td class="orange">진행중</td><td>4/13</td></tr>
-        <tr><td>실링 스티커 / 부자재 수량 정리</td><td>⬜ 대기</td><td>4/16</td></tr>
-        <tr><td>재고 알림 시스템 사방넷 기준 설계</td><td>⬜ 대기</td><td>4/20</td></tr>
-        <tr><td>아블러 신규 컬러 팬톤 샘플 확인</td><td>⬜ 대기</td><td>도착당일</td></tr>
-        <tr><td>와디즈 체험단 댓글/리뷰/CS 응대</td><td class="green">상시</td><td>매일</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- 쥬얼아이스 회의록 -->
-  <h3>쥬얼아이스 회의록</h3>
-  <div class="wide-cards" id="meetingNotes">
-    <div class="wide-card">
-      <h4>2026.04.10 — 주간 회의 (W15)</h4>
-      <div style="font-size:13px;color:#555;line-height:1.8">
-        <p><strong style="color:var(--accent2)">핵심 의제:</strong> "물류 → 가격 → 제안서" 순서로 해결</p>
-        <p><strong style="color:var(--accent2)">결정사항:</strong></p>
-        <ul style="padding-left:18px;margin:6px 0">
-          <li>추석(9/14) B2B가 올해 게임체인저 — 4월말까지 제안서 반드시 배포</li>
-          <li>듀오 컬러박스 5천개 발주 검토 (대표 결정 대기, ~4/22)</li>
-          <li>선물세트/B2B 일정 7월→4월말 앞당기기 (대표 승인 대기)</li>
-          <li>브랜드 컨셉 "음료의 마지막 보석" + 티파니톤 방향 확정 필요</li>
-        </ul>
-        <p><strong style="color:var(--accent2)">대표 의사결정 필요:</strong></p>
-        <ul style="padding-left:18px;margin:6px 0">
-          <li>듀오 컬러박스 5천개 발주 확정 (~4/22)</li>
-          <li>선물세트/B2B 일정 앞당기기 승인 (~4/16)</li>
-          <li>브랜드 컨셉 + 패키지 방향 최종 확정 (~4/30)</li>
-          <li>아블러/아블러제로 재고 소진 전략 (이번 주 내)</li>
-        </ul>
-        <p style="margin-top:8px"><a href="weekly/2026-W15_0410.html" style="color:var(--accent)">상세 실행계획 보기 &rarr;</a></p>
-      </div>
-    </div>
-  </div>
-
-  <!-- 일일 업무 요약 (구글시트 기준) -->
-  <h3>일일업무 요약 (4/10~11)</h3>
-  <div class="wide-cards">
-    <div class="wide-card">
-      <h4>진행 중인 주요 프로젝트</h4>
-      <table>
-        <tr><th>프로젝트</th><th>담당</th><th>상태</th></tr>
-        <tr><td>해외 쇼피파이 / 메타광고</td><td>—</td><td class="orange">진행중</td></tr>
-        <tr><td>자사몰 리뉴얼</td><td>—</td><td class="orange">진행중</td></tr>
-        <tr><td>인플루언서 마케팅</td><td>—</td><td class="orange">진행중</td></tr>
-        <tr><td>싱글메이커 개발</td><td>—</td><td class="orange">진행중</td></tr>
-        <tr><td>상품소싱</td><td>—</td><td class="orange">진행중</td></tr>
-        <tr><td>아블러 런칭 오픈</td><td>—</td><td class="orange">진행중</td></tr>
-        <tr><td>유튜브 쇼핑 마케팅 (생명의물, 어쿠스틱드링크, 은수저)</td><td>—</td><td class="orange">진행중</td></tr>
-      </table>
-    </div>
-    <div class="wide-card">
-      <h4>기타 업무</h4>
-      <table>
-        <tr><th>항목</th><th>내용</th></tr>
-        <tr><td>메타광고 배너 소재</td><td>제작/업데이트 진행</td></tr>
-        <tr><td>재구매 상승 프로세스</td><td>전략 수립 중</td></tr>
-        <tr><td>에벤에셀 미팅 회의록 (250307)</td><td>정리 완료</td></tr>
-        <tr><td>해피홈 3월 재고파악 리스트</td><td>확인 중</td></tr>
-      </table>
-    </div>
+  <!-- 임베드 영역 -->
+  <div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:2px 4px 14px rgba(0,0,0,.06);margin:0 0 24px">
+    <iframe id="sheetEmbed" src="https://docs.google.com/spreadsheets/d/13yy1MtUhXNg4MEG6qL9lJogIDNdouXqQzv8mkUp2Kkk/htmlembed?gid=639158373" style="width:100%;height:560px;border:none;border-radius:18px" loading="lazy"></iframe>
   </div>
 
   <!-- 추석 역산 타임라인 -->
@@ -2758,6 +2665,16 @@ function show(i) {
 function pickSVG(){
   document.querySelectorAll('.drw-panel').forEach(function(d){d.style.display='none'});
   document.getElementById(document.getElementById('svgPick').value).style.display='block';
+}
+var embedGids={dash:'639158373',weekly:'1529873629',meeting:'1390360254',old:'217054422'};
+function switchEmbed(tab){
+  var base='https://docs.google.com/spreadsheets/d/13yy1MtUhXNg4MEG6qL9lJogIDNdouXqQzv8mkUp2Kkk/htmlembed?gid=';
+  document.getElementById('sheetEmbed').src=base+embedGids[tab];
+  ['dash','weekly','meeting','old'].forEach(function(t){
+    var b=document.getElementById('btn-'+t);
+    if(t===tab){b.style.background='var(--accent)';b.style.color='#fff'}
+    else{b.style.background='#fff';b.style.color='var(--t1)'}
+  });
 }
 </script>
 
